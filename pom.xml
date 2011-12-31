@@ -18,7 +18,7 @@
   <groupId>com.likeness.components</groupId>
   <artifactId>likeness-logging</artifactId>
   <name>likeness-logging</name>
-  <version>1.0.1</version>
+  <version>1.0.2-SNAPSHOT</version>
   <packaging>jar</packaging>
   <description>Logging component component.</description>
 
