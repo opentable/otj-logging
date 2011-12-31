@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/"
+                     threshold="trace">
+
+  <logger name="tc-trace">
+    <level value="trace"/>
+  </logger>
+
+  <logger name="tc-debug">
+    <level value="debug"/>
+  </logger>
+
+  <logger name="tc-info">
+    <level value="info"/>
+  </logger>
+
+  <logger name="tc-warn">
+    <level value="warn"/>
+  </logger>
+
+  <logger name="tc-error">
+    <level value="error"/>
+  </logger>
+
+  <!--  set the root loggers -->
+  <root>
+  </root>
+</log4j:configuration>
