@@ -10,9 +10,9 @@
   </parent>
 
   <scm>
-    <connection>scm:git:git://github.com/NessComputing/components-likeness-logging.git</connection>
-    <developerConnection>scm:git:git@github.com:NessComputing/components-likeness-logging.git</developerConnection>
-    <url>http://github.com/NessComputing/components-likeness-logging</url>
+    <connection>scm:git:git://github.com/NessComputing/components-ness-logging.git</connection>
+    <developerConnection>scm:git:git@github.com:NessComputing/components-ness-logging.git</developerConnection>
+    <url>http://github.com/NessComputing/components-ness-logging</url>
   </scm>
 
   <groupId>com.nesscomputing.components</groupId>
