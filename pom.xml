@@ -18,7 +18,7 @@
   <groupId>com.nesscomputing.components</groupId>
   <artifactId>ness-logging</artifactId>
   <name>ness-logging</name>
-  <version>1.0.2</version>
+  <version>1.0.3-SNAPSHOT</version>
   <packaging>jar</packaging>
   <description>Logging component component.</description>
 
