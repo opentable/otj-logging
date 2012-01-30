@@ -13,12 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.likeness.log4j;
+package com.nesscomputing.log4j;
 
 import java.net.URL;
 
 import org.junit.Assert;
 import org.junit.Test;
+
+import com.nesscomputing.log4j.ConfigureStandaloneLogging;
 
 public class TestConfigureStandaloneLogging
 {

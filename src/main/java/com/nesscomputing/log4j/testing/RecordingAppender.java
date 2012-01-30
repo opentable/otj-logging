@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.likeness.log4j.testing;
+package com.nesscomputing.log4j.testing;
 
 import org.apache.log4j.AppenderSkeleton;
 import org.apache.log4j.Layout;

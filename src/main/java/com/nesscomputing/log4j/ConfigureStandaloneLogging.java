@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.likeness.log4j;
+package com.nesscomputing.log4j;
 
 
 import static java.lang.String.format;
@@ -26,7 +26,7 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.helpers.Loader;
 import org.apache.log4j.xml.DOMConfigurator;
 
-import com.likeness.logging.Log;
+import com.nesscomputing.logging.Log;
 
 /**
  * Configure standalone logging using log4j.

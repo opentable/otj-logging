@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.likeness.logging;
+package com.nesscomputing.logging;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
@@ -29,8 +29,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.likeness.log4j.testing.RecordingAppender;
-import com.likeness.logging.Log;
+import com.nesscomputing.log4j.testing.RecordingAppender;
+import com.nesscomputing.logging.Log;
 
 
 public class TestWarnLogging

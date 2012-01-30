@@ -4,9 +4,9 @@
 
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>com.likeness</groupId>
+    <groupId>com.nesscomputing</groupId>
     <artifactId>ness-oss-parent</artifactId>
-    <version>2</version>
+    <version>3-SNAPSHOT</version>
   </parent>
 
   <scm>
@@ -15,9 +15,9 @@
     <url>http://github.com/NessComputing/components-likeness-logging</url>
   </scm>
 
-  <groupId>com.likeness.components</groupId>
-  <artifactId>likeness-logging</artifactId>
-  <name>likeness-logging</name>
+  <groupId>com.nesscomputing.components</groupId>
+  <artifactId>ness-logging</artifactId>
+  <name>ness-logging</name>
   <version>1.0.2-SNAPSHOT</version>
   <packaging>jar</packaging>
   <description>Logging component component.</description>
