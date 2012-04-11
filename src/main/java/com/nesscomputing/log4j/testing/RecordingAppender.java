@@ -65,6 +65,11 @@ public class RecordingAppender extends AppenderSkeleton
         return (ti != null) ? ti.getThrowableStrRep()[0] : null;
     }
 
+    public String[] getStackTrace()
+    {
+        return (ti != null) ? ti.getThrowableStrRep() : null;
+    }
+
     @Override
     protected void append(final LoggingEvent event)
     {
