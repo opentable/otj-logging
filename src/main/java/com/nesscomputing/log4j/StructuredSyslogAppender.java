@@ -48,7 +48,7 @@ import com.nesscomputing.syslog4j.impl.message.structured.StructuredSyslogMessag
  * <ul>
  * <li>'l' is the fully qualified logger name.</li>
  * <li>'c' is the current line count. For single line messages, this is always 0. For multiline messages (e.g. stack traces), this count allows recombination of log messages.</li>
- * <li>'ai' is the agent id (if configured).</li>
+ * <li>'si' is the service id (if configured).</li>
  * <li>'sc' is the service configuration (if configured).</li>
  * <li>'t' is the track token if the MDC contains a 'track' value.</li>
  * </ul>
