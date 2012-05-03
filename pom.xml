@@ -43,6 +43,12 @@
     </dependency>
 
     <dependency>
+      <groupId>com.nesscomputing</groupId>
+      <artifactId>ness-syslog4j</artifactId>
+      <version>0.9.47-NESS-3-SNAPSHOT</version>
+    </dependency>
+
+    <dependency>
       <groupId>junit</groupId>
       <artifactId>junit-dep</artifactId>
       <version>4.10</version>
