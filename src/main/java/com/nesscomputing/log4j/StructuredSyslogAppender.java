@@ -169,9 +169,8 @@ public class StructuredSyslogAppender extends AppenderSkeleton
             final StructuredSyslogMessageProcessor messageProcessor = new StructuredSyslogMessageProcessor(appname);
             syslog.setStructuredMessageProcessor(messageProcessor);
 
-            final SyslogIF newSyslog = syslogHolder.getAndSet(syslog);
-            if (newSyslog != null) {
-                syslog = newSyslog;
+            if (!syslogHolder.compareAndSet(null, syslog)) {
+                syslog = syslogHolder.get();
             }
         }
 
