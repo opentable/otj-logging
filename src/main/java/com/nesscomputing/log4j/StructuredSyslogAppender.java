@@ -134,7 +134,8 @@ public class StructuredSyslogAppender extends AppenderSkeleton
 
             Map<String, String> payload = b.build();
 
-            final StructuredSyslogMessage structuredMessage = new StructuredSyslogMessage(messageId, event.getThreadName(), ImmutableMap.of(ianaIdentifier, payload), messageLines[i]);
+            final String threadName = StringUtils.replaceChars(event.getThreadName()," \t", "");
+            final StructuredSyslogMessage structuredMessage = new StructuredSyslogMessage(messageId, threadName, ImmutableMap.of(ianaIdentifier, payload), messageLines[i]);
             syslog.log(level, structuredMessage);
         }
     }
