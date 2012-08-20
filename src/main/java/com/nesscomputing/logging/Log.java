@@ -25,7 +25,7 @@ public final class Log
 {
     private static final String LOG_NAME = Log.class.getName();
 
-    private final Logger wrappedLogger;
+    private final Logger wrappedLogger; // NOPMD
 
     /**
      * Finds the logger for the current class by using the call stack.
