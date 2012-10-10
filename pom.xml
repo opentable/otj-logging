@@ -6,7 +6,7 @@
   <parent>
     <groupId>com.nesscomputing</groupId>
     <artifactId>ness-oss-parent</artifactId>
-    <version>17</version>
+    <version>19</version>
   </parent>
 
   <scm>
@@ -45,7 +45,7 @@
     <dependency>
       <groupId>com.nesscomputing</groupId>
       <artifactId>ness-syslog4j</artifactId>
-      <version>0.9.47-NESS-4</version>
+      <version>0.9.47-NESS-7</version>
     </dependency>
 
     <dependency>
