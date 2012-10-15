@@ -36,7 +36,7 @@ public final class AssimilateForeignLogging
     }
 
     /**
-     * Assimilate all logging frameworks.
+     * Assimilate a small set of logging frameworks.
      */
     public static void assimilate()
     {
