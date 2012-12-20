@@ -13,12 +13,13 @@
     <connection>scm:git:git://github.com/NessComputing/components-ness-logging.git</connection>
     <developerConnection>scm:git:git@github.com:NessComputing/components-ness-logging.git</developerConnection>
     <url>http://github.com/NessComputing/components-ness-logging</url>
+    <tag>ness-logging-1.1.1</tag>
   </scm>
 
   <groupId>com.nesscomputing.components</groupId>
   <artifactId>ness-logging</artifactId>
   <name>ness-logging</name>
-  <version>1.1.1-SNAPSHOT</version>
+  <version>1.1.1</version>
   <packaging>jar</packaging>
   <description>Logging component component.</description>
 
