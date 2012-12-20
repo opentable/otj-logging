@@ -20,6 +20,8 @@ import java.util.logging.Handler;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
+import javax.annotation.concurrent.GuardedBy;
+
 import org.slf4j.bridge.SLF4JBridgeHandler;
 
 /**
@@ -31,6 +33,11 @@ public final class AssimilateForeignLogging
 {
     private static final Log LOG = Log.findLog();
 
+    private static final String AUTO_ASSIMILATE_PROPERTY = "ness.log.assimilate";
+
+    @GuardedBy("AssimilateForeignLogging.class")
+    private static boolean assimilated = false;
+
     private AssimilateForeignLogging()
     {
     }
@@ -38,8 +45,13 @@ public final class AssimilateForeignLogging
     /**
      * Assimilate a small set of logging frameworks.
      */
-    public static void assimilate()
+    public synchronized static void assimilate()
     {
+        if (assimilated) {
+            return;
+        }
+        assimilated = true;
+
         // Assimilate java.util.logging
         final Logger rootLogger = LogManager.getLogManager().getLogger("");
         final Handler[] handlers = rootLogger.getHandlers();
@@ -57,8 +69,20 @@ public final class AssimilateForeignLogging
     /**
      * Try to unassimilate the logging frameworks.
      */
-    public static void unassimilate()
+    public synchronized static void unassimilate()
     {
         SLF4JBridgeHandler.uninstall();
+    }
+
+    /**
+     * Possibly automate log assimilation, if a system property is set.
+     * Useful for unit tests.  Configure maven-surefire-plugin to set the property.
+     */
+    public static void automaticAssimilationHook()
+    {
+        if (System.getProperty(AUTO_ASSIMILATE_PROPERTY) != null)
+        {
+            assimilate();
+        }
     }
 }
