@@ -27,6 +27,10 @@ public final class Log
 
     private final Logger wrappedLogger; // NOPMD
 
+    static {
+        AssimilateForeignLogging.automaticAssimilationHook();
+    }
+
     /**
      * Finds the logger for the current class by using the call stack.
      */

@@ -31,6 +31,8 @@ public final class AssimilateForeignLogging
 {
     private static final Log LOG = Log.findLog();
 
+    private static final String AUTO_ASSIMILATE_PROPERTY = "ness.log.assimilate";
+
     private AssimilateForeignLogging()
     {
     }
@@ -60,5 +62,17 @@ public final class AssimilateForeignLogging
     public static void unassimilate()
     {
         SLF4JBridgeHandler.uninstall();
+    }
+
+    /**
+     * Possibly automate log assimilation, if a system property is set.
+     * Useful for unit tests.  Configure maven-surefire-plugin to set the property.
+     */
+    public static void automaticAssimilationHook()
+    {
+        if (System.getProperty(AUTO_ASSIMILATE_PROPERTY) != null)
+        {
+            assimilate();
+        }
     }
 }
