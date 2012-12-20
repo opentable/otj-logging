@@ -6,7 +6,7 @@
   <parent>
     <groupId>com.nesscomputing</groupId>
     <artifactId>ness-oss-parent</artifactId>
-    <version>20</version>
+    <version>22</version>
   </parent>
 
   <scm>
@@ -26,7 +26,6 @@
     <dependency>
       <groupId>log4j</groupId>
       <artifactId>log4j</artifactId>
-      <version>1.2.16</version>
     </dependency>
 
     <dependency>
@@ -66,7 +65,7 @@
 
     <dependency>
       <groupId>junit</groupId>
-      <artifactId>junit-dep</artifactId>
+      <artifactId>junit</artifactId>
       <scope>test</scope>
     </dependency>
 
