@@ -5,8 +5,8 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>com.opentable</groupId>
-    <artifactId>opentable-parent</artifactId>
-    <version>1-SNAPSHOT</version>
+    <artifactId>otj-parent</artifactId>
+    <version>1</version>
   </parent>
 
   <scm>
