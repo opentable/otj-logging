@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.nesscomputing.logging;
+package com.opentable.logging;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Wraps a Log4j logger into a number of convenience methods such as varargs.
@@ -60,7 +60,7 @@ public final class Log
      */
     public static Log forName(final String name)
     {
-        return new Log(Logger.getLogger(name));
+        return new Log(LoggerFactory.getLogger(name));
     }
 
     /**
@@ -113,22 +113,17 @@ public final class Log
 
     public boolean isErrorEnabled()
     {
-        return wrappedLogger.isEnabledFor(Level.ERROR);
+        return wrappedLogger.isErrorEnabled();
     }
 
     public boolean isWarnEnabled()
     {
-        return wrappedLogger.isEnabledFor(Level.WARN);
+        return wrappedLogger.isWarnEnabled();
     }
 
     public boolean isInfoEnabled()
     {
         return wrappedLogger.isInfoEnabled();
-    }
-
-    public void setLevel(final Level level)
-    {
-        wrappedLogger.setLevel(level);
     }
 
     // ========================================================================
@@ -163,7 +158,7 @@ public final class Log
 
     public void trace(final Throwable e)
     {
-        wrappedLogger.trace(e, e);
+        wrappedLogger.trace(e.toString(), e);
     }
 
     // ========================================================================
@@ -198,7 +193,7 @@ public final class Log
 
     public void debug(final Throwable e)
     {
-        wrappedLogger.debug(e, e);
+        wrappedLogger.debug(e.toString(), e);
     }
 
     // ========================================================================
@@ -221,7 +216,7 @@ public final class Log
 
     public void info(final Throwable e)
     {
-        wrappedLogger.info(e, e);
+        wrappedLogger.info(e.toString(), e);
     }
 
     public void info(final String message, final Object ... args)
@@ -259,7 +254,7 @@ public final class Log
     public void infoDebug(final Throwable t)
     {
         if (wrappedLogger.isDebugEnabled()) {
-            wrappedLogger.info(t, t);
+            wrappedLogger.info(t.toString(), t);
         }
         else {
             wrappedLogger.info(summarize(t, null));
@@ -284,7 +279,7 @@ public final class Log
 
     public void warn(final Throwable t)
     {
-        wrappedLogger.warn(t, t);
+        wrappedLogger.warn(t.toString(), t);
     }
 
     public void warn(final String message, final Object ... args)
@@ -320,7 +315,7 @@ public final class Log
     public void warnDebug(final Throwable t)
     {
         if (wrappedLogger.isDebugEnabled()) {
-            wrappedLogger.warn(t, t);
+            wrappedLogger.warn(t.toString(), t);
         }
         else {
             wrappedLogger.warn(summarize(t, null));
@@ -355,7 +350,7 @@ public final class Log
 
     public void error(final Throwable e)
     {
-        wrappedLogger.error(e, e);
+        wrappedLogger.error(e.toString(), e);
     }
 
     public void errorDebug(final Throwable t, final String errorMessage, final Object ... args)
@@ -381,7 +376,7 @@ public final class Log
     public void errorDebug(final Throwable t)
     {
         if (wrappedLogger.isDebugEnabled()) {
-            wrappedLogger.error(t, t);
+            wrappedLogger.error(t.toString(), t);
         }
         else {
             wrappedLogger.error(summarize(t, null));

@@ -13,16 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.nesscomputing.logging;
+package com.opentable.logging;
 
-
+import java.lang.management.ManagementFactory;
 import java.util.logging.Handler;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
-import javax.annotation.concurrent.GuardedBy;
+import javax.management.MalformedObjectNameException;
+import javax.management.ObjectName;
 
+import org.slf4j.LoggerFactory;
 import org.slf4j.bridge.SLF4JBridgeHandler;
+
+import ch.qos.logback.classic.LoggerContext;
+import ch.qos.logback.classic.jmx.JMXConfigurator;
+import ch.qos.logback.classic.jul.LevelChangePropagator;
 
 /**
  * Assimilates all the other logging frameworks that we use and redirect them to log4j.
@@ -33,9 +39,9 @@ public final class AssimilateForeignLogging
 {
     private static final Log LOG = Log.findLog();
 
-    private static final String AUTO_ASSIMILATE_PROPERTY = "ness.log.assimilate";
+    private static final String AUTO_ASSIMILATE_PROPERTY = "ot.log.assimilate";
 
-    @GuardedBy("AssimilateForeignLogging.class")
+    // @GuardedBy("AssimilateForeignLogging.class")
     private static boolean assimilated = false;
 
     private AssimilateForeignLogging()
@@ -63,6 +69,15 @@ public final class AssimilateForeignLogging
         }
 
         SLF4JBridgeHandler.install();
+        LoggerContext lc = (LoggerContext) LoggerFactory.getILoggerFactory();
+        lc.addListener(new LevelChangePropagator());
+        try {
+            lc.addListener(new JMXConfigurator(lc,
+                    ManagementFactory.getPlatformMBeanServer(),
+                    new ObjectName("com.opentable.logging:name=LogbackConfig")));
+        } catch (MalformedObjectNameException e) {
+            throw new RuntimeException(e);
+        }
         LOG.info("java.util.logging was assimilated.");
     }
 
@@ -75,12 +90,12 @@ public final class AssimilateForeignLogging
     }
 
     /**
-     * Possibly automate log assimilation, if a system property is set.
-     * Useful for unit tests.  Configure maven-surefire-plugin to set the property.
+     * Automatically configure logging without further interaction from the user.
      */
     public static void automaticAssimilationHook()
     {
-        if (System.getProperty(AUTO_ASSIMILATE_PROPERTY) != null)
+        final String autoAssimilate = System.getProperty(AUTO_ASSIMILATE_PROPERTY);
+        if (autoAssimilate == null || Boolean.parseBoolean(autoAssimilate))
         {
             assimilate();
         }
