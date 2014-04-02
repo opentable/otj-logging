@@ -6,13 +6,13 @@
   <parent>
     <groupId>com.opentable</groupId>
     <artifactId>otj-parent</artifactId>
-    <version>2-SNAPSHOT</version>
+    <version>2</version>
   </parent>
 
   <scm>
-    <connection>scm:git:git://github.com/NessComputing/components-ness-logging.git</connection>
-    <developerConnection>scm:git:git@github.com:NessComputing/components-ness-logging.git</developerConnection>
-    <url>http://github.com/NessComputing/components-ness-logging</url>
+    <connection>scm:git:git://github.com/opentable/otj-logging.git</connection>
+    <developerConnection>scm:git:git@github.com:opentable/otj-logging.git</developerConnection>
+    <url>http://github.com/opentable/otj-logging</url>
     <tag>HEAD</tag>
   </scm>
 
@@ -55,20 +55,4 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>com.nesscomputing.testing</groupId>
-        <artifactId>kawala-lessio</artifactId>
-        <version>1.0.0</version>
-        <exclusions>
-          <exclusion>
-            <groupId>com.nesscomputing.components</groupId>
-            <artifactId>ness-logging</artifactId>
-          </exclusion>
-        </exclusions>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
 </project>
