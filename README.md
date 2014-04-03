@@ -16,8 +16,10 @@ friction in a very crucial piece of the platform.  So far, it has been worth the
 
 __SLF4J__
 
-    void info(String format, Object... args);
-    void info(String message, Throwable t);
+```java
+void info(String format, Object... args);
+void info(String message, Throwable t);
+```
 
 The two overloads are not compatible with each other!  Depending on whether you are
 handling an exception or not changes the semantics of the first argument - with a Throwable
@@ -27,8 +29,10 @@ This is frankly an insane API.  We have a much better one:
 
 __otj-logging__
 
-    void info(String format, Object... args);
-    void info(Throwable t, String format, Object... args);
+```java
+void info(String format, Object... args);
+void info(Throwable t, String format, Object... args);
+```
 
 Now you may confidently use the same message strings with or without a Throwable to report.
 
@@ -40,17 +44,19 @@ Usage
 
 Usage is very simple:
 
-    class MyLoggingClass {
-        private static final Log LOG = Log.findLog();
+```java
+class MyLoggingClass {
+    private static final Log LOG = Log.findLog();
 
-        MyLoggingClass() {
-            LOG.info("Hello constructor from %s!", this);
-        }
-
-        public void handleError(Throwable t) {
-            LOG.error(t, "Something went wrong! I am: %s", this);
-        }
+    MyLoggingClass() {
+        LOG.info("Hello constructor from %s!", this);
     }
+
+    public void handleError(Throwable t) {
+        LOG.error(t, "Something went wrong! I am: %s", this);
+    }
+}
+```
 
 Component Level
 ---------------
