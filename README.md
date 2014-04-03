@@ -32,6 +32,9 @@ __otj-logging__
 
 Now you may confidently use the same message strings with or without a Throwable to report.
 
+The SLF4J API is still available and works fine, just be very conscious about which one you use
+because the message formats are not the same.
+
 Usage
 -----
 
