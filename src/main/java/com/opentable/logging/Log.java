@@ -261,6 +261,36 @@ public final class Log
         }
     }
 
+    public void infoTrace(final Throwable t, final String infoMessage, final Object ... args)
+    {
+        if (wrappedLogger.isTraceEnabled()) {
+            wrappedLogger.info(String.format(infoMessage, args), t);
+        }
+        else if (wrappedLogger.isInfoEnabled()) {
+            wrappedLogger.info(summarize(t, infoMessage, args));
+        }
+    }
+
+    public void infoTrace(final Throwable t, final String infoMessage)
+    {
+        if (wrappedLogger.isTraceEnabled()) {
+            wrappedLogger.info(infoMessage, t);
+        }
+        else {
+            wrappedLogger.info(summarize(t, infoMessage));
+        }
+    }
+
+    public void infoTrace(final Throwable t)
+    {
+        if (wrappedLogger.isTraceEnabled()) {
+            wrappedLogger.info(t.toString(), t);
+        }
+        else {
+            wrappedLogger.info(summarize(t, null));
+        }
+    }
+
     // ========================================================================
     //
     // Warn level methods
@@ -322,6 +352,37 @@ public final class Log
         }
     }
 
+    public void warnTrace(final Throwable t, final String warnMessage, final Object ... args)
+    {
+        if (wrappedLogger.isTraceEnabled()) {
+            wrappedLogger.warn(String.format(warnMessage, args), t);
+        }
+        else if (isWarnEnabled()) {
+            wrappedLogger.warn(summarize(t, warnMessage, args));
+        }
+    }
+
+    public void warnTrace(final Throwable t, final String warnMessage)
+    {
+        if (wrappedLogger.isTraceEnabled()) {
+            wrappedLogger.warn(warnMessage, t);
+        }
+        else {
+            wrappedLogger.warn(summarize(t, warnMessage));
+        }
+    }
+
+    public void warnTrace(final Throwable t)
+    {
+        if (wrappedLogger.isTraceEnabled()) {
+            wrappedLogger.warn(t.toString(), t);
+        }
+        else {
+            wrappedLogger.warn(summarize(t, null));
+        }
+    }
+
+
     // ========================================================================
     //
     // Error level methods
@@ -376,6 +437,36 @@ public final class Log
     public void errorDebug(final Throwable t)
     {
         if (wrappedLogger.isDebugEnabled()) {
+            wrappedLogger.error(t.toString(), t);
+        }
+        else {
+            wrappedLogger.error(summarize(t, null));
+        }
+    }
+
+    public void errorTrace(final Throwable t, final String errorMessage, final Object ... args)
+    {
+        if (wrappedLogger.isTraceEnabled()) {
+            wrappedLogger.error(String.format(errorMessage, args), t);
+        }
+        else if (isErrorEnabled()) {
+            wrappedLogger.error(summarize(t, errorMessage, args));
+        }
+    }
+
+    public void errorTrace(final Throwable t, final String errorMessage)
+    {
+        if (wrappedLogger.isTraceEnabled()) {
+            wrappedLogger.error(errorMessage, t);
+        }
+        else {
+            wrappedLogger.error(summarize(t, errorMessage));
+        }
+    }
+
+    public void errorTrace(final Throwable t)
+    {
+        if (wrappedLogger.isTraceEnabled()) {
             wrappedLogger.error(t.toString(), t);
         }
         else {
