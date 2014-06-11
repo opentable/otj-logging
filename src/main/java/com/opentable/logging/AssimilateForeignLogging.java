@@ -39,8 +39,6 @@ public final class AssimilateForeignLogging
 {
     private static final Log LOG = Log.findLog();
 
-    private static final String AUTO_ASSIMILATE_PROPERTY = "ot.log.assimilate";
-
     // @GuardedBy("AssimilateForeignLogging.class")
     private static boolean assimilated = false;
 
@@ -87,17 +85,5 @@ public final class AssimilateForeignLogging
     public synchronized static void unassimilate()
     {
         SLF4JBridgeHandler.uninstall();
-    }
-
-    /**
-     * Automatically configure logging without further interaction from the user.
-     */
-    public static void automaticAssimilationHook()
-    {
-        final String autoAssimilate = System.getProperty(AUTO_ASSIMILATE_PROPERTY);
-        if (autoAssimilate == null || Boolean.parseBoolean(autoAssimilate))
-        {
-            assimilate();
-        }
     }
 }

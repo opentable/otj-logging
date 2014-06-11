@@ -28,7 +28,7 @@ public final class Log
     private final Logger wrappedLogger; // NOPMD
 
     static {
-        AssimilateForeignLogging.automaticAssimilationHook();
+        AssimilateForeignLoggingHook.automaticAssimilationHook();
     }
 
     /**
