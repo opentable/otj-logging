@@ -50,15 +50,6 @@ class ApplicationLogEvent implements CommonLogFields
     }
 
     @Override
-    public StackTraceElement[] getStackTrace()
-    {
-        if (event.hasCallerData()) {
-            return event.getCallerData();
-        }
-        return null;
-    }
-
-    @Override
     public String getServiceType()
     {
         return serverInfo(ServerInfo.SERVER_TYPE);

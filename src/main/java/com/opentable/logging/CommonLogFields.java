@@ -44,9 +44,6 @@ public interface CommonLogFields
     @JsonProperty("threadname")
     String getThreadName();
 
-    @JsonProperty("stacktrace")
-    StackTraceElement[] getStackTrace();
-
     /** Written by the encoder, value is ignored for serialization. */
     @JsonProperty("sequencenumber")
     default long getSequenceNumber() {
