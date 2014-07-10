@@ -20,6 +20,9 @@ public interface CommonLogFields
     @JsonProperty("logname")
     String getLogTypeName();
 
+    @JsonProperty("logclass")
+    String getLogClass();
+
     @JsonProperty("formatversion")
     default String getFormatVersion() {
         return "v1";

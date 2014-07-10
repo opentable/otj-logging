@@ -28,6 +28,12 @@ class ApplicationLogEvent implements CommonLogFields
     }
 
     @Override
+    public String getLogClass()
+    {
+        return event.getLoggerName();
+    }
+
+    @Override
     public String getThreadName()
     {
         return event.getThreadName();
