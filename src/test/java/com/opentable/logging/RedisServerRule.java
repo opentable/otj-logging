@@ -1,11 +1,10 @@
 package com.opentable.logging;
 
-import java.net.InetSocketAddress;
+import java.net.ServerSocket;
 
 import org.junit.rules.ExternalResource;
 
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
@@ -24,12 +23,15 @@ public class RedisServerRule extends ExternalResource
 
     private int port = -1;
     private ServerBootstrap b;
-    private Channel channel;
     private DefaultEventExecutorGroup group;
 
     @Override
     protected void before() throws Throwable
     {
+        try (ServerSocket ss = new ServerSocket(0)) {
+            port = ss.getLocalPort();
+        }
+
         // Only execute the command handler in a single thread
         final RedisCommandHandler commandHandler = new RedisCommandHandler(new SimpleRedisServer());
 
@@ -38,7 +40,7 @@ public class RedisServerRule extends ExternalResource
         b.group(new NioEventLoopGroup(), new NioEventLoopGroup())
             .channel(NioServerSocketChannel.class)
             .option(ChannelOption.SO_BACKLOG, 100)
-            .localAddress(0)
+            .localAddress(port)
             .childOption(ChannelOption.TCP_NODELAY, true)
             .childHandler(new ChannelInitializer<SocketChannel>() {
                 @Override
@@ -53,9 +55,6 @@ public class RedisServerRule extends ExternalResource
 
         // Start the server.
         ChannelFuture f = b.bind().sync();
-
-        channel = f.channel();
-        port = ((InetSocketAddress)channel.localAddress()).getPort();
     }
 
     @Override
