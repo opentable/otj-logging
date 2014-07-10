@@ -52,10 +52,8 @@ public class JsonLogEncoder extends EncoderBase<ILoggingEvent> {
 
         logLine.put("sequencenumber", LOG_SEQUENCE_NUMBER.incrementAndGet());
 
-        byte[] bytes = mapper.writeValueAsBytes(logLine);
-
         synchronized (outputStream) {
-            outputStream.write(bytes);
+            mapper.writeValue(outputStream, logLine);
             outputStream.write('\n');
         }
     }
