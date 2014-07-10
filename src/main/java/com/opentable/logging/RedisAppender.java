@@ -34,13 +34,19 @@ public class RedisAppender extends UnsynchronizedAppenderBase<ILoggingEvent>
     private int database = Protocol.DEFAULT_DATABASE;
     private byte[] key;
     private int timeout = Protocol.DEFAULT_TIMEOUT;
-    private String clientName = Objects.toString(ServerInfo.get(ServerInfo.SERVER_TOKEN), null);
+    private String clientName;
     private int bufSize = 1024;
 
     @Override
     public void start()
     {
         super.start();
+
+        // Important to not initialize this until we are started, because ServerInfo itself logs...
+        if (clientName == null) {
+            clientName = Objects.toString(ServerInfo.get(ServerInfo.SERVER_TOKEN), null);
+        }
+
         pool = new JedisPool(new GenericObjectPoolConfig(), host, port, timeout, password, database, clientName);
     }
 
