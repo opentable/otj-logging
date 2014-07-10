@@ -28,6 +28,13 @@ public interface HttpLogFields extends CommonLogFields
     @JsonProperty("user-agent")
     String getUserAgent();
 
+    /**
+     * Usually provided via MDC, but the RequestLog handler is triggered
+     * after the RequestIdFilter teardown so it is lost from the MDC.
+     */
+    @JsonProperty("ot-requestid")
+    String getRequestId();
+
     @JsonProperty("ot-userid")
     String getUserId();
 
