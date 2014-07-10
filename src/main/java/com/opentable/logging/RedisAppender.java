@@ -34,7 +34,7 @@ public class RedisAppender extends UnsynchronizedAppenderBase<ILoggingEvent>
     private int database = Protocol.DEFAULT_DATABASE;
     private byte[] key;
     private int timeout = Protocol.DEFAULT_TIMEOUT;
-    private final String clientName = Objects.toString(ServerInfo.get(ServerInfo.SERVER_TOKEN), null);
+    private String clientName = Objects.toString(ServerInfo.get(ServerInfo.SERVER_TOKEN), null);
     private int bufSize = 1024;
 
     @Override
@@ -136,6 +136,16 @@ public class RedisAppender extends UnsynchronizedAppenderBase<ILoggingEvent>
     public void setDatabase(int database)
     {
         this.database = database;
+    }
+
+    public String getClientName()
+    {
+        return clientName;
+    }
+
+    public void setClientName(String clientName)
+    {
+        this.clientName = clientName;
     }
 
     public int getTimeout()
