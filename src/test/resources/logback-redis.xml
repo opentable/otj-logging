@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <!--
-  This is the default logging setup for a local server
-
-  If more/less logging is required, enable disable it on a per component base.
+  This configuration for the Redis logging test case.
 -->
 <configuration threshold="TRACE">
   <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
