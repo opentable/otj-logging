@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!--
+  This configuration for the Redis logging test case.
+-->
+<configuration threshold="TRACE">
+  <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+    </encoder>
+  </appender>
+
+  <appender name="REDIS" class="com.opentable.logging.RedisAppender">
+    <encoder class="com.opentable.logging.JsonLogEncoder"/>
+    <host>localhost</host>
+    <port>$PORT$</port>
+    <key>logs</key>
+  </appender>
+
+  <!-- Default is DEBUG for our stuff, INFO for everything else -->
+  <logger name="com.opentable" level="DEBUG" />
+
+  <root level="INFO">
+    <appender-ref ref="CONSOLE" />
+    <appender-ref ref="REDIS" />
+  </root>
+
+</configuration>

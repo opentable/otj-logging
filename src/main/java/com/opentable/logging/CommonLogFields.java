@@ -20,6 +20,9 @@ public interface CommonLogFields
     @JsonProperty("logname")
     String getLogTypeName();
 
+    @JsonProperty("logclass")
+    String getLogClass();
+
     @JsonProperty("formatversion")
     default String getFormatVersion() {
         return "v1";
@@ -44,6 +47,12 @@ public interface CommonLogFields
     @JsonProperty("threadname")
     String getThreadName();
 
-    @JsonProperty("stacktrace")
-    StackTraceElement[] getStackTrace();
+    @JsonProperty("throwable")
+    String getThrowable();
+
+    /** Written by the encoder, value is ignored for serialization. */
+    @JsonProperty("sequencenumber")
+    default long getSequenceNumber() {
+        return Long.MIN_VALUE;
+    }
 }

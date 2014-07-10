@@ -25,6 +25,7 @@
 
   <properties>
     <dep.jackson.version>2.3.2</dep.jackson.version>
+    <ot.build.securityManagerArgument />
   </properties>
 
   <dependencies>
@@ -44,6 +45,17 @@
     </dependency>
 
     <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-pool2</artifactId>
+      <version>2.0</version>
+    </dependency>
+
+    <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
     </dependency>
@@ -58,6 +70,12 @@
     </dependency>
 
     <dependency>
+      <groupId>redis.clients</groupId>
+      <artifactId>jedis</artifactId>
+      <version>2.5.1</version>
+    </dependency>
+
+    <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-annotations</artifactId>
       <version>${dep.jackson.version}</version>
@@ -66,6 +84,12 @@
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
       <version>${dep.jackson.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.module</groupId>
+      <artifactId>jackson-module-mrbean</artifactId>
+      <version>${dep.jackson.version}</version>
+      <scope>test</scope>
     </dependency>
 
     <dependency>
@@ -77,6 +101,19 @@
     <dependency>
       <groupId>org.hamcrest</groupId>
       <artifactId>hamcrest-core</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>com.github.spullara.redis</groupId>
+      <artifactId>netty4-server</artifactId>
+      <version>0.7-OT-2</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.netty</groupId>
+      <artifactId>netty-all</artifactId>
+      <version>4.0.10.Final</version>
       <scope>test</scope>
     </dependency>
   </dependencies>

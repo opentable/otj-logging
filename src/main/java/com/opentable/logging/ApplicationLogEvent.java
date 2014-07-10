@@ -4,7 +4,9 @@ import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
+import ch.qos.logback.classic.pattern.ThrowableProxyConverter;
 import ch.qos.logback.classic.spi.ILoggingEvent;
+import ch.qos.logback.classic.spi.IThrowableProxy;
 
 import com.opentable.serverinfo.ServerInfo;
 
@@ -23,6 +25,12 @@ class ApplicationLogEvent implements CommonLogFields
     public String getLogTypeName()
     {
         return "application";
+    }
+
+    @Override
+    public String getLogClass()
+    {
+        return event.getLoggerName();
     }
 
     @Override
@@ -50,12 +58,13 @@ class ApplicationLogEvent implements CommonLogFields
     }
 
     @Override
-    public StackTraceElement[] getStackTrace()
+    public String getThrowable()
     {
-        if (event.hasCallerData()) {
-            return event.getCallerData();
+        final IThrowableProxy t = event.getThrowableProxy();
+        if (t == null) {
+            return null;
         }
-        return null;
+        return ThrowableConverterHack.INSTANCE.throwableProxyToString(t);
     }
 
     @Override
@@ -67,5 +76,21 @@ class ApplicationLogEvent implements CommonLogFields
     private static String serverInfo(String infoType)
     {
         return Objects.toString(ServerInfo.get(infoType), null);
+    }
+
+    static class ThrowableConverterHack extends ThrowableProxyConverter
+    {
+        static final ThrowableConverterHack INSTANCE = new ThrowableConverterHack();
+
+        ThrowableConverterHack()
+        {
+            start();
+        }
+
+        @Override
+        public String throwableProxyToString(IThrowableProxy tp)
+        {
+            return super.throwableProxyToString(tp);
+        }
     }
 }
