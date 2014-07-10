@@ -46,4 +46,10 @@ public interface CommonLogFields
 
     @JsonProperty("stacktrace")
     StackTraceElement[] getStackTrace();
+
+    /** Written by the encoder, value is ignored for serialization. */
+    @JsonProperty("sequencenumber")
+    default long getSequenceNumber() {
+        return Long.MIN_VALUE;
+    }
 }
