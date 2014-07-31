@@ -30,6 +30,7 @@
   <modules>
     <module>core</module>
     <module>redis</module>
+    <module>jetty</module>
     <module>logging</module>
   </modules>
 
