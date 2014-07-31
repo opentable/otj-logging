@@ -15,6 +15,7 @@
     <host>localhost</host>
     <port>$PORT$</port>
     <key>logs</key>
+    <sendClientName>false</sendClientName>
   </appender>
 
   <!-- Default is DEBUG for our stuff, INFO for everything else -->

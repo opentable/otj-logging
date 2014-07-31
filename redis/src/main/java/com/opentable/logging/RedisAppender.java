@@ -32,6 +32,7 @@ public class RedisAppender extends UnsynchronizedAppenderBase<ILoggingEvent>
     private byte[] key;
     private int timeout = Protocol.DEFAULT_TIMEOUT;
     private String clientName;
+    private boolean sendClientName = true;
     private int bufSize = 1024;
 
     @Override
@@ -44,7 +45,7 @@ public class RedisAppender extends UnsynchronizedAppenderBase<ILoggingEvent>
             clientName = OptionalServerInfo.getDefaultClientName(this::addWarn);
         }
 
-        pool = new JedisPool(new GenericObjectPoolConfig(), host, port, timeout, password, database, clientName);
+        pool = new JedisPool(new GenericObjectPoolConfig(), host, port, timeout, password, database, sendClientName ? clientName : null);
     }
 
     @Override
@@ -149,6 +150,20 @@ public class RedisAppender extends UnsynchronizedAppenderBase<ILoggingEvent>
     public void setClientName(String clientName)
     {
         this.clientName = clientName;
+    }
+
+    /**
+     * Some broken Redis servers (e.g. Jedis) error if you try to
+     * send a clientName.  So you can turn it off.
+     */
+    public void setSendClientName(boolean sendClientName)
+    {
+        this.sendClientName = sendClientName;
+    }
+
+    public boolean isSendClientName()
+    {
+        return this.sendClientName;
     }
 
     public int getTimeout()

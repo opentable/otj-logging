@@ -21,8 +21,6 @@ import ch.qos.logback.classic.joran.JoranConfigurator;
 import ch.qos.logback.core.status.OnConsoleStatusListener;
 import redis.clients.jedis.Jedis;
 
-import com.opentable.serverinfo.ServerInfo;
-
 public class RedisAppenderTest
 {
     @Rule
@@ -34,8 +32,6 @@ public class RedisAppenderTest
     @Before
     public void addHandler() throws Exception
     {
-        ServerInfo.add(ServerInfo.SERVER_TYPE, "test-case");
-
         final String xml = Resources.toString(RedisAppenderTest.class.getResource("/logback-redis.xml"), Charsets.UTF_8)
                 .replaceAll("\\$PORT\\$", Integer.toString(redis.getPort()));
 
