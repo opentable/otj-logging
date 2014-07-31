@@ -18,6 +18,7 @@ import org.junit.Test;
 
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.joran.JoranConfigurator;
+import ch.qos.logback.core.status.OnConsoleStatusListener;
 import redis.clients.jedis.Jedis;
 
 import com.opentable.serverinfo.ServerInfo;
@@ -39,8 +40,11 @@ public class RedisAppenderTest
                 .replaceAll("\\$PORT\\$", Integer.toString(redis.getPort()));
 
         final JoranConfigurator configurator = new JoranConfigurator();
+        final OnConsoleStatusListener listener = new OnConsoleStatusListener();
+        listener.start();
         configurator.setContext(context);
         configurator.doConfigure(new ByteArrayInputStream(xml.getBytes(Charsets.UTF_8)));
+        configurator.getStatusManager().add(listener);
         context.start();
     }
 
