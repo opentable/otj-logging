@@ -68,6 +68,42 @@ The Redis module provides an Appender that submits logging events to a Redis que
 </configuration>
 ```
 
+otj-logging-kafka
+-----------------
+
+The Kafka module provides an Appender that submits logging events to a Kafka queue.  Example configuration:
+
+```xml
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!--
+  Example configuration that logs text to the console and JSON to Kafka
+-->
+<configuration threshold="TRACE">
+  <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+    </encoder>
+  </appender>
+
+  <appender name="KAFKA" class="com.opentable.logging.KafkaAppender">
+    <encoder class="com.opentable.logging.JsonLogEncoder"/>
+    <brokerList>localhost:12345</brokerList>
+    <topic>logs</topic>
+    <clientId>my-application-name</clientId>
+  </appender>
+
+  <!-- Default is DEBUG for our stuff, INFO for everything else -->
+  <logger name="com.opentable" level="DEBUG" />
+
+  <root level="INFO">
+    <appender-ref ref="CONSOLE" />
+    <appender-ref ref="KAFKA" />
+  </root>
+</configuration>
+
+```
+
 otj-logging
 -----------
 
@@ -76,6 +112,7 @@ together other common logging frameworks:
 
 * `java.util.logging` via `jul-to-slf4j`
 * `commons-logging` via `jcl-over-slf4j`
+* `log4j` via `log4j-over-slf4j`
 
 Finally, it provides an alternative facade to `SLF4J` with a nicer API.
 

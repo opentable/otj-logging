@@ -91,7 +91,6 @@ class ApplicationLogEvent implements CommonLogFields
     {
         static final ThrowableConverterHack INSTANCE = new ThrowableConverterHack();
 
-        ThrowableConverterHack()
         {
             start();
         }
