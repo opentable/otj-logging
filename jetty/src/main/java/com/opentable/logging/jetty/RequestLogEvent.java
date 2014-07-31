@@ -29,7 +29,7 @@ class RequestLogEvent extends LoggingEvent implements HttpLogFields
         if (request == null) {
             throw new IllegalArgumentException("null request");
         }
-        if (response != null) {
+        if (response == null) {
             throw new IllegalArgumentException("null response");
         }
 
