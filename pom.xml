@@ -6,7 +6,7 @@
   <parent>
     <groupId>com.opentable</groupId>
     <artifactId>otj-parent</artifactId>
-    <version>14</version>
+    <version>19-SNAPSHOT</version>
   </parent>
 
   <scm>
@@ -17,104 +17,89 @@
   </scm>
 
   <groupId>com.opentable.components</groupId>
-  <artifactId>otj-logging</artifactId>
-  <name>otj-logging</name>
-  <version>1.2.1-SNAPSHOT</version>
-  <packaging>jar</packaging>
-  <description>Logging component component.</description>
+  <artifactId>otj-logging-parent</artifactId>
+  <name>otj-logging-parent</name>
+  <version>1.3.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
+  <description>Logging component parent</description>
 
   <properties>
     <dep.jackson.version>2.3.2</dep.jackson.version>
-    <ot.build.securityManagerArgument />
+    <dep.kafka.version>0.8.1.1</dep.kafka.version>
   </properties>
 
-  <dependencies>
-    <dependency>
-      <groupId>com.opentable.components</groupId>
-      <artifactId>otj-serverinfo</artifactId>
-      <version>1.3.0</version>
-    </dependency>
+  <modules>
+    <module>core</module>
+    <module>redis</module>
+    <module>kafka</module>
+    <module>jetty</module>
+    <module>logging</module>
+  </modules>
 
-    <dependency>
-      <groupId>ch.qos.logback</groupId>
-      <artifactId>logback-core</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>ch.qos.logback</groupId>
-      <artifactId>logback-classic</artifactId>
-    </dependency>
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>com.opentable.components</groupId>
+        <artifactId>otj-logging-core</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.opentable.components</groupId>
+        <artifactId>otj-logging-redis</artifactId>
+        <version>${project.version}</version>
+      </dependency>
 
-    <dependency>
-      <groupId>com.google.guava</groupId>
-      <artifactId>guava</artifactId>
-    </dependency>
+      <dependency>
+        <groupId>com.opentable.components</groupId>
+        <artifactId>otj-serverinfo</artifactId>
+        <version>1.5.0</version>
+      </dependency>
 
-    <dependency>
-      <groupId>org.apache.commons</groupId>
-      <artifactId>commons-pool2</artifactId>
-      <version>2.0</version>
-    </dependency>
+      <dependency>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-pool2</artifactId>
+        <version>2.0</version>
+      </dependency>
 
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>jul-to-slf4j</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>jcl-over-slf4j</artifactId>
-      <scope>runtime</scope>
-    </dependency>
+      <dependency>
+        <groupId>redis.clients</groupId>
+        <artifactId>jedis</artifactId>
+        <version>2.5.1</version>
+      </dependency>
 
-    <dependency>
-      <groupId>redis.clients</groupId>
-      <artifactId>jedis</artifactId>
-      <version>2.5.1</version>
-    </dependency>
+      <dependency>
+        <groupId>org.apache.zookeeper</groupId>
+        <artifactId>zookeeper</artifactId>
+        <version>3.4.6</version>
+      </dependency>
 
-    <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-annotations</artifactId>
-      <version>${dep.jackson.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-databind</artifactId>
-      <version>${dep.jackson.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>com.fasterxml.jackson.module</groupId>
-      <artifactId>jackson-module-mrbean</artifactId>
-      <version>${dep.jackson.version}</version>
-      <scope>test</scope>
-    </dependency>
+      <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-annotations</artifactId>
+        <version>${dep.jackson.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-databind</artifactId>
+        <version>${dep.jackson.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.fasterxml.jackson.module</groupId>
+        <artifactId>jackson-module-mrbean</artifactId>
+        <version>${dep.jackson.version}</version>
+        <scope>test</scope>
+      </dependency>
 
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.hamcrest</groupId>
-      <artifactId>hamcrest-core</artifactId>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>com.github.spullara.redis</groupId>
-      <artifactId>netty4-server</artifactId>
-      <version>0.7-OT-2</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>io.netty</groupId>
-      <artifactId>netty-all</artifactId>
-      <version>4.0.10.Final</version>
-      <scope>test</scope>
-    </dependency>
-  </dependencies>
+      <dependency>
+        <groupId>com.github.spullara.redis</groupId>
+        <artifactId>netty4-server</artifactId>
+        <version>0.7-OT-2</version>
+      </dependency>
+      <dependency>
+        <groupId>io.netty</groupId>
+        <artifactId>netty-all</artifactId>
+        <version>4.0.10.Final</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
 </project>
