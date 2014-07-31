@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Properties;
 import java.util.UUID;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.module.mrbean.MrBeanModule;
 import com.google.common.base.Charsets;
@@ -45,6 +46,8 @@ public class KafkaAppenderTest
     @Before
     public void addHandler() throws Exception
     {
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
         final String xml = Resources.toString(KafkaAppenderTest.class.getResource("/logback-kafka.xml"), Charsets.UTF_8)
                 .replaceAll("\\$KAFKA\\$", kafka.getKafkaBrokerConnect());
 
