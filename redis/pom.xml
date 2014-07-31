@@ -17,15 +17,9 @@
   <dependencies>
     <dependency>
       <groupId>com.opentable.components</groupId>
-      <artifactId>otj-serverinfo</artifactId>
-      <optional>true</optional>
-    </dependency>
-  
-    <dependency>
-      <groupId>com.opentable.components</groupId>
       <artifactId>otj-logging-core</artifactId>
     </dependency>
-  
+
     <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-core</artifactId>
