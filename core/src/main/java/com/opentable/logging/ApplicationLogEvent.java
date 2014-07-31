@@ -75,7 +75,7 @@ class ApplicationLogEvent implements CommonLogFields
 
     private static String serverInfo(String infoType)
     {
-        return Objects.toString(ServerInfo.get(infoType), null);
+        return Objects.toString(ServerInfo.get(infoType), "UNSET");
     }
 
     static class ThrowableConverterHack extends ThrowableProxyConverter

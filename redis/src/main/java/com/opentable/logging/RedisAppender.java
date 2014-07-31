@@ -2,7 +2,6 @@ package com.opentable.logging;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.Objects;
 
 import com.google.common.base.Charsets;
 import com.google.common.base.Throwables;
@@ -15,8 +14,6 @@ import ch.qos.logback.core.encoder.Encoder;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.Protocol;
-
-import com.opentable.serverinfo.ServerInfo;
 
 /**
  * Log messages to Redis with a configurable encoder.
@@ -44,7 +41,7 @@ public class RedisAppender extends UnsynchronizedAppenderBase<ILoggingEvent>
 
         // Important to not initialize this until we are started, because ServerInfo itself logs...
         if (clientName == null) {
-            clientName = Objects.toString(ServerInfo.get(ServerInfo.SERVER_TOKEN), null);
+            clientName = OptionalServerInfo.getDefaultClientName(this::addWarn);
         }
 
         pool = new JedisPool(new GenericObjectPoolConfig(), host, port, timeout, password, database, clientName);

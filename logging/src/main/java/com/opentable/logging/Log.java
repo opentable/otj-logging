@@ -15,10 +15,10 @@
  */
 package com.opentable.logging;
 
-import ch.qos.logback.classic.spi.ILoggingEvent;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import ch.qos.logback.classic.spi.ILoggingEvent;
 
 /**
  * Wraps a Log4j logger into a number of convenience methods such as varargs.
@@ -478,7 +478,7 @@ public final class Log
 
     public void log(ILoggingEvent event)
     {
-        ((ch.qos.logback.classic.Logger) getWrappedLogger()).callAppenders(event);
+        LogbackLogging.log(getWrappedLogger(), event);
     }
 
     private String summarize(final Throwable t, final String format, final Object ... args)
