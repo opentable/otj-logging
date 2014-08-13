@@ -59,7 +59,7 @@ class RequestLogEvent extends LoggingEvent implements HttpLogFields
     {
         final Long responseSize = getResponseSize();
         final String responseSizeText = responseSize == null ? "" : responseSize + " bytes in ";
-        return String.format("%s %s : %s, %s%s ms", getMethod(), getUrl(), getStatus(), responseSizeText, getDurationMs());
+        return String.format("%s %s : %s, %s%s us", getMethod(), getUrl(), getStatus(), responseSizeText, getDurationMicros());
     }
 
     @Override
@@ -112,11 +112,11 @@ class RequestLogEvent extends LoggingEvent implements HttpLogFields
     }
 
     @Override
-    public long getDurationMs()
+    public long getDurationMicros()
     {
         final Instant start = Instant.ofEpochMilli(request.getTimeStamp());
         final Instant end = clock.instant();
-        return Duration.between(start, end).toMillis();
+        return Duration.between(start, end).toMillis() * 1000;
     }
 
     @Override

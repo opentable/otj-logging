@@ -16,8 +16,8 @@ public interface HttpLogFields extends CommonLogFields
     @JsonProperty("status")
     int getStatus();
 
-    @JsonProperty("durationms")
-    long getDurationMs();
+    @JsonProperty("duration")
+    long getDurationMicros();
 
     @JsonProperty("bodysize")
     Long getBodySize();
