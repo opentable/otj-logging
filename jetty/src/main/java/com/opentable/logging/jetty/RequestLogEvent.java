@@ -71,7 +71,7 @@ class RequestLogEvent extends LoggingEvent implements HttpLogFields
     @Override
     public String getLogTypeName()
     {
-        return "access";
+        return "request";
     }
 
     @Override
@@ -83,7 +83,7 @@ class RequestLogEvent extends LoggingEvent implements HttpLogFields
     @Override
     public String getSeverity()
     {
-        return "access";
+        return null;
     }
 
     @Override
