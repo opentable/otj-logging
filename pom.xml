@@ -13,13 +13,13 @@
     <connection>scm:git:git://github.com/opentable/otj-logging.git</connection>
     <developerConnection>scm:git:git@github.com:opentable/otj-logging.git</developerConnection>
     <url>http://github.com/opentable/otj-logging</url>
-    <tag>otj-logging-parent-1.3.2</tag>
+    <tag>HEAD</tag>
   </scm>
 
   <groupId>com.opentable.components</groupId>
   <artifactId>otj-logging-parent</artifactId>
   <name>otj-logging-parent</name>
-  <version>1.3.2</version>
+  <version>1.3.3-SNAPSHOT</version>
   <packaging>pom</packaging>
   <description>Logging component parent</description>
 
