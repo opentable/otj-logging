@@ -5,8 +5,8 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>com.opentable</groupId>
-    <artifactId>otj-parent</artifactId>
-    <version>21</version>
+    <artifactId>otj-parent-oss</artifactId>
+    <version>23-SNAPSHOT</version>
   </parent>
 
   <scm>
@@ -24,6 +24,7 @@
   <description>Logging component parent</description>
 
   <properties>
+    <ot.build.allow-guice>false</ot.build.allow-guice>
     <dep.jackson.version>2.3.2</dep.jackson.version>
     <dep.kafka.version>0.8.1.1</dep.kafka.version>
   </properties>
