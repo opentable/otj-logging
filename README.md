@@ -1,6 +1,8 @@
 OpenTable Logging Components
 ============================
 
+[![Build Status](https://travis-ci.org/opentable/otj-logging.svg)](https://travis-ci.org/opentable/otj-logging)
+
 Component Charter
 -----------------
 
