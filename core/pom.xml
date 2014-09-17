@@ -19,7 +19,7 @@
   <parent>
     <groupId>com.opentable.components</groupId>
     <artifactId>otj-logging-parent</artifactId>
-    <version>1.3.3-SNAPSHOT</version>
+    <version>1.4.0-SNAPSHOT</version>
   </parent>
 
   <artifactId>otj-logging-core</artifactId>
