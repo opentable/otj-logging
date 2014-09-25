@@ -72,7 +72,18 @@ class RequestLogEvent extends LoggingEvent implements HttpLogFields
     {
         final Long responseSize = getResponseSize();
         final String responseSizeText = responseSize == null ? "" : responseSize + " bytes in ";
-        return String.format("%s %s : %s, %s%s us", getMethod(), getUrl(), getStatus(), responseSizeText, getDurationMicros());
+        return String.format("%s %s : %s, %s%s", getMethod(), getUrl(), getStatus(), responseSizeText, prettyTime(getDurationMicros()));
+    }
+
+    private static String prettyTime(long micros)
+    {
+        if (micros < 1000) {
+            return micros + " us";
+        } else if (micros < 1000 * 1000) {
+            return String.format("%.1f ms", micros / 1000.0);
+        } else {
+            return String.format("%.1f s", micros / (1000.0 * 1000.0));
+        }
     }
 
     @Override
