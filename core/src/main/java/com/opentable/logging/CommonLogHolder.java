@@ -17,15 +17,22 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.time.format.DateTimeFormatter;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 final class CommonLogHolder
 {
+    private static final Logger LOG = LoggerFactory.getLogger(CommonLogHolder.class);
+
     static final DateTimeFormatter FORMAT = DateTimeFormatter.ISO_INSTANT;
     static final String HOST_NAME;
 
     static {
         try {
             HOST_NAME = InetAddress.getLocalHost().getHostName();
+            LOG.info("Detected hostname as '{}'", HOST_NAME);
         } catch (UnknownHostException e) {
+            LOG.error("Failed to detect hostname", e);
             throw new ExceptionInInitializerError(e);
         }
     }
