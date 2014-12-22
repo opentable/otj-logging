@@ -33,9 +33,23 @@ class RequestLogEvent extends LoggingEvent implements HttpLogFields
 {
     private static final DateTimeFormatter FORMAT = DateTimeFormatter.ISO_INSTANT;
 
-    private final Clock clock;
-    private final Request request;
-    private final Response response;
+    private final long timeStamp;
+    private final String timestampStr;
+    private final String method;
+    private final String queryString;
+    private final String requestURI;
+    private final int status;
+    private final long durationMicros;
+    private final long requestContentLengthLong;
+    private final long responseContentCount;
+    private final String userAgent;
+    private final String requestId;
+    private final String userId;
+    private final String sessionId;
+    private final String referringHost;
+    private final String referringService;
+    private final String otDomain;
+    private final String acceptLanguage;
 
     public RequestLogEvent(Clock clock, Request request, Response response)
     {
@@ -46,25 +60,40 @@ class RequestLogEvent extends LoggingEvent implements HttpLogFields
             throw new IllegalArgumentException("null response");
         }
 
-        this.clock = clock;
-        this.request = request;
-        this.response = response;
-
         setLevel(Level.ALL);
         setLoggerName("access");
+
+        timeStamp = request.getTimeStamp();
+        timestampStr = FORMAT.format(Instant.ofEpochMilli(getTimeStamp()));
+        method = request.getMethod();
+        queryString = request.getQueryString();
+        requestURI = request.getRequestURI();
+        status = response.getStatus();
+        durationMicros = Duration.between(Instant.ofEpochMilli(request.getTimeStamp()), clock.instant()).toMillis() * 1000;
+        requestContentLengthLong = request.getContentLengthLong();
+        responseContentCount = response.getContentCount();
+        userAgent = request.getHeader(HttpHeader.USER_AGENT.asString());
+        requestId = response.getHeader("OT-RequestId");
+        userId = request.getHeader("OT-UserId");
+        sessionId = request.getHeader("OT-SessionId");
+        referringHost = request.getHeader("OT-ReferringHost");
+        referringService = request.getHeader("OT-ReferringService");
+        otDomain = request.getHeader("OT-Domain");
+        acceptLanguage = request.getHeader(HttpHeader.ACCEPT_LANGUAGE.asString());
+
         setMessage(getMessage());
     }
 
     @Override
     public long getTimeStamp()
     {
-        return request.getTimeStamp();
+        return timeStamp;
     }
 
     @Override
     public String getTimestamp()
     {
-        return FORMAT.format(Instant.ofEpochMilli(getTimeStamp()));
+        return timestampStr;
     }
 
     @Override
@@ -119,90 +148,87 @@ class RequestLogEvent extends LoggingEvent implements HttpLogFields
     @Override
     public String getMethod()
     {
-        return request.getMethod();
+        return method;
     }
 
     @Override
     public String getUrl()
     {
-        final String queryString = request.getQueryString();
-        return request.getRequestURI() + (queryString == null? "" : "?" + queryString);
+        return requestURI + (queryString == null ? "" : "?" + queryString);
     }
 
     @Override
     public int getStatus()
     {
-        return response.getStatus();
+        return status;
     }
 
     @Override
     public long getDurationMicros()
     {
-        final Instant start = Instant.ofEpochMilli(request.getTimeStamp());
-        final Instant end = clock.instant();
-        return Duration.between(start, end).toMillis() * 1000;
+        return durationMicros;
     }
 
     @Override
     public Long getBodySize()
     {
-        final long size = request.getContentLengthLong();
+        final long size = requestContentLengthLong;
         return size > 0 ? size : null;
     }
 
     @Override
     public Long getResponseSize()
     {
-        final long size = response.getContentCount();
+        final long size = responseContentCount;
         return size >= 0 ? size : null;
     }
 
     @Override
     public String getUserAgent()
     {
-        return request.getHeader(HttpHeader.USER_AGENT.asString());
+        return userAgent;
     }
 
     @Override
     public String getRequestId()
     {
-        return response.getHeader("OT-RequestId");
+        return requestId;
     }
 
     @Override
     public String getUserId()
     {
-        return request.getHeader("OT-UserId");
+        return userId;
     }
 
     @Override
     public String getSessionId()
     {
-        return request.getHeader("OT-SessionId");
+        return sessionId;
     }
 
     @Override
     public String getReferringHost()
     {
-        return request.getHeader("OT-ReferringHost");
+        return referringHost;
     }
 
     @Override
     public String getReferringService()
     {
-        return request.getHeader("OT-ReferringService");
+        return referringService;
     }
 
     @Override
     public String getDomain()
     {
-        return request.getHeader("OT-Domain");
+        return otDomain;
     }
 
     @Override
     public String getAcceptLanguage()
     {
-        return request.getHeader(HttpHeader.ACCEPT_LANGUAGE.asString());
+        return acceptLanguage;
     }
 
     @Override
