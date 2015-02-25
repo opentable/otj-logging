@@ -18,6 +18,7 @@ import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicLong;
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.core.JsonGenerator.Feature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -41,7 +42,10 @@ public class JsonLogEncoder extends EncoderBase<ILoggingEvent> {
 
     public JsonLogEncoder() {
         // TODO: This sucks - - won't get the mapper customizations.  Find a way to inject this.
-        this.mapper = new ObjectMapper().disable(SerializationFeature.WRITE_NULL_MAP_VALUES).setSerializationInclusion(Include.NON_NULL);
+        this.mapper = new ObjectMapper()
+                .disable(SerializationFeature.WRITE_NULL_MAP_VALUES)
+                .setSerializationInclusion(Include.NON_NULL)
+                .configure(Feature.AUTO_CLOSE_TARGET, false);
     }
 
     @Override
