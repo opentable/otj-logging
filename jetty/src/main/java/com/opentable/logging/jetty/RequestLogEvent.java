@@ -18,6 +18,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
+import java.util.Optional;
 
 import org.eclipse.jetty.http.HttpHeader;
 import org.eclipse.jetty.server.Request;
@@ -29,7 +30,7 @@ import ch.qos.logback.classic.spi.LoggingEvent;
 import com.opentable.logging.HttpLogFields;
 import com.opentable.serverinfo.ServerInfo;
 
-class RequestLogEvent extends LoggingEvent implements HttpLogFields
+public class RequestLogEvent extends LoggingEvent implements HttpLogFields
 {
     private static final DateTimeFormatter FORMAT = DateTimeFormatter.ISO_INSTANT;
 
@@ -50,6 +51,10 @@ class RequestLogEvent extends LoggingEvent implements HttpLogFields
     private final String referringService;
     private final String otDomain;
     private final String acceptLanguage;
+    private final String environment;
+
+    private static final String systemEnvironment = Optional.ofNullable(System.getProperty("OT_ENV"))
+            .orElseGet(() -> System.getenv("OT_ENV"));
 
     public RequestLogEvent(Clock clock, Request request, Response response)
     {
@@ -80,7 +85,7 @@ class RequestLogEvent extends LoggingEvent implements HttpLogFields
         referringService = request.getHeader("OT-ReferringService");
         otDomain = request.getHeader("OT-Domain");
         acceptLanguage = request.getHeader(HttpHeader.ACCEPT_LANGUAGE.asString());
-
+        environment = systemEnvironment;
         setMessage(getMessage());
     }
 
@@ -235,6 +240,12 @@ class RequestLogEvent extends LoggingEvent implements HttpLogFields
     public String getThrowable()
     {
         return null;
+    }
+
+    @Override
+    public String getEnvironment()
+    {
+        return environment;
     }
 
     private static String serverInfo(String infoType)
