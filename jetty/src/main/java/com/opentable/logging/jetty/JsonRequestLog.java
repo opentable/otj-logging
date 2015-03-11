@@ -19,6 +19,7 @@ import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import com.google.common.base.Optional;
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.RequestLog;
@@ -44,14 +45,23 @@ public class JsonRequestLog extends AbstractLifeCycle implements RequestLog
     private final Set<String> equalityBlackList;
 
     private final Clock clock;
+    private final JsonRequestEventFactory eventFactory;
 
     @Inject
     public JsonRequestLog(final Clock clock,
-                          final JsonRequestLogConfig config)
+                          final JsonRequestLogConfig config,
+                          final Optional<JsonRequestEventFactory> eventFactory)
     {
         this.clock = clock;
         this.startsWithBlackList = config.getStartsWithBlacklist();
         this.equalityBlackList = config.getEqualityBlacklist();
+        this.eventFactory = eventFactory.or(RequestLogEvent::new);
+    }
+
+    // backward compatibility
+    public JsonRequestLog(final Clock clock,
+                          final JsonRequestLogConfig config) {
+        this(clock, config, Optional.absent());
     }
 
     @Override
@@ -71,7 +81,7 @@ public class JsonRequestLog extends AbstractLifeCycle implements RequestLog
             }
         }
 
-        final RequestLogEvent event = new RequestLogEvent(clock, request, response);
+        final RequestLogEvent event = eventFactory.createFor(clock, request, response);
 
         // TODO: this is a bit of a hack.  The RequestId filter happens inside of the
         // servlet dispatcher which is a Jetty handler.  Since the request log is generated
