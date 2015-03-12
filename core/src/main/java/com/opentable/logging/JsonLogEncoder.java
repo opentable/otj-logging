@@ -67,6 +67,11 @@ public class JsonLogEncoder extends EncoderBase<ILoggingEvent> {
         if (marker instanceof LogMetadata) {
             ObjectNode metadataNode = mapper.valueToTree(((LogMetadata) marker).getMetadata());
             logLine.setAll(metadataNode);
+
+            for (Object o : ((LogMetadata) marker).getInlines()) {
+                metadataNode = mapper.valueToTree(o);
+                logLine.setAll(metadataNode);
+            }
         }
 
         for (Entry<String, String> e : event.getMDCPropertyMap().entrySet()) {

@@ -13,9 +13,11 @@
  */
 package com.opentable.logging;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Marker;
@@ -27,6 +29,7 @@ import org.slf4j.Marker;
 public class LogMetadata implements Marker {
     private static final long serialVersionUID = 1L;
     private final Map<String, Object> metadata;
+    private final List<Object> inlines = new ArrayList<>();
 
     private LogMetadata(Map<String, Object> metadata) {
         this.metadata = metadata;
@@ -47,6 +50,22 @@ public class LogMetadata implements Marker {
     public LogMetadata and(String key, Object value) {
         metadata.put(key, value);
         return this;
+    }
+
+    /**
+     * Extend a metadata marker with an arbitrary object's JSON serialized fields.
+     */
+    public LogMetadata andInline(Object embeddedObj) {
+        inlines.add(embeddedObj);
+        return this;
+    }
+
+    public Map<String, Object> getMetadata() {
+        return metadata;
+    }
+
+    public List<Object> getInlines() {
+        return inlines;
     }
 
     @Override
@@ -87,9 +106,5 @@ public class LogMetadata implements Marker {
     @Override
     public boolean contains(String name) {
         return false;
-    }
-
-    public Map<String, Object> getMetadata() {
-        return metadata;
     }
 }

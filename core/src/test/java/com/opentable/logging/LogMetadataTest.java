@@ -86,7 +86,7 @@ public class LogMetadataTest {
     }
 
     @Test
-    public void testLogger() throws Exception
+    public void testSimpleMetadata() throws Exception
     {
         context.getLogger("test").info(LogMetadata.of("metadataTest", "Win!"), "Test {}!", "message");
         context.getLogger("test").warn(LogMetadata.of("foo", "bar").and("bar", "baz"), "again", new Throwable());
@@ -94,5 +94,17 @@ public class LogMetadataTest {
         assertEquals("Win!", serializedEvents.get(0).get("metadataTest").textValue());
         assertEquals("bar", serializedEvents.get(1).get("foo").textValue());
         assertEquals("baz", serializedEvents.get(1).get("bar").textValue());
+    }
+
+    @Test
+    public void testObjectMetadata() throws Exception
+    {
+        final Object embeddedObj = new Object() {
+            public String getC() { return "d"; }
+        };
+        context.getLogger("test").info(LogMetadata.of("a", "b").andInline(embeddedObj), "");
+        assertEquals(1, serializedEvents.size());
+        assertEquals("b", serializedEvents.get(0).get("a").textValue());
+        assertEquals("d", serializedEvents.get(0).get("c").textValue());
     }
 }
