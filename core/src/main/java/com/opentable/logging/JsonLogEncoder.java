@@ -41,6 +41,7 @@ public class JsonLogEncoder extends EncoderBase<ILoggingEvent> {
     private static final AtomicLong LOG_SEQUENCE_NUMBER = new AtomicLong(0);
 
     private final ObjectMapper mapper;
+    private Class<?> customEventClass = HttpLogFields.class;
 
     public JsonLogEncoder() {
         // TODO: This sucks - - won't get the mapper customizations.  Find a way to inject this.
@@ -50,14 +51,18 @@ public class JsonLogEncoder extends EncoderBase<ILoggingEvent> {
                 .configure(Feature.AUTO_CLOSE_TARGET, false);
     }
 
+    public void setCustomEventClass(String customEventClass) throws ClassNotFoundException {
+        this.customEventClass = Class.forName(customEventClass);
+    }
+
     @Override
     public void doEncode(ILoggingEvent event) throws IOException
     {
         final ObjectNode logLine;
 
-        if (event instanceof HttpLogFields) {
+        if (customEventClass != null && customEventClass.isAssignableFrom(event.getClass())) {
             final TokenBuffer buf = new TokenBuffer(mapper, false);
-            mapper.writerWithType(HttpLogFields.class).writeValue(buf, event);
+            mapper.writerWithType(customEventClass).writeValue(buf, event);
             logLine = mapper.readTree(buf.asParser());
         } else {
             logLine = mapper.valueToTree(new ApplicationLogEvent(event));
