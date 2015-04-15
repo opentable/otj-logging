@@ -26,6 +26,7 @@ final class CommonLogHolder
 
     static final DateTimeFormatter FORMAT = DateTimeFormatter.ISO_INSTANT;
     static final String HOST_NAME;
+    static final String OT_ENV;
 
     static {
         try {
@@ -35,5 +36,7 @@ final class CommonLogHolder
             LOG.error("Failed to detect hostname", e);
             throw new ExceptionInInitializerError(e);
         }
+
+        OT_ENV = System.getenv("OT_ENV");
     }
 }

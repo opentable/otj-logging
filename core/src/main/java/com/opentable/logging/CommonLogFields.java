@@ -53,6 +53,11 @@ public interface CommonLogFields
         return CommonLogHolder.HOST_NAME;
     }
 
+    @JsonProperty("ot-env")
+    default String getOtEnv() {
+        return CommonLogHolder.OT_ENV;
+    }
+
     @JsonProperty("severity")
     String getSeverity();
 
