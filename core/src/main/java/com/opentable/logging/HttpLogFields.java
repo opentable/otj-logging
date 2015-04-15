@@ -65,7 +65,4 @@ public interface HttpLogFields extends CommonLogFields
 
     @JsonProperty("accept-language")
     String getAcceptLanguage();
-
-    @JsonProperty("environment")
-    public String getEnvironment();
 }
