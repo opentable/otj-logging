@@ -38,5 +38,6 @@ final class CommonLogHolder
         }
 
         OT_ENV = System.getenv("OT_ENV");
+        LOG.info("Running in environment {}", OT_ENV);
     }
 }
