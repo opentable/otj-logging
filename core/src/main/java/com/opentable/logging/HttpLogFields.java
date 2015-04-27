@@ -41,6 +41,18 @@ public interface HttpLogFields extends CommonLogFields
     @JsonProperty("user-agent")
     String getUserAgent();
 
+    @JsonProperty("remote-address")
+    String getRemoteAddress();
+
+    @JsonProperty("x-forwarded-for")
+    String getForwardedFor();
+
+    @JsonProperty("x-forwarded-port")
+    String getForwardedPort();
+
+    @JsonProperty("x-forwarded-proto")
+    String getForwardedProto();
+
     /**
      * Usually provided via MDC, but the RequestLog handler is triggered
      * after the RequestIdFilter teardown so it is lost from the MDC.
