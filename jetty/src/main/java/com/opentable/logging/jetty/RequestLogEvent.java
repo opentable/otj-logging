@@ -50,6 +50,10 @@ public class RequestLogEvent extends LoggingEvent implements HttpLogFields
     private final String referringService;
     private final String otDomain;
     private final String acceptLanguage;
+    private final String remoteAddress;
+    private final String forwardedFor;
+    private final String forwardedPort;
+    private final String forwardedProto;
 
     public RequestLogEvent(Clock clock, Request request, Response response)
     {
@@ -80,6 +84,10 @@ public class RequestLogEvent extends LoggingEvent implements HttpLogFields
         referringService = request.getHeader("OT-ReferringService");
         otDomain = request.getHeader("OT-Domain");
         acceptLanguage = request.getHeader(HttpHeader.ACCEPT_LANGUAGE.asString());
+        remoteAddress = request.getRemoteAddr();
+        forwardedFor = request.getHeader("X-Forwarded-For");
+        forwardedPort = request.getHeader("X-Forwarded-Port");
+        forwardedProto = request.getHeader("X-Forwarded-Proto");
         setMessage(getMessage());
     }
 
@@ -186,6 +194,26 @@ public class RequestLogEvent extends LoggingEvent implements HttpLogFields
     public String getUserAgent()
     {
         return userAgent;
+    }
+
+    @Override
+    public String getRemoteAddress() {
+        return remoteAddress;
+    }
+
+    @Override
+    public String getForwardedFor() {
+        return forwardedFor;
+    }
+
+    @Override
+    public String getForwardedPort() {
+        return forwardedPort;
+    }
+
+    @Override
+    public String getForwardedProto() {
+        return forwardedProto;
     }
 
     @Override
