@@ -60,6 +60,9 @@ public interface HttpLogFields extends CommonLogFields
     @JsonProperty("ot-requestid")
     String getRequestId();
 
+    @JsonProperty("ot-anonymousid")
+    String getAnonymousId();
+
     @JsonProperty("ot-userid")
     String getUserId();
 
