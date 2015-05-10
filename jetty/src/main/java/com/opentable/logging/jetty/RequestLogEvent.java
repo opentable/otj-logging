@@ -79,7 +79,7 @@ public class RequestLogEvent extends LoggingEvent implements HttpLogFields
         responseContentCount = response.getContentCount();
         userAgent = request.getHeader(HttpHeader.USER_AGENT.asString());
         requestId = response.getHeader("OT-RequestId");
-        anonymousId = response.getHeader("OT-AnonymousId");
+        anonymousId = request.getHeader("OT-AnonymousId");
         userId = request.getHeader("OT-UserId");
         sessionId = request.getHeader("OT-SessionId");
         referringHost = request.getHeader("OT-ReferringHost");
