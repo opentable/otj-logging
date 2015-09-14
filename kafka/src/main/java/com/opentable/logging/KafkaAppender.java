@@ -34,6 +34,8 @@ import kafka.producer.ProducerConfig;
  */
 public class KafkaAppender extends UnsynchronizedAppenderBase<ILoggingEvent>
 {
+    private final ThreadLocal<byte[]> partitionShufflerKey = ThreadLocal.withInitial(() -> new byte[1]);
+
     private Producer<byte[], byte[]> producer;
     private Encoder<ILoggingEvent> encoder;
 
@@ -84,7 +86,9 @@ public class KafkaAppender extends UnsynchronizedAppenderBase<ILoggingEvent>
             throw Throwables.propagate(e);
         }
 
-        producer.send(new KeyedMessage<>(topic, out.toByteArray()));
+        final byte[] key = partitionShufflerKey.get();
+        key[0]++;
+        producer.send(new KeyedMessage<>(topic, key, out.toByteArray()));
     }
 
     public Encoder<ILoggingEvent> getEncoder()
