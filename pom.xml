@@ -38,7 +38,6 @@
 
   <properties>
     <ot.build.allow-guice>false</ot.build.allow-guice>
-    <dep.jackson.version>2.3.2</dep.jackson.version>
     <dep.kafka.version>0.8.1.1</dep.kafka.version>
   </properties>
 
