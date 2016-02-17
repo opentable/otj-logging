@@ -13,6 +13,8 @@
  */
 package com.opentable.logging;
 
+import java.util.UUID;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import org.slf4j.MDC;
@@ -28,6 +30,9 @@ public interface CommonLogFields
 
     @JsonProperty("@timestamp")
     String getTimestamp();
+
+    @JsonProperty("@uuid")
+    UUID getMessageId();
 
     @JsonProperty("servicetype")
     String getServiceType();

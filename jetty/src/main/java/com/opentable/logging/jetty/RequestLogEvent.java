@@ -18,6 +18,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
+import java.util.UUID;
 
 import org.eclipse.jetty.http.HttpHeader;
 import org.eclipse.jetty.server.Request;
@@ -32,6 +33,8 @@ import com.opentable.serverinfo.ServerInfo;
 public class RequestLogEvent extends LoggingEvent implements HttpLogFields
 {
     private static final DateTimeFormatter FORMAT = DateTimeFormatter.ISO_INSTANT;
+
+    private final UUID messageId = UUID.randomUUID();
 
     private final long timeStamp;
     private final String timestampStr;
@@ -91,6 +94,11 @@ public class RequestLogEvent extends LoggingEvent implements HttpLogFields
         forwardedPort = request.getHeader("X-Forwarded-Port");
         forwardedProto = request.getHeader("X-Forwarded-Proto");
         setMessage(getMessage());
+    }
+
+    @Override
+    public UUID getMessageId() {
+        return messageId;
     }
 
     @Override

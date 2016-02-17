@@ -16,6 +16,7 @@ package com.opentable.logging;
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.slf4j.LoggerFactory;
@@ -33,10 +34,16 @@ class ApplicationLogEvent implements CommonLogFields
     private static final AtomicBoolean WARNED_UNSET = new AtomicBoolean();
 
     private final ILoggingEvent event;
+    private final UUID messageId = UUID.randomUUID();
 
     ApplicationLogEvent(ILoggingEvent event)
     {
         this.event = event;
+    }
+
+    @Override
+    public UUID getMessageId() {
+        return messageId;
     }
 
     @Override
