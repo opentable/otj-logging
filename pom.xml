@@ -19,7 +19,7 @@
   <parent>
     <groupId>com.opentable</groupId>
     <artifactId>otj-parent-oss</artifactId>
-    <version>44</version>
+    <version>47-SNAPSHOT</version>
   </parent>
 
   <scm>
@@ -38,7 +38,6 @@
 
   <properties>
     <ot.build.allow-guice>false</ot.build.allow-guice>
-    <dep.kafka.version>0.8.1.1</dep.kafka.version>
   </properties>
 
   <modules>
@@ -75,12 +74,6 @@
       </dependency>
 
       <dependency>
-        <groupId>org.apache.zookeeper</groupId>
-        <artifactId>zookeeper</artifactId>
-        <version>3.4.6</version>
-      </dependency>
-
-      <dependency>
         <groupId>com.fasterxml.jackson.core</groupId>
         <artifactId>jackson-annotations</artifactId>
         <version>${dep.jackson.version}</version>
@@ -95,6 +88,12 @@
         <artifactId>jackson-module-mrbean</artifactId>
         <version>${dep.jackson.version}</version>
         <scope>test</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>com.opentable.components</groupId>
+        <artifactId>otj-kafka</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
       </dependency>
 
       <dependency>

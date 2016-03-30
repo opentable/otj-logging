@@ -54,18 +54,11 @@
 
     <dependency>
       <groupId>org.apache.kafka</groupId>
-      <artifactId>kafka_2.9.2</artifactId>
-      <version>${dep.kafka.version}</version>
-      <exclusions>
-        <exclusion>
-          <artifactId>log4j</artifactId>
-          <groupId>log4j</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>slf4j-log4j12</artifactId>
-          <groupId>org.slf4j</groupId>
-        </exclusion>
-      </exclusions>
+      <artifactId>kafka_2.10</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.kafka</groupId>
+      <artifactId>kafka-clients</artifactId>
     </dependency>
 
     <dependency>
@@ -98,16 +91,15 @@
 
     <dependency>
       <groupId>org.apache.kafka</groupId>
-      <artifactId>kafka_2.9.2</artifactId>
+      <artifactId>kafka_2.10</artifactId>
       <classifier>test</classifier>
-      <version>${dep.kafka.version}</version>
       <scope>test</scope>
     </dependency>
+
     <dependency>
-      <groupId>org.apache.curator</groupId>
-      <artifactId>curator-test</artifactId>
+      <groupId>com.opentable.components</groupId>
+      <artifactId>otj-kafka</artifactId>
       <scope>test</scope>
-      <version>2.6.0</version>
     </dependency>
   </dependencies>
 </project>
