@@ -27,6 +27,10 @@
   <packaging>jar</packaging>
   <description>Logging component Kafka appender</description>
 
+  <properties>
+    <basepom.test.timeout>120</basepom.test.timeout>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>com.opentable.components</groupId>
