@@ -18,17 +18,16 @@ import static org.junit.Assert.assertEquals;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.Collections;
-import java.util.List;
-import java.util.Properties;
-import java.util.UUID;
+import java.util.Iterator;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.module.mrbean.MrBeanModule;
 import com.google.common.base.Charsets;
-import com.google.common.collect.Iterables;
 import com.google.common.io.Resources;
 
+import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -38,12 +37,9 @@ import org.junit.rules.RuleChain;
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.joran.JoranConfigurator;
 import ch.qos.logback.core.status.OnConsoleStatusListener;
-import kafka.admin.AdminUtils;
-import kafka.consumer.Consumer;
-import kafka.consumer.ConsumerConfig;
-import kafka.consumer.ConsumerIterator;
-import kafka.consumer.KafkaStream;
-import kafka.javaapi.consumer.ConsumerConnector;
+
+import com.opentable.kafka.KafkaBrokerRule;
+import com.opentable.kafka.ZookeeperRule;
 
 public class KafkaAppenderTest
 {
@@ -80,11 +76,10 @@ public class KafkaAppenderTest
         context.stop();
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=30000)
     public void testLog() throws Exception
     {
-        AdminUtils.createTopic(kafka.getServer().zkClient(), "logs", 1, 1, new Properties());
-        Thread.sleep(2000);
+        kafka.createTopic("logs");
         context.getLogger("test").info("Herro!");
         context.getLogger("womp").warn("flop", new Throwable());
 
@@ -93,20 +88,13 @@ public class KafkaAppenderTest
 
         final CommonLogFields log1, log2;
 
-        ConsumerConnector consumer = createConsumer();
+        try (KafkaConsumer<String, String> consumer = kafka.createConsumer()) {
+            consumer.subscribe(Collections.singletonList("logs"));
+            final Iterator<ConsumerRecord<String, String>> iterator = consumer.poll(10000).iterator();
 
-        final List<KafkaStream<byte[], byte[]>> streams = consumer.createMessageStreams(Collections.singletonMap("logs", 1)).get("logs");
-        final KafkaStream<byte[], byte[]> stream = Iterables.getOnlyElement(streams);
-        final ConsumerIterator<byte[], byte[]> iterator = stream.iterator();
-
-        System.out.println("read 0");
-        log1 = read(iterator.next().message());
-        System.out.println("read 1");
-        log2 = read(iterator.next().message());
-        System.out.println("read 2");
-
-        consumer.shutdown();
-
+            log1 = read(iterator.next().value());
+            log2 = read(iterator.next().value());
+        }
 
         assertEquals("Herro!", log1.getMessage());
         assertEquals("test", log1.getLogClass());
@@ -117,17 +105,7 @@ public class KafkaAppenderTest
         assertEquals("WARN", log2.getSeverity());
     }
 
-    private ConsumerConnector createConsumer()
-    {
-        Properties props = new Properties();
-        props.put("zookeeper.connect", zk.getConnectString());
-        props.put("group.id", UUID.randomUUID().toString());
-        props.put("auto.offset.reset", "smallest");
-        props.put("socket.timeout.ms", "500");
-        return Consumer.createJavaConsumerConnector(new ConsumerConfig(props));
-    }
-
-    private CommonLogFields read(byte[] data) throws IOException
+    private CommonLogFields read(String data) throws IOException
     {
         return mapper.readValue(data, CommonLogFields.class);
     }
