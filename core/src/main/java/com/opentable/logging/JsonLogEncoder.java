@@ -23,7 +23,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.util.TokenBuffer;
-import com.fasterxml.jackson.datatype.jsr310.JSR310Module;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import org.slf4j.Marker;
 
@@ -48,7 +48,7 @@ public class JsonLogEncoder extends EncoderBase<ILoggingEvent> {
         // TODO: This sucks - - won't get the mapper customizations.  Find a way to inject this.
         // Master configuration is in otj-jackson
         this.mapper = new ObjectMapper()
-                .registerModule(new JSR310Module())
+                .registerModule(new JavaTimeModule())
                 .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
                 .disable(SerializationFeature.WRITE_NULL_MAP_VALUES)
                 .setSerializationInclusion(Include.NON_NULL)
@@ -66,7 +66,7 @@ public class JsonLogEncoder extends EncoderBase<ILoggingEvent> {
 
         if (customEventClass != null && customEventClass.isAssignableFrom(event.getClass())) {
             final TokenBuffer buf = new TokenBuffer(mapper, false);
-            mapper.writerWithType(customEventClass).writeValue(buf, event);
+            mapper.writerFor(customEventClass).writeValue(buf, event);
             logLine = mapper.readTree(buf.asParser());
         } else {
             logLine = mapper.valueToTree(new ApplicationLogEvent(event));
