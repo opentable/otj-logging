@@ -29,14 +29,12 @@ import ch.qos.logback.classic.jmx.JMXConfigurator;
 import ch.qos.logback.classic.jul.LevelChangePropagator;
 
 /**
- * Assimilates all the other logging frameworks that we use and redirect them to log4j.
+ * Assimilates all the other logging frameworks that we use and redirect them to logback.
  *
- * Currently that is only java.util.logging, when using slf4j, it is sent directly to log4j.
+ * Currently that is only java.util.logging, when using slf4j, it is sent directly to logback.
  */
 public final class AssimilateForeignLogging
 {
-    private static final Log LOG = Log.findLog();
-
     // @GuardedBy("AssimilateForeignLogging.class")
     private static boolean assimilated = false;
 
@@ -74,7 +72,7 @@ public final class AssimilateForeignLogging
         } catch (MalformedObjectNameException e) {
             throw new RuntimeException(e);
         }
-        LOG.info("java.util.logging was assimilated.");
+        LoggerFactory.getLogger(AssimilateForeignLogging.class).info("java.util.logging was assimilated.");
     }
 
     /**
