@@ -20,7 +20,11 @@ import ch.qos.logback.classic.spi.ILoggingEvent;
 
 /**
  * Wraps a Log4j logger into a number of convenience methods such as varargs.
+ *
+ * @deprecated This code is leftover from the Ness codebase and probably
+ * shouldn't be adopted in new code, use SLF4J {@link Logger} instead.
  */
+@Deprecated
 public final class Log
 {
     private static final String LOG_NAME = Log.class.getName();
