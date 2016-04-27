@@ -22,10 +22,9 @@
     <version>2.0.0-SNAPSHOT</version>
   </parent>
 
-  <artifactId>otj-logging-core</artifactId>
-  <name>otj-logging-core</name>
-  <packaging>jar</packaging>
-  <description>Logging component core</description>
+  <artifactId>otj-logging</artifactId>
+  <name>otj-logging</name>
+  <description>Logging component</description>
 
   <dependencies>
     <dependency>
@@ -45,6 +44,10 @@
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>jul-to-slf4j</artifactId>
     </dependency>
 
     <dependency>

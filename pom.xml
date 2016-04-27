@@ -18,8 +18,8 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>com.opentable</groupId>
-    <artifactId>otj-parent-oss</artifactId>
-    <version>49</version>
+    <artifactId>otj-parent-spring</artifactId> <!-- XXX: need parent-spring-oss -->
+    <version>55-SNAPSHOT</version>
   </parent>
 
   <scm>
@@ -36,25 +36,15 @@
   <packaging>pom</packaging>
   <description>Logging component parent</description>
 
-  <properties>
-    <ot.build.allow-guice>false</ot.build.allow-guice>
-  </properties>
-
   <modules>
     <module>core</module>
     <module>redis</module>
     <module>kafka</module>
     <module>jetty</module>
-    <module>logging</module>
   </modules>
 
   <dependencyManagement>
     <dependencies>
-      <dependency>
-        <groupId>com.opentable.components</groupId>
-        <artifactId>otj-logging-core</artifactId>
-        <version>${project.version}</version>
-      </dependency>
       <dependency>
         <groupId>com.opentable.components</groupId>
         <artifactId>otj-logging-redis</artifactId>
@@ -71,23 +61,6 @@
         <groupId>redis.clients</groupId>
         <artifactId>jedis</artifactId>
         <version>2.5.1</version>
-      </dependency>
-
-      <dependency>
-        <groupId>com.fasterxml.jackson.core</groupId>
-        <artifactId>jackson-annotations</artifactId>
-        <version>${dep.jackson.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.fasterxml.jackson.core</groupId>
-        <artifactId>jackson-databind</artifactId>
-        <version>${dep.jackson.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.fasterxml.jackson.module</groupId>
-        <artifactId>jackson-module-mrbean</artifactId>
-        <version>${dep.jackson.version}</version>
-        <scope>test</scope>
       </dependency>
 
       <dependency>
