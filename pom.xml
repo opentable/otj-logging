@@ -52,12 +52,6 @@
       </dependency>
 
       <dependency>
-        <groupId>com.opentable.components</groupId>
-        <artifactId>otj-serverinfo</artifactId>
-        <version>1.6.0</version>
-      </dependency>
-
-      <dependency>
         <groupId>redis.clients</groupId>
         <artifactId>jedis</artifactId>
         <version>2.5.1</version>
