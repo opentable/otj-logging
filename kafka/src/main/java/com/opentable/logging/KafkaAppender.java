@@ -19,13 +19,14 @@ import java.util.Properties;
 
 import com.google.common.base.Throwables;
 
+import org.apache.kafka.clients.producer.KafkaProducer;
+import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.common.serialization.ByteArraySerializer;
+
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.UnsynchronizedAppenderBase;
 import ch.qos.logback.core.encoder.Encoder;
 import ch.qos.logback.core.status.InfoStatus;
-import kafka.javaapi.producer.Producer;
-import kafka.producer.KeyedMessage;
-import kafka.producer.ProducerConfig;
 
 /**
  * Log messages to Kafka with a configurable encoder.
@@ -36,7 +37,7 @@ public class KafkaAppender extends UnsynchronizedAppenderBase<ILoggingEvent>
 {
     private final ThreadLocal<byte[]> partitionShufflerKey = ThreadLocal.withInitial(() -> new byte[1]);
 
-    private Producer<byte[], byte[]> producer;
+    private KafkaProducer<byte[], byte[]> producer;
     private Encoder<ILoggingEvent> encoder;
 
     private String brokerList = null;
@@ -56,12 +57,11 @@ public class KafkaAppender extends UnsynchronizedAppenderBase<ILoggingEvent>
         }
 
         final Properties config = new Properties();
-        config.put("metadata.broker.list", brokerList);
-        config.put("producer.type", "async");
-        config.put("compression.codec", compressionCodec);
+        config.put("bootstrap.servers", brokerList);
+        config.put("acks", "1");
+        config.put("compression.type", compressionCodec);
         config.put("client.id", clientId);
-        config.put("serializer.class", "kafka.serializer.DefaultEncoder");
-        producer = new Producer<>(new ProducerConfig(config));
+        producer = new KafkaProducer<>(config, new ByteArraySerializer(), new ByteArraySerializer());
     }
 
     @Override
@@ -88,7 +88,7 @@ public class KafkaAppender extends UnsynchronizedAppenderBase<ILoggingEvent>
 
         final byte[] key = partitionShufflerKey.get();
         key[0]++;
-        producer.send(new KeyedMessage<>(topic, key, out.toByteArray()));
+        producer.send(new ProducerRecord<>(topic, key, out.toByteArray()));
     }
 
     public Encoder<ILoggingEvent> getEncoder()
