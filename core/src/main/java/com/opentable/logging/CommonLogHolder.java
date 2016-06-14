@@ -16,17 +16,22 @@ package com.opentable.logging;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.time.format.DateTimeFormatter;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-final class CommonLogHolder
+public final class CommonLogHolder
 {
     private static final Logger LOG = LoggerFactory.getLogger(CommonLogHolder.class);
+
+    private static final String UNSET = "UNSET";
+    private static final AtomicBoolean WARNED_UNSET = new AtomicBoolean();
 
     static final DateTimeFormatter FORMAT = DateTimeFormatter.ISO_INSTANT;
     static final String HOST_NAME;
     static final String OT_ENV;
+    private static String serviceType = UNSET;
 
     static {
         try {
@@ -39,5 +44,16 @@ final class CommonLogHolder
 
         OT_ENV = System.getenv("OT_ENV");
         LOG.info("Running in environment {}", OT_ENV);
+    }
+
+    public static void setServiceType(String serviceType) {
+        CommonLogHolder.serviceType = serviceType;
+    }
+
+    public static String getServiceType() {
+        if (UNSET.equals(serviceType) && WARNED_UNSET.compareAndSet(false, true)) {
+            LoggerFactory.getLogger(ApplicationLogEvent.class).error("The application name was not set!  Sending 'UNSET' instead :(");
+        }
+        return serviceType;
     }
 }

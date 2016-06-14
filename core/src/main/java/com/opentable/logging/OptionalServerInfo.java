@@ -13,10 +13,7 @@
  */
 package com.opentable.logging;
 
-import java.util.Objects;
 import java.util.UUID;
-
-import com.opentable.serverinfo.ServerInfo;
 
 class OptionalServerInfo
 {
@@ -29,9 +26,9 @@ class OptionalServerInfo
     static String getDefaultClientName(WarningReporter reporter)
     {
         try {
-            return Objects.toString(ServerInfo.get(ServerInfo.SERVER_TOKEN), UUID.randomUUID().toString());
+            return UUID.randomUUID().toString();
         } catch (Exception e) {
-            reporter.warn("No client name was set on appender!  Failed to get default value from otj-serverinfo.", e);
+            reporter.warn("No client name was set on appender!", e);
             return null;
         }
     }

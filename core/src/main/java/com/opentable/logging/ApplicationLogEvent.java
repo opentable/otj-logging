@@ -15,23 +15,15 @@ package com.opentable.logging;
 
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
-import java.util.Objects;
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicBoolean;
-
-import org.slf4j.LoggerFactory;
 
 import ch.qos.logback.classic.pattern.ThrowableProxyConverter;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.classic.spi.IThrowableProxy;
 
-import com.opentable.serverinfo.ServerInfo;
-
 class ApplicationLogEvent implements CommonLogFields
 {
     private static final DateTimeFormatter FORMAT = DateTimeFormatter.ISO_INSTANT;
-    private static final String UNSET = "UNSET";
-    private static final AtomicBoolean WARNED_UNSET = new AtomicBoolean();
 
     private final ILoggingEvent event;
     private final UUID messageId = UUID.randomUUID();
@@ -95,16 +87,7 @@ class ApplicationLogEvent implements CommonLogFields
     @Override
     public String getServiceType()
     {
-        final String result = serverInfo(ServerInfo.SERVER_TYPE);
-        if (UNSET.equals(result) && WARNED_UNSET.compareAndSet(false, true)) {
-            LoggerFactory.getLogger(ApplicationLogEvent.class).error("The application name was not set!  Sending 'UNSET' instead :(");
-        }
-        return result;
-    }
-
-    private static String serverInfo(String infoType)
-    {
-        return Objects.toString(ServerInfo.get(infoType), UNSET);
+        return CommonLogHolder.getServiceType();
     }
 
     static class ThrowableConverterHack extends ThrowableProxyConverter
