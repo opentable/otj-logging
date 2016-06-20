@@ -16,36 +16,39 @@ package com.opentable.logging.jetty;
 import java.util.Collections;
 import java.util.Set;
 
-import org.skife.config.Config;
-import org.skife.config.Default;
+import org.springframework.beans.factory.annotation.Value;
 
 public class JsonRequestLogConfig
 {
-    @Config("enabled")
-    @Default("true")
+    @Value("${ot.httpserver.request-log.enabled:true}")
+    private final boolean enabled = true;
+
+    @Value("${ot.httpserver.request-log.startswith-blacklist:}")
+    private final Set<String> startsWithBlacklist = Collections.emptySet();
+
+    @Value("${ot.httpserver.request-log.equality-blacklist:/health}")
+    private final Set<String> equalityBlacklist = Collections.singleton("/health");
+
+    @Value("${ot.httpserver.request-log.logger-name:httpserver}")
+    private final String loggerName = "httpserver";
+
     public boolean isEnabled()
     {
-        return true;
+        return enabled;
     }
 
-    @Config("startswith-blacklist")
-    @Default("")
     public Set<String> getStartsWithBlacklist()
     {
-        return Collections.emptySet();
+        return startsWithBlacklist;
     }
 
-    @Config("equality-blacklist")
-    @Default("/health")
     public Set<String> getEqualityBlacklist()
     {
-        return Collections.singleton("/health");
+        return equalityBlacklist;
     }
 
-    @Config("logger-name")
-    @Default("httpserver")
     public String getLoggerName()
     {
-        return "httpserver";
+        return loggerName;
     }
 }

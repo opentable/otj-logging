@@ -17,7 +17,6 @@ import java.time.Clock;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
-import java.util.Objects;
 import java.util.UUID;
 
 import org.eclipse.jetty.http.HttpHeader;
@@ -27,8 +26,8 @@ import org.eclipse.jetty.server.Response;
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.spi.LoggingEvent;
 
+import com.opentable.logging.CommonLogHolder;
 import com.opentable.logging.HttpLogFields;
-import com.opentable.serverinfo.ServerInfo;
 
 public class RequestLogEvent extends LoggingEvent implements HttpLogFields
 {
@@ -135,7 +134,7 @@ public class RequestLogEvent extends LoggingEvent implements HttpLogFields
     @Override
     public String getServiceType()
     {
-        return serverInfo(ServerInfo.SERVER_TYPE);
+        return CommonLogHolder.getServiceType();
     }
 
     @Override
@@ -278,10 +277,5 @@ public class RequestLogEvent extends LoggingEvent implements HttpLogFields
     public String getThrowable()
     {
         return null;
-    }
-
-    private static String serverInfo(String infoType)
-    {
-        return Objects.toString(ServerInfo.get(infoType), null);
     }
 }
