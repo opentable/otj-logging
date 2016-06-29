@@ -35,7 +35,7 @@ import ch.qos.logback.core.status.InfoStatus;
  */
 public class KafkaAppender extends UnsynchronizedAppenderBase<ILoggingEvent>
 {
-    private final ThreadLocal<byte[]> partitionShufflerKey = ThreadLocal.withInitial(() -> new byte[1]);
+    private final PartitionKeyGenerator keyGenerator = new PartitionKeyGenerator();
 
     private KafkaProducer<byte[], byte[]> producer;
     private Encoder<ILoggingEvent> encoder;
@@ -86,9 +86,7 @@ public class KafkaAppender extends UnsynchronizedAppenderBase<ILoggingEvent>
             throw Throwables.propagate(e);
         }
 
-        final byte[] key = partitionShufflerKey.get();
-        key[0]++;
-        producer.send(new ProducerRecord<>(topic, key, out.toByteArray()));
+        producer.send(new ProducerRecord<>(topic, keyGenerator.next(), out.toByteArray()));
     }
 
     public Encoder<ILoggingEvent> getEncoder()
