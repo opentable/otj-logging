@@ -10,7 +10,7 @@ Component Charter
 * Provide reference implementation of the 
 [standard logging format](https://wiki.otcorp.opentable.com:8443/display/CP/Log+Proposals)
 * Provide Appender implementations for OpenTable logging infrastructure
-* Optionally provide a 'nicer' api than any of `SLF4J`, `commons-logging`, or `java.util.logging` provide.
+* Allow logging structured data in addition to traditional String messages
 
 otj-logging-core
 ----------------
@@ -26,14 +26,18 @@ into a format suitable to submit to the OpenTable logging infrastructure through
 
 The common log format defines a "servicetype" field which should be filled with the name of the service.
 As the logger does not know the name of the service it is running in, this *must* be provided by the application.
-Absent of a better way of doing this, the [otj-serverinfo](https://github.com/opentable/otj-serverinfo) component
-provides the application name.  For builds that are built on top of the `otj-server`
-[StandaloneServer](https://github.com/opentable/otj-server/blob/master/server/src/main/java/com/opentable/server/StandaloneServer.java)
-this will automatically be filled in.  Other applications should explicitly initialize this early on during
-application initialization:
+For applications using our template, the `otj-server` component takes care to set this correctly.
+ther applications should explicitly initialize this early on during application initialization:
 
 ```java
-ServerInfo.add(ServerInfo.SERVER_TYPE, "my-cool-server");
+CommonLogHolder.setServiceType("my-cool-server");
+```
+
+We also provide a way to log structured metadata:
+
+```java
+LogMetadata metadata = LogMetadata.of("availability", "down").and("serviceType", serviceType);
+LOG.info(metadata, "Service '{}' is DOWN at '{}'", serviceType, when);
 ```
 
 otj-logging-redis
@@ -116,61 +120,7 @@ together other common logging frameworks:
 * `commons-logging` via `jcl-over-slf4j`
 * `log4j` via `log4j-over-slf4j`
 
-Finally, it provides an alternative facade to `SLF4J` with a nicer API.
-
-
-otj-logging: Why Another Logging Facade?
-----------------------------------------
-
-It is almost offensive this day and age to create Yet Another Logging Facade.
-`otj-logging` dramatically improves the interface that developers use to log, which reduces
-friction in a very crucial piece of the platform.  So far, it has been worth the effort.
-
-__SLF4J__
-
-```java
-void info(String format, Object... args);
-void info(String message, Throwable t);
-```
-
-The two overloads are not compatible with each other!  Depending on whether you are
-handling an exception or not changes the semantics of the first argument - with a Throwable
-it is a plain String message, and without it is a format string and will get interpolated.
-
-This *so close* to being good but misses the mark on usability.  We have a much better one:
-
-__otj-logging__
-
-```java
-void info(String format, Object... args);
-void info(Throwable t, String format, Object... args);
-```
-
-Now you may confidently use the same message strings with or without a Throwable to report.
-Note that `Log` uses `String.format` so make sure to use `%s` instead of `{}`.
-
-The SLF4J API is still available and works fine, just be very conscious about which one you use
-because the message formats are not the same.  This is arguably a bug, and if there is sufficient
-interest maybe `Log` should switch to using the same `MessageFormat`.
-
-Usage
------
-
-Usage is very simple:
-
-```java
-class MyLoggingClass {
-    private static final Log LOG = Log.findLog();
-
-    MyLoggingClass() {
-        LOG.info("Hello constructor from %s!", this);
-    }
-
-    public void handleError(Throwable t) {
-        LOG.error(t, "Something went wrong! I am: %s", this);
-    }
-}
-```
+Usually you will not need to use this artifact directly, it is used by `otj-server`.
 
 ----
-Copyright (C) 2014 OpenTable, Inc.
+Copyright (C) 2016 OpenTable, Inc.
