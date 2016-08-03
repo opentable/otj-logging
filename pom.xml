@@ -36,10 +36,6 @@
   <packaging>pom</packaging>
   <description>Logging component parent</description>
 
-  <properties>
-    <basepom.release.profiles>basepom.oss-release,oss-build</basepom.release.profiles>
-  </properties>
-
   <modules>
     <module>core</module>
     <module>redis</module>
