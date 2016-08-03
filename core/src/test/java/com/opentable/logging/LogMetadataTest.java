@@ -74,7 +74,7 @@ public class LogMetadataTest {
         captureAppender.start();
 
         context.getLogger(Logger.ROOT_LOGGER_NAME).addAppender(captureAppender);
-        BasicConfigurator.configure(context);
+        new BasicConfigurator().configure(context);
         context.start();
     }
 
