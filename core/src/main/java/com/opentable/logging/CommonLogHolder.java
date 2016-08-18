@@ -30,7 +30,7 @@ public final class CommonLogHolder
 
     static final DateTimeFormatter FORMAT = DateTimeFormatter.ISO_INSTANT;
     static final String HOST_NAME;
-    static final String OT_ENV;
+    static final String OT_ENV, OT_ENV_TYPE, OT_ENV_LOCATION, OT_ENV_FLAVOR;
     private static String serviceType = UNSET;
 
     static {
@@ -43,7 +43,10 @@ public final class CommonLogHolder
         }
 
         OT_ENV = System.getenv("OT_ENV");
-        LOG.info("Running in environment {}", OT_ENV);
+        OT_ENV_TYPE = System.getenv("OT_ENV_TYPE");
+        OT_ENV_LOCATION = System.getenv("OT_ENV_LOCATION");
+        OT_ENV_FLAVOR = System.getenv("OT_ENV_FLAVOR");
+        LOG.info("Running in environment {} ({} {} {})", OT_ENV, OT_ENV_TYPE, OT_ENV_LOCATION, OT_ENV_FLAVOR);
     }
 
     public static void setServiceType(String serviceType) {
