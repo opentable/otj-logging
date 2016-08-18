@@ -63,6 +63,21 @@ public interface CommonLogFields
         return CommonLogHolder.OT_ENV;
     }
 
+    @JsonProperty("ot-env-type")
+    default String getOtEnvType() {
+        return CommonLogHolder.OT_ENV_TYPE;
+    }
+
+    @JsonProperty("ot-env-location")
+    default String getOtEnvLocation() {
+        return CommonLogHolder.OT_ENV_LOCATION;
+    }
+
+    @JsonProperty("ot-env-flavor")
+    default String getOtEnvFlavor() {
+        return CommonLogHolder.OT_ENV_FLAVOR;
+    }
+
     @JsonProperty("severity")
     String getSeverity();
 
