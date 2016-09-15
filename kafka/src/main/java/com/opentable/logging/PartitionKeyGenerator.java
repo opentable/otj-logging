@@ -13,20 +13,15 @@
  */
 package com.opentable.logging;
 
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.atomic.AtomicLong;
+
+import com.google.common.primitives.Longs;
+
 class PartitionKeyGenerator {
-    private final ThreadLocal<byte[]> partitionShufflerKey = ThreadLocal.withInitial(() -> new byte[8]);
+    private final AtomicLong partitionShufflerKey = new AtomicLong(ThreadLocalRandom.current().nextLong());
 
     byte[] next() {
-        final byte[] key = partitionShufflerKey.get();
-
-        // Increment the byte array as if it were a single number
-        // Saves allocating new byte[] on every call, just reuse it, one per thread
-        for (int i = key.length-1; i >= 0; i--) {
-            if (key[i]++ != Byte.MIN_VALUE) {
-                break;
-            }
-        }
-
-        return key;
+        return Longs.toByteArray(partitionShufflerKey.incrementAndGet());
     }
 }
