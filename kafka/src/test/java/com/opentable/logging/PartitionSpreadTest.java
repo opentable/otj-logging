@@ -66,7 +66,7 @@ public class PartitionSpreadTest {
         }
 
         int expected = messages / partitions;
-        double threshold = expected * 0.025;
+        double threshold = expected * 0.05;
 
         for (Multiset.Entry<Integer> e : results.entrySet()) {
             int offBy = Math.abs(e.getCount() - expected);
