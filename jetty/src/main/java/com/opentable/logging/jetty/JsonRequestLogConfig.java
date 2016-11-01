@@ -60,4 +60,10 @@ public class JsonRequestLogConfig {
     {
         return loggerName;
     }
+
+    @Override
+    public String toString() {
+        return String.format("%s{enabled: %s, startswith-blacklist: %s, equality-blacklist: %s, logger-name: %s}",
+                getClass().getSimpleName(), enabled, startsWithBlacklist, equalityBlacklist, loggerName);
+    }
 }
