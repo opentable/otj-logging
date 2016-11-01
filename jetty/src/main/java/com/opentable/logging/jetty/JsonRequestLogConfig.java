@@ -17,20 +17,29 @@ import java.util.Collections;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
-public class JsonRequestLogConfig
-{
-    @Value("${ot.httpserver.request-log.enabled:true}")
-    private final boolean enabled = true;
+@Component
+public class JsonRequestLogConfig {
+    private final boolean enabled;
+    private final Set<String> startsWithBlacklist;
+    private final Set<String> equalityBlacklist;
+    private final String loggerName;
 
-    @Value("${ot.httpserver.request-log.startswith-blacklist:}")
-    private final Set<String> startsWithBlacklist = Collections.emptySet();
-
-    @Value("${ot.httpserver.request-log.equality-blacklist:/health}")
-    private final Set<String> equalityBlacklist = Collections.singleton("/health");
-
-    @Value("${ot.httpserver.request-log.logger-name:httpserver}")
-    private final String loggerName = "httpserver";
+    public JsonRequestLogConfig(
+            @Value("${ot.httpserver.request-log.enabled:true}")
+            final boolean enabled,
+            @Value("${ot.httpserver.request-log.startswith-blacklist:#{null}}")
+            final Set<String> startsWithBlacklist,
+            @Value("${ot.httpserver.request-log.equality-blacklist:/health}")
+            final Set<String> equalityBlacklist,
+            @Value("${ot.httpserver.request-log.logger-name:httpserver}")
+            final String loggerName) {
+        this.enabled = enabled;
+        this.startsWithBlacklist = startsWithBlacklist == null ? Collections.emptySet() : startsWithBlacklist;
+        this.equalityBlacklist = equalityBlacklist;
+        this.loggerName = loggerName;
+    }
 
     public boolean isEnabled()
     {
@@ -50,5 +59,11 @@ public class JsonRequestLogConfig
     public String getLoggerName()
     {
         return loggerName;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%s{enabled: %s, startswith-blacklist: %s, equality-blacklist: %s, logger-name: %s}",
+                getClass().getSimpleName(), enabled, startsWithBlacklist, equalityBlacklist, loggerName);
     }
 }
