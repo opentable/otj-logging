@@ -88,7 +88,7 @@ public class KafkaAppenderTest
 
         final CommonLogFields log1, log2;
 
-        try (KafkaConsumer<String, String> consumer = kafka.createConsumer()) {
+        try (KafkaConsumer<String, String> consumer = kafka.createConsumer("test")) {
             consumer.subscribe(Collections.singletonList("logs"));
             final Iterator<ConsumerRecord<String, String>> iterator = consumer.poll(10000).iterator();
 
