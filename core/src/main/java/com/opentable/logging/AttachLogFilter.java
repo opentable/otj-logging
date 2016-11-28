@@ -1,5 +1,7 @@
 package com.opentable.logging;
 
+import java.util.Iterator;
+
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
@@ -13,7 +15,6 @@ import ch.qos.logback.core.Appender;
 import ch.qos.logback.core.filter.Filter;
 
 public class AttachLogFilter {
-
     private final Filter<ILoggingEvent> filter;
     private final String configKey;
 
@@ -35,11 +36,13 @@ public class AttachLogFilter {
 
     @PostConstruct
     public void attach() {
-        if (!enabled) {
-            return;
-        }
         if (context == null) {
             context = (LoggerContext) LoggerFactory.getILoggerFactory();
+        }
+
+        if (!enabled) {
+            LoggerFactory.getLogger(AttachLogFilter.class).debug("Not attaching {} due to '{}'", filter, configKey);
+            return;
         }
 
         final Logger attachLogger = context.getLogger(loggerName);
@@ -53,16 +56,21 @@ public class AttachLogFilter {
             return;
         }
 
-        attachLogger.iteratorForAppenders()
-            .forEachRemaining(this::doAttach);
+        Iterator<Appender<ILoggingEvent>> iter = attachLogger.iteratorForAppenders();
+
+        if (!iter.hasNext()) {
+            throw new IllegalStateException("expecting at least one appender attached to root");
+        }
+
+        iter.forEachRemaining(this::doAttach);
     }
 
     private void doAttach(Appender<ILoggingEvent> appender) {
         if (appender != null) {
             appender.addFilter(filter);
-            LoggerFactory.getLogger(AttachLogFilter.class).info("Attached access log filter to {} '{}'", appender, appenderName);
+            LoggerFactory.getLogger(AttachLogFilter.class).info("Attached log filter {} to {} '{}'", filter, appender, appenderName);
         } else {
-            throw new IllegalStateException("Could not attach access log filter to appender " + appenderName);
+            throw new IllegalStateException("Could not attach log filter to appender " + appenderName);
         }
     }
 
