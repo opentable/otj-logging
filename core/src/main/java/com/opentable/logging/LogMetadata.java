@@ -22,6 +22,8 @@ import java.util.Map;
 
 import org.slf4j.Marker;
 
+import com.opentable.logging.otl.OtlType;
+
 /**
  * Attach arbitrary JSON key-value metadata to logging statements.
  * Not really a marker in the pure sense of the term, but works well enough...
@@ -42,6 +44,10 @@ public class LogMetadata implements Marker {
         Map<String, Object> map = new HashMap<>();
         map.put(key, value);
         return new LogMetadata(map);
+    }
+
+    public static <T extends OtlType> LogMetadata logOtl(T otl) {
+        return new LogMetadata(Collections.emptyMap()).andInline(otl);
     }
 
     /**

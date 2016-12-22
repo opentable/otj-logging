@@ -37,6 +37,11 @@
     </dependency>
 
     <dependency>
+      <groupId>com.opentable.logging</groupId>
+      <artifactId>otj-otl</artifactId>
+    </dependency>
+
+    <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
     </dependency>
