@@ -60,8 +60,15 @@ public class JsonLogEncoder extends EncoderBase<ILoggingEvent> {
     }
 
     @Override
-    public void doEncode(ILoggingEvent event) throws IOException
-    {
+    public void doEncode(ILoggingEvent event) throws IOException {
+        final ObjectNode logLine = encodeNoAppend(event);
+        writeJsonNode(logLine);
+    }
+
+    /**
+     * Prepare a log event but don't append it, return it as an ObjectNode instead.
+     */
+    public ObjectNode encodeNoAppend(ILoggingEvent event) throws IOException {
         final ObjectNode logLine;
 
         if (customEventClass != null && customEventClass.isAssignableFrom(event.getClass())) {
@@ -90,8 +97,7 @@ public class JsonLogEncoder extends EncoderBase<ILoggingEvent> {
         }
 
         logLine.put("sequencenumber", LOG_SEQUENCE_NUMBER.incrementAndGet());
-
-        writeJsonNode(logLine);
+        return logLine;
     }
 
     protected void writeJsonNode(final ObjectNode logLine) throws IOException {
