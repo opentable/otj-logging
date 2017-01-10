@@ -38,7 +38,6 @@
 
   <modules>
     <module>core</module>
-    <module>redis</module>
     <module>kafka</module>
     <module>jetty</module>
   </modules>
@@ -47,31 +46,8 @@
     <dependencies>
       <dependency>
         <groupId>com.opentable.components</groupId>
-        <artifactId>otj-logging-redis</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>redis.clients</groupId>
-        <artifactId>jedis</artifactId>
-        <version>2.5.1</version>
-      </dependency>
-
-      <dependency>
-        <groupId>com.opentable.components</groupId>
         <artifactId>otj-kafka</artifactId>
         <version>1.0.0</version>
-      </dependency>
-
-      <dependency>
-        <groupId>com.github.spullara.redis</groupId>
-        <artifactId>netty4-server</artifactId>
-        <version>0.7-OT-2</version>
-      </dependency>
-      <dependency>
-        <groupId>io.netty</groupId>
-        <artifactId>netty-all</artifactId>
-        <version>4.0.10.Final</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
