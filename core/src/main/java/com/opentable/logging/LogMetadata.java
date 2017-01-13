@@ -113,4 +113,17 @@ public class LogMetadata implements Marker {
     public boolean contains(String name) {
         return false;
     }
+
+    /**
+     * This is used to render the Marker with the {@code %marker}
+     * pattern formatter in Logback.
+     *
+     * If you want to separate the marker visually from the rest of the log line,
+     * override your log pattern.
+     */
+    @Override
+    public String toString() {
+        final String spacer = metadata.isEmpty() && !inlines.isEmpty() ? "" : " ";
+        return ( metadata.isEmpty() ? "" : metadata ) + spacer + ( inlines.isEmpty() ? "" : inlines );
+    }
 }
