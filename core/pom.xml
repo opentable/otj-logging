@@ -117,16 +117,5 @@
       <artifactId>spring-test</artifactId>
       <scope>test</scope>
     </dependency>
-
-    <dependency>
-      <groupId>com.github.spullara.redis</groupId>
-      <artifactId>netty4-server</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>io.netty</groupId>
-      <artifactId>netty-all</artifactId>
-      <scope>test</scope>
-    </dependency>
   </dependencies>
 </project>
