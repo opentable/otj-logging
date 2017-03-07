@@ -15,9 +15,8 @@ package com.opentable.logging;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.util.Properties;
-
-import com.google.common.base.Throwables;
 
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -83,7 +82,7 @@ public class KafkaAppender extends UnsynchronizedAppenderBase<ILoggingEvent>
                 encoder.doEncode(eventObject);
             }
         } catch (IOException e) {
-            throw Throwables.propagate(e);
+            throw new UncheckedIOException(e);
         }
 
         producer.send(new ProducerRecord<>(topic, keyGenerator.next(), out.toByteArray()));

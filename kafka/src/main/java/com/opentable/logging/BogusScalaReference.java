@@ -13,12 +13,12 @@
  */
 package com.opentable.logging;
 
-import scala.ScalaObject;
+import scala.math.ScalaNumber;
 
 class BogusScalaReference {
     // Dead reference to get the dependency analyzer to realize that we actually
     // *do* need Scala.
-    private final String wat = ScalaObject.class.toString();
+    private final String wat = ScalaNumber.class.toString();
 
     @Override
     public String toString() {
