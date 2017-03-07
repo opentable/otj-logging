@@ -31,6 +31,38 @@
     <basepom.test.timeout>120</basepom.test.timeout>
   </properties>
 
+  <build>
+  <plugins>
+    <plugin>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-shade-plugin</artifactId>
+      <executions>
+        <execution>
+          <id>shade-kafka</id>
+          <phase>package</phase>
+          <goals>
+            <goal>shade</goal>
+          </goals>
+        </execution>
+      </executions>
+      <configuration>
+        <shadedArtifactAttached>false</shadedArtifactAttached>
+        <artifactSet>
+          <includes>
+            <include>org.apache.kafka</include>
+          </includes>
+        </artifactSet>
+        <relocations>
+          <relocation>
+            <pattern>org.apache.kafka</pattern>
+            <shadedPattern>otj.logging.kafka</shadedPattern>
+          </relocation>
+        </relocations>
+      </configuration>
+    </plugin>
+  </plugins>
+  </build>
+
   <dependencies>
     <dependency>
       <groupId>com.opentable.components</groupId>
@@ -59,6 +91,18 @@
     <dependency>
       <groupId>org.apache.kafka</groupId>
       <artifactId>kafka-clients</artifactId>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>org.xerial.snappy</groupId>
+      <artifactId>snappy-java</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>net.jpountz.lz4</groupId>
+      <artifactId>lz4</artifactId>
+      <version>1.2.0</version>
+      <scope>runtime</scope>
     </dependency>
 
     <dependency>
