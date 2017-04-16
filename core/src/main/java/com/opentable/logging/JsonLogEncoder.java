@@ -102,7 +102,8 @@ public class JsonLogEncoder extends EncoderBase<ILoggingEvent> {
 
     protected void writeJsonNode(final ObjectNode logLine) throws IOException {
         synchronized (outputStream) {
-            mapper.writeValue(outputStream, logLine);
+            String line = mapper.writeValueAsString(logLine);
+            outputStream.write(line.getBytes());
             outputStream.write('\n');
         }
     }
