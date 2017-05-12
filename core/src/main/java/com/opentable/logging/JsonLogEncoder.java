@@ -19,6 +19,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonGenerator.Feature;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -59,22 +60,28 @@ public class JsonLogEncoder extends EncoderBase<ILoggingEvent> {
         this.customEventClass = Class.forName(customEventClass);
     }
 
-    @Override
-    public void doEncode(ILoggingEvent event) throws IOException {
-        final ObjectNode logLine = encodeNoAppend(event);
-        writeJsonNode(logLine);
-    }
-
     /**
      * Prepare a log event but don't append it, return it as an ObjectNode instead.
      */
-    public ObjectNode encodeNoAppend(ILoggingEvent event) throws IOException {
+    public ObjectNode convertToObjectNode(ILoggingEvent event){
+
         final ObjectNode logLine;
 
         if (customEventClass != null && customEventClass.isAssignableFrom(event.getClass())) {
             final TokenBuffer buf = new TokenBuffer(mapper, false);
-            mapper.writerFor(customEventClass).writeValue(buf, event);
-            logLine = mapper.readTree(buf.asParser());
+            try {
+                mapper.writerFor(customEventClass).writeValue(buf, event);
+            } catch (IOException e1) {
+                addError("There was an error creating writing the log message into a token buffer for JSON conversion.", e1);
+                return null;
+            }
+            try {
+                logLine = mapper.readTree(buf.asParser());
+            } catch (IOException e1) {
+                addError("There was an error reading the JSON tree for log message JSON conversion.", e1);
+                return null;
+            }
+
         } else {
             logLine = mapper.valueToTree(new ApplicationLogEvent(event));
         }
@@ -100,15 +107,33 @@ public class JsonLogEncoder extends EncoderBase<ILoggingEvent> {
         return logLine;
     }
 
-    protected void writeJsonNode(final ObjectNode logLine) throws IOException {
-        synchronized (outputStream) {
-            mapper.writeValue(outputStream, logLine);
-            outputStream.write('\n');
-        }
+    protected byte[] getLogMessage(final ObjectNode logLine){
+            String messageToLog;
+            try {
+                messageToLog = mapper.writeValueAsString(logLine);
+            } catch (JsonProcessingException e) {
+                addError("Could not encode the log message into JSON.", e);
+                return null;
+            }
+            StringBuilder sb = new StringBuilder(messageToLog.length() + 1);
+            sb.append(messageToLog);
+            sb.append('\n');
+            return sb.toString().getBytes();
     }
 
     @Override
-    public void close() throws IOException {
-        // Nothing to do here
+    public byte[] headerBytes() {
+        return null;
+    }
+
+    @Override
+    public byte[] encode(ILoggingEvent event) {
+        ObjectNode objectNode = convertToObjectNode(event);
+        return getLogMessage(objectNode);
+    }
+
+    @Override
+    public byte[] footerBytes() {
+        return null;
     }
 }

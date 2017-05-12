@@ -13,31 +13,30 @@
  */
 package com.opentable.logging;
 
-import java.io.ByteArrayOutputStream;
-import java.io.FilterOutputStream;
-import java.io.OutputStream;
+import static org.junit.Assert.assertEquals;
 
-import org.junit.Assert;
 import org.junit.Test;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.spi.LoggingEvent;
 
 public class JsonLogEncoderTest
 {
+
+    private static final ObjectMapper mapper = new ObjectMapper();
+
     @Test
     public void testNoCloseOutputStream() throws Exception {
+        CommonLogHolder.setServiceType("logging-test");
         JsonLogEncoder jle = new JsonLogEncoder();
-        OutputStream os = new FilterOutputStream(new ByteArrayOutputStream()) {
-            @Override
-            public void close() {
-                Assert.fail("Close called");
-            }
-        };
-        jle.init(os);
-
         LoggingEvent le = new LoggingEvent();
         le.setLevel(Level.ERROR);
-        jle.doEncode(le);
+        byte[] result = jle.encode(le);
+        ObjectNode node = mapper.readValue(result, ObjectNode.class);
+        assertEquals("logging-test", node.get("servicetype").asText());
     }
+
 }

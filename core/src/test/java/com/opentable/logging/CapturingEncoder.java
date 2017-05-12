@@ -13,9 +13,6 @@
  */
 package com.opentable.logging;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.nio.charset.Charset;
 
 import org.junit.rules.ExternalResource;
@@ -28,7 +25,6 @@ import ch.qos.logback.core.encoder.Encoder;
  */
 public class CapturingEncoder<E> extends ExternalResource {
     private final Encoder<E> encoder;
-    private final ByteArrayOutputStream os = new ByteArrayOutputStream();
 
     public CapturingEncoder(Encoder<E> encoder) {
         this.encoder = encoder;
@@ -40,19 +36,12 @@ public class CapturingEncoder<E> extends ExternalResource {
 
     @Override
     protected void before() throws Throwable {
-        encoder.init(os);
         encoder.start();
     }
 
     public String capture(E record) {
-        try {
-            encoder.doEncode(record);
-            return new String(os.toByteArray(), Charset.forName("UTF-8"));
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        } finally {
-            os.reset();
-        }
+        byte[] output = encoder.encode(record);
+        return new String(output, Charset.forName("UTF-8"));
     }
 
     @Override

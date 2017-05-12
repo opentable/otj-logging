@@ -73,6 +73,7 @@ public class PartitionSpreadTest {
             assertTrue("Partition " + e.getElement() + " had " + e.getCount() + " elements, expected " + expected + ", threshold is " + threshold,
                     offBy < threshold);
         }
+        p.close();
     }
 
     // Cluster is final and can't be mocked.  So crack it open the hard way.
