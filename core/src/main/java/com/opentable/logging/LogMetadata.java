@@ -28,7 +28,7 @@ import com.opentable.logging.otl.OtlType;
  * Attach arbitrary JSON key-value metadata to logging statements.
  * Not really a marker in the pure sense of the term, but works well enough...
  */
-public class LogMetadata implements Marker {
+public final class LogMetadata implements Marker {
     private static final long serialVersionUID = 1L;
     private final Map<String, Object> metadata;
     private final List<Object> inlines = new ArrayList<>();

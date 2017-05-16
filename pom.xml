@@ -46,8 +46,18 @@
     <dependencies>
       <dependency>
         <groupId>com.opentable.components</groupId>
-        <artifactId>otj-kafka</artifactId>
-        <version>1.0.0</version>
+        <artifactId>otj-logging</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.opentable.components</groupId>
+        <artifactId>otj-logging-jetty</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.opentable.components</groupId>
+        <artifactId>otj-logging-kafka</artifactId>
+        <version>${project.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>

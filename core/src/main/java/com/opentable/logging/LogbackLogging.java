@@ -17,8 +17,9 @@ import org.slf4j.Logger;
 
 import ch.qos.logback.classic.spi.ILoggingEvent;
 
-public class LogbackLogging
+public final class LogbackLogging
 {
+    private LogbackLogging() { }
     /**
      * Log an arbitrary {@link ILoggingEvent} to a Logback logger.
      */

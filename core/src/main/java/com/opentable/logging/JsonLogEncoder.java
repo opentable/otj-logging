@@ -40,6 +40,7 @@ import ch.qos.logback.core.encoder.EncoderBase;
  * </pre>
  */
 public class JsonLogEncoder extends EncoderBase<ILoggingEvent> {
+    private static final byte[] NADA = new byte[0];
     private static final AtomicLong LOG_SEQUENCE_NUMBER = new AtomicLong(0);
 
     private final ObjectMapper mapper;
@@ -107,7 +108,7 @@ public class JsonLogEncoder extends EncoderBase<ILoggingEvent> {
             mapper.writeValue(buf, event);
         } catch (IOException e) {
             addError("while serializing log event", e);
-            return new byte[0];
+            return NADA;
         }
         buf.append('\n');
         return buf.toByteArray();
@@ -115,17 +116,16 @@ public class JsonLogEncoder extends EncoderBase<ILoggingEvent> {
 
     @Override
     public byte[] headerBytes() {
-        return null;
+        return NADA;
     }
 
     @Override
     public byte[] encode(ILoggingEvent event) {
-        ObjectNode objectNode = convertToObjectNode(event);
-        return getLogMessage(objectNode);
+        return getLogMessage(convertToObjectNode(event));
     }
 
     @Override
     public byte[] footerBytes() {
-        return null;
+        return NADA;
     }
 }

@@ -23,13 +23,13 @@ import org.eclipse.jetty.http.HttpHeader;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.Response;
 
-import ch.qos.logback.classic.Level;
-import ch.qos.logback.classic.spi.LoggingEvent;
-
 import com.opentable.logging.CommonLogHolder;
 import com.opentable.logging.HttpLogFields;
 
-public class RequestLogEvent extends LoggingEvent implements HttpLogFields
+import ch.qos.logback.classic.Level;
+import ch.qos.logback.classic.spi.LoggingEvent;
+
+public final class RequestLogEvent extends LoggingEvent implements HttpLogFields
 {
     private static final DateTimeFormatter FORMAT = DateTimeFormatter.ISO_INSTANT;
 
@@ -71,7 +71,7 @@ public class RequestLogEvent extends LoggingEvent implements HttpLogFields
         setLoggerName("access");
 
         timeStamp = request.getTimeStamp();
-        timestampStr = FORMAT.format(Instant.ofEpochMilli(getTimeStamp()));
+        timestampStr = FORMAT.format(Instant.ofEpochMilli(timeStamp));
         method = request.getMethod();
         queryString = request.getQueryString();
         requestURI = request.getRequestURI();
