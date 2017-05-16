@@ -72,12 +72,7 @@ public class KafkaAppender extends UnsynchronizedAppenderBase<ILoggingEvent>
     @Override
     protected void append(ILoggingEvent eventObject)
     {
-        byte[] output;
-        synchronized (encoder) {
-            output = encoder.encode(eventObject);
-        }
-
-        producer.send(new ProducerRecord<>(topic, keyGenerator.next(), output));
+        producer.send(new ProducerRecord<>(topic, keyGenerator.next(), encoder.encode(eventObject)));
     }
 
     public Encoder<ILoggingEvent> getEncoder()

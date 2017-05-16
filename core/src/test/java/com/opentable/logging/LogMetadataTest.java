@@ -52,14 +52,12 @@ public class LogMetadataTest {
         context.getStatusManager().add(listener);
 
         final JsonLogEncoder encoder = new JsonLogEncoder() {
-
             @Override
             public ObjectNode convertToObjectNode(ILoggingEvent event) {
-                ObjectNode node =  super.convertToObjectNode(event);
+                ObjectNode node = super.convertToObjectNode(event);
                 serializedEvents.add(node);
                 return node;
             }
-
         };
         encoder.setContext(context);
 
