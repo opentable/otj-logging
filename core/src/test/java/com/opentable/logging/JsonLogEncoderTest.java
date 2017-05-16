@@ -25,11 +25,10 @@ import ch.qos.logback.classic.spi.LoggingEvent;
 
 public class JsonLogEncoderTest
 {
-
     private static final ObjectMapper mapper = new ObjectMapper();
 
     @Test
-    public void testNoCloseOutputStream() throws Exception {
+    public void simpleEncode() throws Exception {
         CommonLogHolder.setServiceType("logging-test");
         JsonLogEncoder jle = new JsonLogEncoder();
         LoggingEvent le = new LoggingEvent();
@@ -38,5 +37,4 @@ public class JsonLogEncoderTest
         ObjectNode node = mapper.readValue(result, ObjectNode.class);
         assertEquals("logging-test", node.get("servicetype").asText());
     }
-
 }
