@@ -17,16 +17,16 @@ import java.io.IOException;
 import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicLong;
 
+import org.slf4j.Marker;
+
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonGenerator.Feature;
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.util.ByteArrayBuilder;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.util.TokenBuffer;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-
-import org.slf4j.Marker;
 
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.encoder.EncoderBase;
@@ -63,7 +63,7 @@ public class JsonLogEncoder extends EncoderBase<ILoggingEvent> {
     /**
      * Prepare a log event but don't append it, return it as an ObjectNode instead.
      */
-    public ObjectNode convertToObjectNode(ILoggingEvent event){
+    public ObjectNode convertToObjectNode(ILoggingEvent event) {
 
         final ObjectNode logLine;
 
@@ -71,17 +71,11 @@ public class JsonLogEncoder extends EncoderBase<ILoggingEvent> {
             final TokenBuffer buf = new TokenBuffer(mapper, false);
             try {
                 mapper.writerFor(customEventClass).writeValue(buf, event);
-            } catch (IOException e1) {
-                addError("There was an error creating writing the log message into a token buffer for JSON conversion.", e1);
-                return null;
-            }
-            try {
                 logLine = mapper.readTree(buf.asParser());
-            } catch (IOException e1) {
-                addError("There was an error reading the JSON tree for log message JSON conversion.", e1);
+            } catch (IOException e) {
+                addError("Failed to convert log event to json", e);
                 return null;
             }
-
         } else {
             logLine = mapper.valueToTree(new ApplicationLogEvent(event));
         }
@@ -107,18 +101,16 @@ public class JsonLogEncoder extends EncoderBase<ILoggingEvent> {
         return logLine;
     }
 
-    protected byte[] getLogMessage(final ObjectNode logLine){
-            String messageToLog;
-            try {
-                messageToLog = mapper.writeValueAsString(logLine);
-            } catch (JsonProcessingException e) {
-                addError("Could not encode the log message into JSON.", e);
-                return null;
-            }
-            StringBuilder sb = new StringBuilder(messageToLog.length() + 1);
-            sb.append(messageToLog);
-            sb.append('\n');
-            return sb.toString().getBytes();
+    protected byte[] getLogMessage(final ObjectNode event) {
+        ByteArrayBuilder buf = new ByteArrayBuilder();
+        try {
+            mapper.writeValue(buf, event);
+        } catch (IOException e) {
+            addError("while serializing log event", e);
+            return new byte[0];
+        }
+        buf.append('\n');
+        return buf.toByteArray();
     }
 
     @Override
