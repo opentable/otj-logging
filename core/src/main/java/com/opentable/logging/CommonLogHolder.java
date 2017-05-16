@@ -49,6 +49,8 @@ public final class CommonLogHolder
         LOG.info("Running in environment {} ({} {} {})", OT_ENV, OT_ENV_TYPE, OT_ENV_LOCATION, OT_ENV_FLAVOR);
     }
 
+    private CommonLogHolder() { }
+
     public static void setServiceType(String serviceType) {
         CommonLogHolder.serviceType = serviceType;
     }

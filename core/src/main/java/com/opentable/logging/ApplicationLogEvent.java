@@ -94,12 +94,12 @@ class ApplicationLogEvent implements CommonLogFields
     {
         static final ThrowableConverterHack INSTANCE = new ThrowableConverterHack();
 
-        {
+        ThrowableConverterHack() {
             start();
         }
 
         @Override
-        public String throwableProxyToString(IThrowableProxy tp)
+        public String throwableProxyToString(IThrowableProxy tp) // NOPMD
         {
             return super.throwableProxyToString(tp);
         }

@@ -13,9 +13,6 @@
  */
 package com.opentable.logging;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.util.Properties;
 
 import org.apache.kafka.clients.producer.KafkaProducer;
@@ -75,17 +72,7 @@ public class KafkaAppender extends UnsynchronizedAppenderBase<ILoggingEvent>
     @Override
     protected void append(ILoggingEvent eventObject)
     {
-        final ByteArrayOutputStream out = new ByteArrayOutputStream(bufSize);
-        try {
-            synchronized (encoder) {
-                encoder.init(out);
-                encoder.doEncode(eventObject);
-            }
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
-
-        producer.send(new ProducerRecord<>(topic, keyGenerator.next(), out.toByteArray()));
+        producer.send(new ProducerRecord<>(topic, keyGenerator.next(), encoder.encode(eventObject)));
     }
 
     public Encoder<ILoggingEvent> getEncoder()

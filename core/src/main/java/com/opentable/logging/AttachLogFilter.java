@@ -27,7 +27,7 @@ import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.Appender;
 import ch.qos.logback.core.filter.Filter;
 
-public class AttachLogFilter {
+public final class AttachLogFilter {
     private final Filter<ILoggingEvent> filter;
     private final String configKey;
 

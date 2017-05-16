@@ -15,8 +15,9 @@ package com.opentable.logging;
 
 import java.util.UUID;
 
-class OptionalServerInfo
+final class OptionalServerInfo
 {
+    private OptionalServerInfo() { }
     @FunctionalInterface
     interface WarningReporter
     {

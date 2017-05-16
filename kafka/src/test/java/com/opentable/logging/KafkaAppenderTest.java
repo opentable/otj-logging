@@ -20,34 +20,29 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.Iterator;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.module.mrbean.MrBeanModule;
-import com.google.common.base.Charsets;
-import com.google.common.io.Resources;
-
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.RuleChain;
+
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.module.mrbean.MrBeanModule;
+import com.google.common.base.Charsets;
+import com.google.common.io.Resources;
+import com.opentable.kafka.embedded.EmbeddedKafkaBuilder;
+import com.opentable.kafka.embedded.EmbeddedKafkaRule;
 
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.joran.JoranConfigurator;
 import ch.qos.logback.core.status.OnConsoleStatusListener;
 
-import com.opentable.kafka.KafkaBrokerRule;
-import com.opentable.kafka.ZookeeperRule;
-
 public class KafkaAppenderTest
 {
-    public final ZookeeperRule zk = new ZookeeperRule();
-    public final KafkaBrokerRule kafka = new KafkaBrokerRule(zk);
-
     @Rule
-    public final RuleChain rules = RuleChain.outerRule(zk).around(kafka);
+    public final EmbeddedKafkaRule kafka = new EmbeddedKafkaBuilder().withTopics("logs").rule();
 
     private final LoggerContext context = new LoggerContext();
     private final ObjectMapper mapper = new ObjectMapper().registerModule(new MrBeanModule());
@@ -58,7 +53,7 @@ public class KafkaAppenderTest
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
         final String xml = Resources.toString(KafkaAppenderTest.class.getResource("/logback-kafka.xml"), Charsets.UTF_8)
-                .replaceAll("\\$KAFKA\\$", kafka.getKafkaBrokerConnect());
+                .replaceAll("\\$KAFKA\\$", kafka.getBroker().getKafkaBrokerConnect());
 
         final OnConsoleStatusListener listener = new OnConsoleStatusListener();
         listener.start();
@@ -79,7 +74,6 @@ public class KafkaAppenderTest
     @Test(timeout=30000)
     public void testLog() throws Exception
     {
-        kafka.createTopic("logs");
         context.getLogger("test").info("Herro!");
         context.getLogger("womp").warn("flop", new Throwable());
 
@@ -88,7 +82,7 @@ public class KafkaAppenderTest
 
         final CommonLogFields log1, log2;
 
-        try (KafkaConsumer<String, String> consumer = kafka.createConsumer()) {
+        try (KafkaConsumer<String, String> consumer = kafka.getBroker().createConsumer("test")) {
             consumer.subscribe(Collections.singletonList("logs"));
             final Iterator<ConsumerRecord<String, String>> iterator = consumer.poll(10000).iterator();
 

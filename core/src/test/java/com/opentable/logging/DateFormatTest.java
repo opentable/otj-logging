@@ -16,29 +16,27 @@ package com.opentable.logging;
 import static org.hamcrest.Matchers.containsString;
 import static org.junit.Assert.assertThat;
 
+import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
-import org.junit.Rule;
 import org.junit.Test;
 
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.LoggerContext;
-import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.classic.spi.LoggingEvent;
 
 public class DateFormatTest {
 
-    @Rule
-    public CapturingEncoder<ILoggingEvent> encoder = new CapturingEncoder<>(new JsonLogEncoder());
+    private JsonLogEncoder e = new JsonLogEncoder();
 
     LoggingEvent event = new LoggingEvent("test", new LoggerContext().getLogger("test"), Level.INFO, "when will then be now?", null, new Object[0]);
 
     @Test
     public void testInstantFormat() throws Exception {
         event.setMarker(LogMetadata.of("soon", Instant.EPOCH));
-        String captured = encoder.capture(event);
+        String captured = encode(event);
 
         assertThat(captured, containsString(DateTimeFormatter.ISO_INSTANT.format(Instant.EPOCH)));
     }
@@ -46,10 +44,13 @@ public class DateFormatTest {
     @Test
     public void testDateFormat() throws Exception {
         event.setMarker(LogMetadata.of("soon", new Date(0)));
-        String captured = encoder.capture(event);
+        String captured = encode(event);
 
         assertThat(captured, containsString(DateTimeFormatter.ISO_INSTANT.format(Instant.EPOCH)
                 .replace("Z", ".000+0000")));  // not quite the same but close enough
     }
 
+    private String encode(LoggingEvent event) {
+        return new String(e.encode(event), StandardCharsets.UTF_8);
+    }
 }

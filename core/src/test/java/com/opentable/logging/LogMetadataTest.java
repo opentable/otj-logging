@@ -15,7 +15,6 @@ package com.opentable.logging;
 
 import static org.junit.Assert.assertEquals;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,8 +53,10 @@ public class LogMetadataTest {
 
         final JsonLogEncoder encoder = new JsonLogEncoder() {
             @Override
-            protected void writeJsonNode(ObjectNode logLine) throws IOException {
-                serializedEvents.add(mapper.valueToTree(logLine));
+            public ObjectNode convertToObjectNode(ILoggingEvent event) {
+                ObjectNode node = super.convertToObjectNode(event);
+                serializedEvents.add(node);
+                return node;
             }
         };
         encoder.setContext(context);
@@ -63,11 +64,7 @@ public class LogMetadataTest {
         final UnsynchronizedAppenderBase<ILoggingEvent> captureAppender = new UnsynchronizedAppenderBase<ILoggingEvent>() {
             @Override
             protected void append(ILoggingEvent eventObject) {
-                try {
-                    encoder.doEncode(eventObject);
-                } catch (IOException e) {
-                    throw new AssertionError(e);
-                }
+                encoder.encode(eventObject);
             }
         };
         captureAppender.setContext(context);
@@ -100,6 +97,7 @@ public class LogMetadataTest {
     public void testObjectMetadata() throws Exception
     {
         final Object embeddedObj = new Object() {
+            @SuppressWarnings("unused")
             public String getC() { return "d"; }
         };
         context.getLogger("test").info(LogMetadata.of("a", "b").andInline(embeddedObj), "");
