@@ -58,6 +58,11 @@ public interface CommonLogFields
         return CommonLogHolder.HOST_NAME;
     }
 
+    @JsonProperty("instance-no")
+    default Integer getInstanceNo() {
+        return CommonLogHolder.INSTANCE_NO;
+    }
+
     @JsonProperty("ot-env")
     default String getOtEnv() {
         return CommonLogHolder.OT_ENV;
