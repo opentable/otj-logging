@@ -56,24 +56,24 @@ public class PartitionSpreadTest {
     public void testPartitionSpread() throws Exception {
         Multiset<Integer> results = TreeMultiset.create();
         Cluster c = Cluster.empty();
-        Partitioner p = new DefaultPartitioner();
-        PartitionKeyGenerator pkg = new PartitionKeyGenerator();
+        try (Partitioner p = new DefaultPartitioner()) {
+            PartitionKeyGenerator pkg = new PartitionKeyGenerator();
 
-        mockPartitions(c);
+            mockPartitions(c);
 
-        for (int i = 0; i < messages; i++) {
-            results.add(p.partition("test", null, pkg.next(), null, null, c));
+            for (int i = 0; i < messages; i++) {
+                results.add(p.partition("test", null, pkg.next(), null, null, c));
+            }
+
+            int expected = messages / partitions;
+            double threshold = expected * 0.05;
+
+            for (Multiset.Entry<Integer> e : results.entrySet()) {
+                int offBy = Math.abs(e.getCount() - expected);
+                assertTrue("Partition " + e.getElement() + " had " + e.getCount() + " elements, expected " + expected + ", threshold is " + threshold,
+                        offBy < threshold);
+            }
         }
-
-        int expected = messages / partitions;
-        double threshold = expected * 0.05;
-
-        for (Multiset.Entry<Integer> e : results.entrySet()) {
-            int offBy = Math.abs(e.getCount() - expected);
-            assertTrue("Partition " + e.getElement() + " had " + e.getCount() + " elements, expected " + expected + ", threshold is " + threshold,
-                    offBy < threshold);
-        }
-        p.close();
     }
 
     // Cluster is final and can't be mocked.  So crack it open the hard way.
