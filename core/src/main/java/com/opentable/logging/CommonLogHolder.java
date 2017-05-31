@@ -34,13 +34,18 @@ public final class CommonLogHolder
     private static String serviceType = UNSET;
 
     static {
-        try {
-            HOST_NAME = InetAddress.getLocalHost().getHostName();
-            LOG.info("Detected hostname as '{}'", HOST_NAME);
-        } catch (UnknownHostException e) {
-            LOG.error("Failed to detect hostname", e);
-            throw new ExceptionInInitializerError(e);
+        final String hostNameEnv = System.getenv("TASK_HOST");
+        if (hostNameEnv != null) {
+            HOST_NAME = hostNameEnv;
+        } else {
+            try {
+                HOST_NAME = InetAddress.getLocalHost().getHostName();
+            } catch (UnknownHostException e) {
+                LOG.error("Failed to detect hostname", e);
+                throw new ExceptionInInitializerError(e);
+            }
         }
+        LOG.info("Detected hostname as '{}'", HOST_NAME);
 
         OT_ENV = System.getenv("OT_ENV");
         OT_ENV_TYPE = System.getenv("OT_ENV_TYPE");
