@@ -59,7 +59,7 @@ public interface CommonLogFields
     }
 
     @JsonProperty("instance-no")
-    default String getInstanceNo() {
+    default Integer getInstanceNo() {
         return CommonLogHolder.INSTANCE_NO;
     }
 

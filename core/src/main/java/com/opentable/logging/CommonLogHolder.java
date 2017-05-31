@@ -29,7 +29,8 @@ public final class CommonLogHolder
     private static final AtomicBoolean WARNED_UNSET = new AtomicBoolean();
 
     static final DateTimeFormatter FORMAT = DateTimeFormatter.ISO_INSTANT;
-    static final String HOST_NAME, INSTANCE_NO;
+    static final String HOST_NAME;
+    static final Integer INSTANCE_NO;
     static final String OT_ENV, OT_ENV_TYPE, OT_ENV_LOCATION, OT_ENV_FLAVOR;
     private static String serviceType = UNSET;
 
@@ -48,7 +49,7 @@ public final class CommonLogHolder
         LOG.info("Detected hostname as '{}'", HOST_NAME);
 
         // If not present, will be null, and not make it through buzzsaw.
-        INSTANCE_NO = System.getenv("INSTANCE_NO");
+        INSTANCE_NO = getInstanceNumber();
         LOG.info("Determined instance-no '{}'", INSTANCE_NO);
 
         OT_ENV = System.getenv("OT_ENV");
@@ -69,5 +70,13 @@ public final class CommonLogHolder
             LoggerFactory.getLogger(ApplicationLogEvent.class).error("The application name was not set!  Sending 'UNSET' instead :(");
         }
         return serviceType;
+    }
+
+    private static Integer getInstanceNumber() {
+        try {
+            return Integer.parseInt(System.getenv("INSTANCE_NO"));
+        } catch (final NumberFormatException e) {
+            return null;
+        }
     }
 }
