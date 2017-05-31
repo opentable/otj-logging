@@ -29,7 +29,7 @@ public final class CommonLogHolder
     private static final AtomicBoolean WARNED_UNSET = new AtomicBoolean();
 
     static final DateTimeFormatter FORMAT = DateTimeFormatter.ISO_INSTANT;
-    static final String HOST_NAME;
+    static final String HOST_NAME, INSTANCE_NO;
     static final String OT_ENV, OT_ENV_TYPE, OT_ENV_LOCATION, OT_ENV_FLAVOR;
     private static String serviceType = UNSET;
 
@@ -46,6 +46,10 @@ public final class CommonLogHolder
             }
         }
         LOG.info("Detected hostname as '{}'", HOST_NAME);
+
+        // If not present, will be null, and not make it through buzzsaw.
+        INSTANCE_NO = System.getenv("INSTANCE_NO");
+        LOG.info("Determined instance-no '{}'", INSTANCE_NO);
 
         OT_ENV = System.getenv("OT_ENV");
         OT_ENV_TYPE = System.getenv("OT_ENV_TYPE");
