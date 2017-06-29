@@ -90,6 +90,11 @@ class ApplicationLogEvent implements CommonLogFields
         return CommonLogHolder.getServiceType();
     }
 
+    @Override
+    public String getLoglov3Otl() {
+        return "msg-v1";
+    }
+
     static class ThrowableConverterHack extends ThrowableProxyConverter
     {
         static final ThrowableConverterHack INSTANCE = new ThrowableConverterHack();

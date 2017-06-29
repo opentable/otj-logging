@@ -34,24 +34,19 @@ public interface CommonLogFields
     @JsonProperty("@uuid")
     UUID getMessageId();
 
-    @JsonProperty("servicetype")
+    @JsonProperty("component-id")
+    default String getComponentId() {
+        return getServiceType();
+    }
+
+    @JsonProperty("service-type")
     String getServiceType();
 
-    @JsonProperty("logname")
+    @JsonProperty("log-name")
     String getLogTypeName();
 
-    @JsonProperty("logclass")
+    @JsonProperty("logger-name")
     String getLogClass();
-
-    @JsonProperty("formatversion")
-    default String getFormatVersion() {
-        return "v1";
-    }
-
-    @JsonProperty("type")
-    default String getType() {
-        return getServiceType() + "-" + getLogTypeName() + "-" + getFormatVersion();
-    }
 
     @JsonProperty("host")
     default String getHost() {
@@ -86,18 +81,22 @@ public interface CommonLogFields
     @JsonProperty("severity")
     String getSeverity();
 
-    @JsonProperty("logmessage")
+    @JsonProperty("message")
     String getMessage();
 
-    @JsonProperty("threadname")
+    @JsonProperty("thread-name")
     String getThreadName();
 
-    @JsonProperty("throwable")
+    @JsonProperty("exception")
     String getThrowable();
 
     /** Written by the encoder, value is ignored for serialization. */
-    @JsonProperty("sequencenumber")
+    @JsonProperty("sequence-number")
     default long getSequenceNumber() {
         return Long.MIN_VALUE;
     }
+
+    /** Declare the OTL type for selectorless processing. */
+    @JsonProperty("@loglov3-otl")
+    String getLoglov3Otl();
 }

@@ -15,10 +15,10 @@ package com.opentable.logging;
 
 import static org.junit.Assert.assertEquals;
 
-import org.junit.Test;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+
+import org.junit.Test;
 
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.spi.LoggingEvent;
@@ -35,6 +35,6 @@ public class JsonLogEncoderTest
         le.setLevel(Level.ERROR);
         byte[] result = jle.encode(le);
         ObjectNode node = mapper.readValue(result, ObjectNode.class);
-        assertEquals("logging-test", node.get("servicetype").asText());
+        assertEquals("logging-test", node.get("service-type").asText());
     }
 }

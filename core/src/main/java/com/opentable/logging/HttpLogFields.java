@@ -13,6 +13,8 @@
  */
 package com.opentable.logging;
 
+import java.net.URI;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -26,16 +28,36 @@ public interface HttpLogFields extends CommonLogFields
     @JsonProperty("url")
     String getUrl();
 
+    @JsonProperty("url-hostname")
+    default String getUrlHostname() {
+        return URI.create(getUrl()).getHost();
+    }
+
+    @JsonProperty("url-port")
+    default int getUrlPort() {
+        return URI.create(getUrl()).getPort();
+    }
+
+    @JsonProperty("url-pathname")
+    default String getUrlPath() {
+        return URI.create(getUrl()).getPath();
+    }
+
+    @JsonProperty("url-querystring")
+    default String getUrlQuery() {
+        return URI.create(getUrl()).getQuery();
+    }
+
     @JsonProperty("status")
     int getStatus();
 
     @JsonProperty("duration")
     long getDurationMicros();
 
-    @JsonProperty("bodysize")
-    Long getBodySize();
+    @JsonProperty("body-size")
+    long getBodySize();
 
-    @JsonProperty("responsesize")
+    @JsonProperty("response-size")
     Long getResponseSize();
 
     @JsonProperty("user-agent")
@@ -44,40 +66,42 @@ public interface HttpLogFields extends CommonLogFields
     @JsonProperty("remote-address")
     String getRemoteAddress();
 
-    @JsonProperty("x-forwarded-for")
+    @JsonProperty("header-x-forwarded-for")
     String getForwardedFor();
 
-    @JsonProperty("x-forwarded-port")
+    @JsonProperty("header-x-forwarded-port")
     String getForwardedPort();
 
-    @JsonProperty("x-forwarded-proto")
+    @JsonProperty("header-x-forwarded-proto")
     String getForwardedProto();
 
     /**
      * Usually provided via MDC, but the RequestLog handler is triggered
      * after the RequestIdFilter teardown so it is lost from the MDC.
      */
-    @JsonProperty("ot-requestid")
+    @JsonProperty("request-id")
     String getRequestId();
 
-    @JsonProperty("ot-anonymousid")
+    @JsonProperty("anonymous-id")
     String getAnonymousId();
 
-    @JsonProperty("ot-userid")
+    @JsonProperty("user-id")
     String getUserId();
 
-    @JsonProperty("ot-sessionid")
+    @JsonProperty("session-id")
     String getSessionId();
 
-    @JsonProperty("ot-referringhost")
+    @JsonProperty("header-ot-referring-host")
     String getReferringHost();
 
-    @JsonProperty("ot-referringservice")
+    @JsonProperty("header-ot-referring-service")
     String getReferringService();
 
-    @JsonProperty("ot-domain")
+    @JsonProperty("header-ot-domain")
     String getDomain();
 
-    @JsonProperty("accept-language")
+    @JsonProperty("header-accept-language")
     String getAcceptLanguage();
+
+    boolean isIncoming();
 }

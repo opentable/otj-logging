@@ -23,11 +23,11 @@ import org.eclipse.jetty.http.HttpHeader;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.Response;
 
-import com.opentable.logging.CommonLogHolder;
-import com.opentable.logging.HttpLogFields;
-
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.spi.LoggingEvent;
+
+import com.opentable.logging.CommonLogHolder;
+import com.opentable.logging.HttpLogFields;
 
 public final class RequestLogEvent extends LoggingEvent implements HttpLogFields
 {
@@ -186,10 +186,9 @@ public final class RequestLogEvent extends LoggingEvent implements HttpLogFields
     }
 
     @Override
-    public Long getBodySize()
+    public long getBodySize()
     {
-        final long size = requestContentLengthLong;
-        return size > 0 ? size : null;
+        return requestContentLengthLong;
     }
 
     @Override
@@ -277,5 +276,17 @@ public final class RequestLogEvent extends LoggingEvent implements HttpLogFields
     public String getThrowable()
     {
         return null;
+    }
+
+    @Override
+    public String getLoglov3Otl()
+    {
+        return "http-v1";
+    }
+
+    @Override
+    public boolean isIncoming()
+    {
+        return true;
     }
 }
