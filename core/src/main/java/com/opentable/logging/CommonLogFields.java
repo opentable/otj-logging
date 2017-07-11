@@ -26,7 +26,7 @@ import org.slf4j.MDC;
  */
 public interface CommonLogFields
 {
-    String REQUEST_ID_KEY = "ot-requestid";
+    String REQUEST_ID_KEY = "request-id";
 
     @JsonProperty("@timestamp")
     String getTimestamp();
