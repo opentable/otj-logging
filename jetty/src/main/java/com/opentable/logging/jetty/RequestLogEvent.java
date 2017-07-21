@@ -29,7 +29,7 @@ import ch.qos.logback.classic.spi.LoggingEvent;
 import com.opentable.logging.CommonLogHolder;
 import com.opentable.logging.HttpLogFields;
 
-public final class RequestLogEvent extends LoggingEvent implements HttpLogFields
+public class RequestLogEvent extends LoggingEvent implements HttpLogFields // NOPMD
 {
     private static final DateTimeFormatter FORMAT = DateTimeFormatter.ISO_INSTANT;
 
@@ -92,7 +92,7 @@ public final class RequestLogEvent extends LoggingEvent implements HttpLogFields
         forwardedFor = request.getHeader("X-Forwarded-For");
         forwardedPort = request.getHeader("X-Forwarded-Port");
         forwardedProto = request.getHeader("X-Forwarded-Proto");
-        setMessage(getMessage());
+        setMessage(getMessage()); // NOPMD
     }
 
     @Override
