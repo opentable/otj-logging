@@ -33,6 +33,7 @@ public final class CommonLogHolder
     static final Integer INSTANCE_NO;
     static final String OT_ENV, OT_ENV_TYPE, OT_ENV_LOCATION, OT_ENV_FLAVOR;
     private static String serviceType = UNSET;
+    private static String otlType = "msg-v1";
 
     static {
         final String hostNameEnv = System.getenv("TASK_HOST");
@@ -70,6 +71,22 @@ public final class CommonLogHolder
             LoggerFactory.getLogger(ApplicationLogEvent.class).error("The application name was not set!  Sending 'UNSET' instead :(");
         }
         return serviceType;
+    }
+
+    /**
+     * Get the loglov3 OTL name
+     * @return the name of the loglov3 OTL to use when logging messages
+     */
+    public static String getOtlType() {
+        return otlType;
+    }
+
+    /**
+     * Set the name of the loglov3 OTL to use when logging messages
+     * @param otlType the name of the loglov3 OTL to use when logging messages (e.g. "msg-v1")
+     */
+    public static void setOtlType(String otlType) {
+        CommonLogHolder.otlType = otlType;
     }
 
     private static Integer getInstanceNumber() {
