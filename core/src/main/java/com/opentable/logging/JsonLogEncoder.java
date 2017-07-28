@@ -17,8 +17,6 @@ import java.io.IOException;
 import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicLong;
 
-import org.slf4j.Marker;
-
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonGenerator.Feature;
 import com.fasterxml.jackson.core.util.ByteArrayBuilder;
@@ -28,8 +26,12 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.util.TokenBuffer;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
+import org.slf4j.Marker;
+
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.encoder.EncoderBase;
+
+import com.opentable.logging.otl.OtlMarker;
 
 /**
  * This class encodes log fields as a JSON object, and writes each as a separate line to the outputStream.
@@ -90,6 +92,10 @@ public class JsonLogEncoder extends EncoderBase<ILoggingEvent> {
                 metadataNode = mapper.valueToTree(o);
                 logLine.setAll(metadataNode);
             }
+        }
+        if (marker instanceof OtlMarker) {
+            ObjectNode metadataNode = mapper.valueToTree(((OtlMarker) marker).getOtl());
+            logLine.setAll(metadataNode);
         }
 
         for (Entry<String, String> e : event.getMDCPropertyMap().entrySet()) {
