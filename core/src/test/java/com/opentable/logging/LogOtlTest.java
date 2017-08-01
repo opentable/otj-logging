@@ -90,6 +90,8 @@ public class LogOtlTest {
         final Instant when = Instant.ofEpochSecond(1024);
         context.getLogger("test").info(ChatLogV2().deliveredAt(when).log(), "herro");
         assertEquals(1, serializedEvents.size());
-        assertEquals(when.toString(), serializedEvents.get(0).get("delivered-at").textValue());
+        final JsonNode event = serializedEvents.get(0);
+        assertEquals(when.toString(), event.get("delivered-at").textValue());
+        assertEquals("chat-log-v2", event.get("@loglov3-otl").textValue());
     }
 }
