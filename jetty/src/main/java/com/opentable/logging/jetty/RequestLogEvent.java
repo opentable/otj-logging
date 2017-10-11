@@ -13,280 +13,60 @@
  */
 package com.opentable.logging.jetty;
 
-import java.time.Clock;
-import java.time.Duration;
-import java.time.Instant;
-import java.time.format.DateTimeFormatter;
-import java.util.UUID;
-
-import org.eclipse.jetty.http.HttpHeader;
-import org.eclipse.jetty.server.Request;
-import org.eclipse.jetty.server.Response;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Marker;
 
 import ch.qos.logback.classic.Level;
+import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.spi.LoggingEvent;
 
-import com.opentable.logging.CommonLogHolder;
-import com.opentable.logging.HttpLogFields;
+import com.opentable.logging.otl.HttpV1;
 
-public class RequestLogEvent extends LoggingEvent implements HttpLogFields // NOPMD
-{
-    private static final DateTimeFormatter FORMAT = DateTimeFormatter.ISO_INSTANT;
+public class RequestLogEvent extends LoggingEvent {
+    private static final Object[] NO_ARGS = new Object[0];
 
-    private final UUID messageId = UUID.randomUUID();
+    private final HttpV1 payload;
 
-    private final long timeStamp;
-    private final String timestampStr;
-    private final String method;
-    private final String queryString;
-    private final String requestURI;
-    private final int status;
-    private final long durationMicros;
-    private final long requestContentLengthLong;
-    private final long responseContentCount;
-    private final String userAgent;
-    private final String requestId;
-    private final String anonymousId;
-    private final String userId;
-    private final String sessionId;
-    private final String referringHost;
-    private final String referringService;
-    private final String otDomain;
-    private final String acceptLanguage;
-    private final String remoteAddress;
-    private final String forwardedFor;
-    private final String forwardedPort;
-    private final String forwardedProto;
+    public RequestLogEvent(HttpV1 payload) {
+        super("access", logger(), Level.ALL, constructMessage(payload), null, NO_ARGS);
+        this.payload = payload;
+    }
 
-    public RequestLogEvent(Clock clock, Request request, Response response)
-    {
-        if (request == null) {
-            throw new IllegalArgumentException("null request");
+    private static Logger logger() {
+        return (Logger) LoggerFactory.getLogger(RequestLogEvent.class);
+    }
+
+    private static String constructMessage(HttpV1 payload) {
+        if (payload == null) {
+            throw new IllegalArgumentException("null payload");
         }
-        if (response == null) {
-            throw new IllegalArgumentException("null response");
-        }
-
-        setLevel(Level.ALL);
-        setLoggerName("access");
-
-        timeStamp = request.getTimeStamp();
-        timestampStr = FORMAT.format(Instant.ofEpochMilli(timeStamp));
-        method = request.getMethod();
-        queryString = request.getQueryString();
-        requestURI = request.getRequestURI();
-        status = response.getStatus();
-        durationMicros = Duration.between(Instant.ofEpochMilli(request.getTimeStamp()), clock.instant()).toMillis() * 1000;
-        requestContentLengthLong = request.getContentLengthLong();
-        responseContentCount = response.getContentCount();
-        userAgent = request.getHeader(HttpHeader.USER_AGENT.asString());
-        requestId = response.getHeader("OT-RequestId");
-        anonymousId = request.getHeader("OT-AnonymousId");
-        userId = request.getHeader("OT-UserId");
-        sessionId = request.getHeader("OT-SessionId");
-        referringHost = request.getHeader("OT-ReferringHost");
-        referringService = request.getHeader("OT-ReferringService");
-        otDomain = request.getHeader("OT-Domain");
-        acceptLanguage = request.getHeader(HttpHeader.ACCEPT_LANGUAGE.asString());
-        remoteAddress = request.getRemoteAddr();
-        forwardedFor = request.getHeader("X-Forwarded-For");
-        forwardedPort = request.getHeader("X-Forwarded-Port");
-        forwardedProto = request.getHeader("X-Forwarded-Proto");
-        setMessage(getMessage()); // NOPMD
+        final long responseSize = payload.getResponseSize();
+        final String responseSizeText = responseSize > 0 ? "" : responseSize + " bytes in ";
+        return String.format("%s %s : %s, %s%s", payload.getMethod(), payload.getUrl(), payload.getStatus(), responseSizeText, prettyTime(payload.getDuration()));
     }
 
     @Override
-    public UUID getMessageId() {
-        return messageId;
+    public StackTraceElement[] getCallerData() {
+        return new StackTraceElement[0];
     }
 
     @Override
-    public long getTimeStamp()
-    {
-        return timeStamp;
+    public Level getLevel() {
+        return Level.ALL;
     }
 
     @Override
-    public String getTimestamp()
-    {
-        return timestampStr;
+    public Marker getMarker() {
+        return payload.log();
     }
 
-    @Override
-    public String getMessage()
-    {
-        final Long responseSize = getResponseSize();
-        final String responseSizeText = responseSize == null ? "" : responseSize + " bytes in ";
-        return String.format("%s %s : %s, %s%s", getMethod(), getUrl(), getStatus(), responseSizeText, prettyTime(getDurationMicros()));
-    }
-
-    private static String prettyTime(long micros)
-    {
+    private static String prettyTime(long micros) {
         if (micros < 1000) {
-            return micros + " us";
+            return micros + " µs";
         } else if (micros < 1000 * 1000) {
             return String.format("%.1f ms", micros / 1000.0);
         } else {
             return String.format("%.1f s", micros / (1000.0 * 1000.0));
         }
-    }
-
-    @Override
-    public String getServiceType()
-    {
-        return CommonLogHolder.getServiceType();
-    }
-
-    @Override
-    public String getLogTypeName()
-    {
-        return "request";
-    }
-
-    @Override
-    public String getLogClass()
-    {
-        return null;
-    }
-
-    @Override
-    public String getSeverity()
-    {
-        return null;
-    }
-
-    @Override
-    public Level getLevel()
-    {
-        return Level.ALL;
-    }
-
-    @Override
-    public String getMethod()
-    {
-        return method;
-    }
-
-    @Override
-    public String getUrl()
-    {
-        return requestURI + (queryString == null ? "" : "?" + queryString);
-    }
-
-    @Override
-    public int getStatus()
-    {
-        return status;
-    }
-
-    @Override
-    public long getDurationMicros()
-    {
-        return durationMicros;
-    }
-
-    @Override
-    public long getBodySize()
-    {
-        return requestContentLengthLong;
-    }
-
-    @Override
-    public Long getResponseSize()
-    {
-        final long size = responseContentCount;
-        return size >= 0 ? size : null;
-    }
-
-    @Override
-    public String getUserAgent()
-    {
-        return userAgent;
-    }
-
-    @Override
-    public String getRemoteAddress() {
-        return remoteAddress;
-    }
-
-    @Override
-    public String getForwardedFor() {
-        return forwardedFor;
-    }
-
-    @Override
-    public String getForwardedPort() {
-        return forwardedPort;
-    }
-
-    @Override
-    public String getForwardedProto() {
-        return forwardedProto;
-    }
-
-    @Override
-    public String getRequestId()
-    {
-        return requestId;
-    }
-
-    @Override
-    public String getAnonymousId()
-    {
-        return anonymousId;
-    }
-
-    @Override
-    public String getUserId()
-    {
-        return userId;
-    }
-
-    @Override
-    public String getSessionId()
-    {
-        return sessionId;
-    }
-
-    @Override
-    public String getReferringHost()
-    {
-        return referringHost;
-    }
-
-    @Override
-    public String getReferringService()
-    {
-        return referringService;
-    }
-
-    @Override
-    public String getDomain()
-    {
-        return otDomain;
-    }
-
-    @Override
-    public String getAcceptLanguage()
-    {
-        return acceptLanguage;
-    }
-
-    @Override
-    public String getThrowable()
-    {
-        return null;
-    }
-
-    @Override
-    public String getLoglov3Otl()
-    {
-        return "http-v1";
-    }
-
-    @Override
-    public boolean isIncoming()
-    {
-        return true;
     }
 }
