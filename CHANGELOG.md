@@ -5,6 +5,7 @@ otj-logging
 -----
 
 * rework JsonRequestLog and factory to use OTL and be more extensible
+* remove custom event class; implement OtlType marker interface instead
 
 2.4.0
 -----
