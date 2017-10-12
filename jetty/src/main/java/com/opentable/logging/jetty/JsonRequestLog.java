@@ -14,12 +14,18 @@
 package com.opentable.logging.jetty;
 
 import java.time.Clock;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import com.google.common.base.Optional;
+import com.google.common.net.HttpHeaders;
+
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.RequestLog;
@@ -29,12 +35,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 
+import com.opentable.httpheaders.OTHeaders;
 import com.opentable.logging.CommonLogFields;
+import com.opentable.logging.CommonLogHolder;
 import com.opentable.logging.LogbackLogging;
+import com.opentable.logging.otl.HttpV1;
 
 /**
- * A simple non-rolling access log writer
- * In general, this will be configured via the {@code otj-httpserver} component.
+ * A Jetty RequestLog that emits to Logback, for tranport to centralized logging.
  */
 @Singleton
 public class JsonRequestLog extends AbstractLifeCycle implements RequestLog
@@ -45,23 +53,14 @@ public class JsonRequestLog extends AbstractLifeCycle implements RequestLog
     private final Set<String> equalityBlackList;
 
     private final Clock clock;
-    private final JsonRequestEventFactory eventFactory;
 
     @Inject
     public JsonRequestLog(final Clock clock,
-                          final JsonRequestLogConfig config,
-                          final Optional<JsonRequestEventFactory> eventFactory)
+                          final JsonRequestLogConfig config)
     {
         this.clock = clock;
         this.startsWithBlackList = config.getStartsWithBlacklist();
         this.equalityBlackList = config.getEqualityBlacklist();
-        this.eventFactory = eventFactory.or(RequestLogEvent::new);
-    }
-
-    // backward compatibility
-    public JsonRequestLog(final Clock clock,
-                          final JsonRequestLogConfig config) {
-        this(clock, config, Optional.absent());
     }
 
     @Override
@@ -81,18 +80,84 @@ public class JsonRequestLog extends AbstractLifeCycle implements RequestLog
             }
         }
 
-        final RequestLogEvent event = eventFactory.createFor(clock, request, response);
+        final HttpV1 payload = createEvent(request, response);
+        final RequestLogEvent event = new RequestLogEvent(payload);
 
         // TODO: this is a bit of a hack.  The RequestId filter happens inside of the
         // servlet dispatcher which is a Jetty handler.  Since the request log is generated
         // as a separate handler, the scope has already exited and thus the MDC lost its token.
         // But we want it there when we log, so let's put it back temporarily...
-        MDC.put(CommonLogFields.REQUEST_ID_KEY, event.getRequestId());
+        MDC.put(CommonLogFields.REQUEST_ID_KEY, Objects.toString(payload.getRequestId(), null));
         try {
             event.prepareForDeferredProcessing();
             LogbackLogging.log(LOG, event);
         } finally {
             MDC.remove(CommonLogFields.REQUEST_ID_KEY);
         }
+    }
+
+    protected HttpV1 createEvent(Request request, Response response) {
+        final String query = request.getQueryString();
+        return HttpV1.builder()
+            .logName("request")
+            .serviceType(CommonLogHolder.getServiceType())
+            .uuid(UUID.randomUUID())
+            .timestamp(Instant.ofEpochMilli(request.getTimeStamp()))
+
+            .method(request.getMethod())
+            .status(response.getStatus())
+            .incoming(true)
+            .url(fullUrl(request))
+            .urlQuerystring(query)
+
+            .duration(TimeUnit.NANOSECONDS.toMicros(
+                Duration.between(
+                    Instant.ofEpochMilli(request.getTimeStamp()),
+                    clock.instant())
+                .toNanos()))
+
+            .bodySize(request.getContentLengthLong())
+            .responseSize(response.getContentCount())
+
+            .acceptLanguage(request.getHeader(HttpHeaders.ACCEPT_LANGUAGE))
+            .anonymousId(request.getHeader(OTHeaders.ANONYMOUS_ID))
+            // mind your r's and rr's
+            .referer(request.getHeader(HttpHeaders.REFERER))
+            .referringHost(request.getHeader(OTHeaders.REFERRING_HOST))
+            .referringService(request.getHeader(OTHeaders.REFERRING_SERVICE))
+            .remoteAddress(request.getRemoteAddr())
+            .requestId(optUuid(response.getHeader(OTHeaders.REQUEST_ID)))
+            .sessionId(request.getHeader(OTHeaders.SESSION_ID))
+            .userAgent(request.getHeader(HttpHeaders.USER_AGENT))
+            .userId(request.getHeader(OTHeaders.USER_ID))
+            .headerOtOriginaluri(request.getHeader(OTHeaders.ORIGINAL_URI))
+
+            .headerOtDomain(request.getHeader(OTHeaders.DOMAIN))
+            .headerHost(request.getHeader(HttpHeaders.HOST))
+            .headerAccept(request.getHeader(HttpHeaders.ACCEPT))
+
+            .headerXForwardedFor(request.getHeader(HttpHeaders.X_FORWARDED_FOR))
+            .headerXForwardedPort(request.getHeader(HttpHeaders.X_FORWARDED_PORT))
+            .headerXForwardedProto(request.getHeader(HttpHeaders.X_FORWARDED_PROTO))
+
+            .build();
+    }
+
+    private UUID optUuid(String uuid) {
+        return uuid == null ? null : UUID.fromString(uuid);
+    }
+
+    private String fullUrl(Request request) {
+        final String result;
+        if (StringUtils.isNotEmpty(request.getQueryString())) {
+            result = request.getRequestURI() + '?' + request.getQueryString();
+        } else {
+            result = request.getRequestURI();
+        }
+        return result;
+    }
+
+    protected Clock getClock() {
+        return clock;
     }
 }
