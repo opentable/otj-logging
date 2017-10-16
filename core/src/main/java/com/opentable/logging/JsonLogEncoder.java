@@ -23,7 +23,6 @@ import com.fasterxml.jackson.core.util.ByteArrayBuilder;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.fasterxml.jackson.databind.util.TokenBuffer;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import org.slf4j.Marker;
@@ -32,6 +31,7 @@ import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.encoder.EncoderBase;
 
 import com.opentable.logging.otl.OtlMarker;
+import com.opentable.logging.otl.OtlType;
 
 /**
  * This class encodes log fields as a JSON object, and writes each as a separate line to the outputStream.
@@ -46,7 +46,6 @@ public class JsonLogEncoder extends EncoderBase<ILoggingEvent> {
     private static final AtomicLong LOG_SEQUENCE_NUMBER = new AtomicLong(0);
 
     private final ObjectMapper mapper;
-    private Class<?> customEventClass = HttpLogFields.class;
 
     public JsonLogEncoder() {
         // TODO: This sucks - - won't get the mapper customizations.  Find a way to inject this.
@@ -59,31 +58,14 @@ public class JsonLogEncoder extends EncoderBase<ILoggingEvent> {
                 .configure(Feature.AUTO_CLOSE_TARGET, false);
     }
 
-    public void setCustomEventClass(String customEventClass) throws ClassNotFoundException {
-        this.customEventClass = Class.forName(customEventClass);
-    }
-
     /**
      * Prepare a log event but don't append it, return it as an ObjectNode instead.
      */
     public ObjectNode convertToObjectNode(ILoggingEvent event) {
-
-        final ObjectNode logLine;
-
-        if (customEventClass != null && customEventClass.isAssignableFrom(event.getClass())) {
-            final TokenBuffer buf = new TokenBuffer(mapper, false);
-            try {
-                mapper.writerFor(customEventClass).writeValue(buf, event);
-                logLine = mapper.readTree(buf.asParser());
-            } catch (IOException e) {
-                addError("Failed to convert log event to json", e);
-                return null;
-            }
-        } else {
-            logLine = mapper.valueToTree(new ApplicationLogEvent(event));
-        }
-
+        final ObjectNode logLine = mapper.valueToTree(
+                event instanceof OtlType ? event : new ApplicationLogEvent(event));
         final Marker marker = event.getMarker();
+
         if (marker instanceof LogMetadata) {
             ObjectNode metadataNode = mapper.valueToTree(((LogMetadata) marker).getMetadata());
             logLine.setAll(metadataNode);
