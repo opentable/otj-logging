@@ -22,7 +22,6 @@ import org.apache.kafka.common.serialization.ByteArraySerializer;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.UnsynchronizedAppenderBase;
 import ch.qos.logback.core.encoder.Encoder;
-import ch.qos.logback.core.status.InfoStatus;
 
 /**
  * Log messages to Kafka with a configurable encoder.
@@ -63,10 +62,10 @@ public class KafkaAppender extends UnsynchronizedAppenderBase<ILoggingEvent>
     @Override
     public void stop()
     {
-        getStatusManager().add(new InfoStatus("About to close Kafka producer", this));
+        addInfo("About to close Kafka producer");
         super.stop();
         producer.close();
-        getStatusManager().add(new InfoStatus("Finished closing Kafka producer", this));
+        addInfo("Finished closing Kafka producer");
     }
 
     @Override

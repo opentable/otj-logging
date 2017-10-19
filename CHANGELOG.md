@@ -1,6 +1,11 @@
 otj-logging
 ===========
 
+2.5.1
+-----
+
+* fixed NPE when Kafka log appender stopped soon after start
+
 2.5.0
 -----
 
