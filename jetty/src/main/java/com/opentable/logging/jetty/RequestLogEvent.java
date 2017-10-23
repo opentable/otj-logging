@@ -41,7 +41,7 @@ public class RequestLogEvent extends LoggingEvent {
             throw new IllegalArgumentException("null payload");
         }
         final long responseSize = payload.getResponseSize();
-        final String responseSizeText = responseSize > 0 ? "" : responseSize + " bytes in ";
+        final String responseSizeText = responseSize <= 0 ? "" : responseSize + " bytes in ";
         return String.format("%s %s : %s, %s%s", payload.getMethod(), payload.getUrl(), payload.getStatus(), responseSizeText, prettyTime(payload.getDuration()));
     }
 

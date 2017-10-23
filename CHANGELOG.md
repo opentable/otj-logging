@@ -1,6 +1,10 @@
 otj-logging
 ===========
 
+2.5.2
+-----
+* fix request log rendering in text file
+
 2.5.1
 -----
 
