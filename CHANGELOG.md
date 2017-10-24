@@ -1,6 +1,11 @@
 otj-logging
 ===========
 
+2.6.0
+-----
+
+* added status, url, method getters to RequestLogEvent
+
 2.5.2
 -----
 * fix request log rendering in text file
