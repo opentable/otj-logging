@@ -144,7 +144,12 @@ public class JsonRequestLog extends AbstractLifeCycle implements RequestLog
     }
 
     private UUID optUuid(String uuid) {
-        return uuid == null ? null : UUID.fromString(uuid);
+        try {
+            return uuid == null ? null : UUID.fromString(uuid);
+        } catch (IllegalArgumentException e) {
+            LOG.warn("Unable to parse purported request id '{}': {}", uuid, e.toString());
+            return null;
+        }
     }
 
     private String fullUrl(Request request) {
