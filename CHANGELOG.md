@@ -1,13 +1,15 @@
 otj-logging
 ===========
 
-2.5.3
+2.6.0
 -----
 
 * protect UUID parsing against malformed input
+* added status, url, method getters to RequestLogEvent
 
 2.5.2
 -----
+
 * fix request log rendering in text file
 
 2.5.1

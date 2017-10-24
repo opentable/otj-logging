@@ -60,6 +60,20 @@ public class RequestLogEvent extends LoggingEvent {
         return payload.log();
     }
 
+    // In particular, disco uses these getters to implement a custom filter.
+
+    public int getStatus() {
+        return payload.getStatus();
+    }
+
+    public String getUrl() {
+        return payload.getUrl();
+    }
+
+    public String getMethod() {
+        return payload.getMethod();
+    }
+
     private static String prettyTime(long micros) {
         if (micros < 1000) {
             return micros + " µs";
