@@ -1,6 +1,12 @@
 otj-logging
 ===========
 
+2.7.0
+-----
+
+* CaptureAppender has convenience capture() methods now
+* RequestLogEvent adds getPayload()
+
 2.6.0
 -----
 
