@@ -31,7 +31,7 @@ public final class CommonLogHolder
     static final DateTimeFormatter FORMAT = DateTimeFormatter.ISO_INSTANT;
     static final String HOST_NAME;
     static final Integer INSTANCE_NO;
-    static final String OT_ENV, OT_ENV_TYPE, OT_ENV_LOCATION, OT_ENV_FLAVOR;
+    static String OT_ENV, OT_ENV_TYPE, OT_ENV_LOCATION, OT_ENV_FLAVOR;
     private static String serviceType = UNSET;
 
     static {
@@ -60,6 +60,23 @@ public final class CommonLogHolder
     }
 
     private CommonLogHolder() { }
+
+    /**
+     * Mock out the environment.  You probably don't want to do this.
+     */
+    public static void setEnvironment(String otEnv, String otEnvType, String otEnvLocation, String otEnvFlavor) {
+        OT_ENV = otEnv;
+        OT_ENV_TYPE = otEnvType;
+        OT_ENV_LOCATION = otEnvLocation;
+        OT_ENV_FLAVOR = otEnvFlavor;
+    }
+
+    /**
+     * Set main {@code OT_ENV} variables to {@code test}.
+     */
+    public static void forceTestEnvironment() {
+        setEnvironment("test", "test", "test", null);
+    }
 
     public static void setServiceType(String serviceType) {
         CommonLogHolder.serviceType = serviceType;
