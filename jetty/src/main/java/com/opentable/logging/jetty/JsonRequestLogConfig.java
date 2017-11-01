@@ -29,9 +29,9 @@ public class JsonRequestLogConfig {
     public JsonRequestLogConfig(
             @Value("${ot.httpserver.request-log.enabled:true}")
             final boolean enabled,
-            @Value("${ot.httpserver.request-log.startswith-blacklist:#{null}}")
+            @Value("${ot.httpserver.request-log.startswith-blacklist:/health}")
             final Set<String> startsWithBlacklist,
-            @Value("${ot.httpserver.request-log.equality-blacklist:/health}")
+            @Value("${ot.httpserver.request-log.equality-blacklist:}")
             final Set<String> equalityBlacklist,
             @Value("${ot.httpserver.request-log.logger-name:httpserver}")
             final String loggerName) {
