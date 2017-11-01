@@ -45,6 +45,10 @@ public class RequestLogEvent extends LoggingEvent {
         return String.format("%s %s : %s, %s%s", payload.getMethod(), payload.getUrl(), payload.getStatus(), responseSizeText, prettyTime(payload.getDuration()));
     }
 
+    public HttpV1 getPayload() {
+        return payload;
+    }
+
     @Override
     public StackTraceElement[] getCallerData() {
         return new StackTraceElement[0];
