@@ -16,6 +16,9 @@ package com.opentable.logging;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.UnsynchronizedAppenderBase;
 
@@ -32,4 +35,41 @@ public class CaptureAppender extends UnsynchronizedAppenderBase<ILoggingEvent> {
         captured.add(eventObject);
     }
 
+    /**
+     * Capture the root logger.
+     * @return an updating list of logged events
+     */
+    public static List<ILoggingEvent> capture() {
+        return capture(Logger.ROOT_LOGGER_NAME);
+    }
+
+    /**
+     * Capture a logger by string name.
+     * @param loggerName the logger to capture
+     * @return an updating list of logged events
+     */
+    public static List<ILoggingEvent> capture(String loggerName) {
+        return capture(LoggerFactory.getLogger(loggerName));
+    }
+
+    /**
+     * Capture a logger by Class.
+     * @param loggerClass the class whose logs to capture
+     * @return an updating list of logged events
+     */
+    public static List<ILoggingEvent> capture(Class<?> loggerClass) {
+        return capture(LoggerFactory.getLogger(loggerClass));
+    }
+
+    /**
+     * Capture a Logger.
+     * @param logger the Logger to capture
+     * @return an updating list of logged events
+     */
+    public static List<ILoggingEvent> capture(Logger logger) {
+        CaptureAppender capture = new CaptureAppender();
+        ((ch.qos.logback.classic.Logger) logger).addAppender(capture);
+        capture.start();
+        return capture.captured;
+    }
 }
