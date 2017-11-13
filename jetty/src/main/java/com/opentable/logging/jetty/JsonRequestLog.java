@@ -21,6 +21,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
+import javax.annotation.Nonnull;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -81,7 +82,7 @@ public class JsonRequestLog extends AbstractLifeCycle implements RequestLog
         }
 
         final HttpV1 payload = createEvent(request, response);
-        final RequestLogEvent event = new RequestLogEvent(payload);
+        final RequestLogEvent event = new RequestLogEvent(payload, constructMessage(payload));
 
         // TODO: this is a bit of a hack.  The RequestId filter happens inside of the
         // servlet dispatcher which is a Jetty handler.  Since the request log is generated
@@ -96,6 +97,7 @@ public class JsonRequestLog extends AbstractLifeCycle implements RequestLog
         }
     }
 
+    @Nonnull
     protected HttpV1 createEvent(Request request, Response response) {
         final String query = request.getQueryString();
         return HttpV1.builder()
@@ -141,6 +143,25 @@ public class JsonRequestLog extends AbstractLifeCycle implements RequestLog
             .headerXForwardedProto(request.getHeader(HttpHeaders.X_FORWARDED_PROTO))
 
             .build();
+    }
+
+    @Nonnull
+    protected String constructMessage(HttpV1 payload) {
+        return constructMessage0(payload);
+    }
+
+    @Nonnull
+    static String constructMessage0(HttpV1 payload) {
+        if (payload == null) {
+            throw new IllegalArgumentException("null payload");
+        }
+        final long responseSize = payload.getResponseSize();
+        final String responseSizeText = responseSize <= 0 ? "" : responseSize + " bytes in ";
+        return String.format("%s %s : %s, %s%s", payload.getMethod(), payload.getUrl(), payload.getStatus(), responseSizeText, prettyTime(payload.getDuration()));
+    }
+
+    protected static String prettyTime(long micros) {
+        return String.format("%.1f ms", micros / 1000.0);
     }
 
     private UUID optUuid(String uuid) {

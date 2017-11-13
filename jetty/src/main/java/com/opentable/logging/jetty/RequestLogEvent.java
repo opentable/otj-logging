@@ -28,21 +28,16 @@ public class RequestLogEvent extends LoggingEvent {
     private final HttpV1 payload;
 
     public RequestLogEvent(HttpV1 payload) {
-        super("access", logger(), Level.ALL, constructMessage(payload), null, NO_ARGS);
+        this(payload, JsonRequestLog.constructMessage0(payload));
+    }
+
+    public RequestLogEvent(HttpV1 payload, String message) {
+        super("access", logger(), Level.ALL, message, null, NO_ARGS);
         this.payload = payload;
     }
 
     private static Logger logger() {
         return (Logger) LoggerFactory.getLogger(RequestLogEvent.class);
-    }
-
-    private static String constructMessage(HttpV1 payload) {
-        if (payload == null) {
-            throw new IllegalArgumentException("null payload");
-        }
-        final long responseSize = payload.getResponseSize();
-        final String responseSizeText = responseSize <= 0 ? "" : responseSize + " bytes in ";
-        return String.format("%s %s : %s, %s%s", payload.getMethod(), payload.getUrl(), payload.getStatus(), responseSizeText, prettyTime(payload.getDuration()));
     }
 
     public HttpV1 getPayload() {
@@ -76,15 +71,5 @@ public class RequestLogEvent extends LoggingEvent {
 
     public String getMethod() {
         return payload.getMethod();
-    }
-
-    private static String prettyTime(long micros) {
-        if (micros < 1000) {
-            return micros + " µs";
-        } else if (micros < 1000 * 1000) {
-            return String.format("%.1f ms", micros / 1000.0);
-        } else {
-            return String.format("%.1f s", micros / (1000.0 * 1000.0));
-        }
     }
 }

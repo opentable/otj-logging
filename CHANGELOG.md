@@ -1,6 +1,11 @@
 otj-logging
 ===========
 
+2.7.1
+-----
+
+* JsonRequestLog subclasses may now override message generation
+
 2.7.0
 -----
 
