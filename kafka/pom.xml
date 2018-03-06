@@ -33,32 +33,58 @@
 
   <dependencyManagement>
     <dependencies>
+      <!-- Note: We are breaking the cyclic dependency by fixing versions and excluding deps here. If switched from basic
+      embedded kafka tests, this would not be safe -->
       <dependency>
         <groupId>com.opentable.components</groupId>
         <artifactId>otj-kafka</artifactId>
-        <version>2.6.1-SNAPSHOT</version>
+        <version>2.6.0</version>
+        <scope>test</scope>
+        <exclusions>
+          <exclusion>
+            <groupId>com.opentable.components</groupId>
+            <artifactId>otj-metrics</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>com.opentable.components</groupId>
+            <artifactId>otj-spring</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>com.opentable.components</groupId>
+            <artifactId>otj-conservedheaders</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>com.opentable.components</groupId>
+            <artifactId>otj-scopes</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
       <!-- which itself pulls in these -->
+      <!--
       <dependency>
         <groupId>com.opentable.components</groupId>
         <artifactId>otj-metrics</artifactId>
-        <version>2.6.9-SNAPSHOT</version>
+        <version>2.6.8</version>
+        <scope>test</scope>
       </dependency>
       <dependency>
         <groupId>com.opentable.components</groupId>
         <artifactId>otj-spring</artifactId>
-        <version>1.2.4-SNAPSHOT</version>
+        <version>1.2.3</version>
+        <scope>test</scope>
       </dependency>
       <dependency>
         <groupId>com.opentable.components</groupId>
         <artifactId>otj-conservedheaders</artifactId>
-        <version>2.1.2-SNAPSHOT</version>
+        <version>2.1.1</version>
+        <scope>test</scope>
       </dependency>
       <dependency>
         <groupId>com.opentable.components</groupId>
         <artifactId>otj-scopes</artifactId>
-        <version>2.0.2-SNAPSHOT</version>
-      </dependency>
+        <version>2.0.1</version>
+        <scope>test</scope>
+      </dependency> -->
     </dependencies>
   </dependencyManagement>
 
