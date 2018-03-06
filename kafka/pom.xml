@@ -31,6 +31,37 @@
     <basepom.test.timeout>120</basepom.test.timeout>
   </properties>
 
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>com.opentable.components</groupId>
+        <artifactId>otj-kafka</artifactId>
+        <version>2.6.1-SNAPSHOT</version>
+      </dependency>
+      <!-- which itself pulls in these -->
+      <dependency>
+        <groupId>com.opentable.components</groupId>
+        <artifactId>otj-metrics</artifactId>
+        <version>2.6.9-SNAPSHOT</version>
+      </dependency>
+      <dependency>
+        <groupId>com.opentable.components</groupId>
+        <artifactId>otj-spring</artifactId>
+        <version>1.2.4-SNAPSHOT</version>
+      </dependency>
+      <dependency>
+        <groupId>com.opentable.components</groupId>
+        <artifactId>otj-conservedheaders</artifactId>
+        <version>2.1.2-SNAPSHOT</version>
+      </dependency>
+      <dependency>
+        <groupId>com.opentable.components</groupId>
+        <artifactId>otj-scopes</artifactId>
+        <version>2.0.2-SNAPSHOT</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
   <dependencies>
     <dependency>
       <groupId>com.opentable.components</groupId>
