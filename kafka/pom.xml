@@ -59,32 +59,6 @@
           </exclusion>
         </exclusions>
       </dependency>
-      <!-- which itself pulls in these -->
-      <!--
-      <dependency>
-        <groupId>com.opentable.components</groupId>
-        <artifactId>otj-metrics</artifactId>
-        <version>2.6.8</version>
-        <scope>test</scope>
-      </dependency>
-      <dependency>
-        <groupId>com.opentable.components</groupId>
-        <artifactId>otj-spring</artifactId>
-        <version>1.2.3</version>
-        <scope>test</scope>
-      </dependency>
-      <dependency>
-        <groupId>com.opentable.components</groupId>
-        <artifactId>otj-conservedheaders</artifactId>
-        <version>2.1.1</version>
-        <scope>test</scope>
-      </dependency>
-      <dependency>
-        <groupId>com.opentable.components</groupId>
-        <artifactId>otj-scopes</artifactId>
-        <version>2.0.1</version>
-        <scope>test</scope>
-      </dependency> -->
     </dependencies>
   </dependencyManagement>
 
