@@ -1,6 +1,10 @@
 otj-logging
 ===========
 
+2.7.2
+-----
+* Spring Boot 2 / Spring 5.0.4
+
 2.7.1
 -----
 
