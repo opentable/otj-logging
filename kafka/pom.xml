@@ -31,6 +31,37 @@
     <basepom.test.timeout>120</basepom.test.timeout>
   </properties>
 
+  <dependencyManagement>
+    <dependencies>
+      <!-- Note: We are breaking the cyclic dependency by fixing versions and excluding deps here. If switched from basic
+      embedded kafka tests, this would not be safe -->
+      <dependency>
+        <groupId>com.opentable.components</groupId>
+        <artifactId>otj-kafka</artifactId>
+        <version>2.6.0</version>
+        <scope>test</scope>
+        <exclusions>
+          <exclusion>
+            <groupId>com.opentable.components</groupId>
+            <artifactId>otj-metrics</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>com.opentable.components</groupId>
+            <artifactId>otj-spring</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>com.opentable.components</groupId>
+            <artifactId>otj-conservedheaders</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>com.opentable.components</groupId>
+            <artifactId>otj-scopes</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
   <dependencies>
     <dependency>
       <groupId>com.opentable.components</groupId>
