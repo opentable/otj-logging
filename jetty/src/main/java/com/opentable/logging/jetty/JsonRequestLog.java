@@ -164,7 +164,7 @@ public class JsonRequestLog extends AbstractLifeCycle implements RequestLog
         return String.format("%.1f ms", micros / 1000.0);
     }
 
-    private UUID optUuid(String uuid) {
+    protected UUID optUuid(String uuid) {
         try {
             return uuid == null ? null : UUID.fromString(uuid);
         } catch (IllegalArgumentException e) {
@@ -173,7 +173,7 @@ public class JsonRequestLog extends AbstractLifeCycle implements RequestLog
         }
     }
 
-    private String fullUrl(Request request) {
+    protected String fullUrl(Request request) {
         final String result;
         if (StringUtils.isNotEmpty(request.getQueryString())) {
             result = request.getRequestURI() + '?' + request.getQueryString();
