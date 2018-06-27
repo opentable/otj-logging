@@ -1,6 +1,10 @@
 otj-logging
 ===========
 
+2.7.4
+-----
+* Test oss release
+
 2.7.3
 -----
 * expose some JsonLogEncoder methods for subclassing
