@@ -30,11 +30,13 @@ public class JsonLogEncoderTest
     @Test
     public void simpleEncode() throws Exception {
         CommonLogHolder.setServiceType("logging-test");
+        CommonLogHolder.setOtlType("my-custom-otl-v1");
         JsonLogEncoder jle = new JsonLogEncoder();
         LoggingEvent le = new LoggingEvent();
         le.setLevel(Level.ERROR);
         byte[] result = jle.encode(le);
         ObjectNode node = mapper.readValue(result, ObjectNode.class);
         assertEquals("logging-test", node.get("service-type").asText());
+        assertEquals("my-custom-otl-v1", node.get("@loglov3-otl").asText());
     }
 }
