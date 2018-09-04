@@ -31,8 +31,8 @@ public final class CommonLogHolder
     static final DateTimeFormatter FORMAT = DateTimeFormatter.ISO_INSTANT;
     static final String HOST_NAME;
     static final Integer INSTANCE_NO;
-    static String OT_ENV, OT_ENV_TYPE, OT_ENV_LOCATION, OT_ENV_FLAVOR;
-    private static String serviceType = UNSET;
+    static String OT_ENV, OT_ENV_TYPE, OT_ENV_LOCATION, OT_ENV_FLAVOR; //NOPMD
+    private static String serviceType = UNSET; //NOPMD
 
     static {
         final String hostNameEnv = System.getenv("TASK_HOST");
