@@ -19,7 +19,7 @@
   <parent>
     <groupId>com.opentable</groupId>
     <artifactId>otj-parent-spring</artifactId>
-    <version>139</version>
+    <version>165</version>
   </parent>
 
   <scm>
@@ -32,7 +32,7 @@
   <groupId>com.opentable.components</groupId>
   <artifactId>otj-logging-parent</artifactId>
   <name>otj-logging-parent</name>
-  <version>2.7.5-SNAPSHOT</version>
+  <version>2.7.6-SNAPSHOT</version>
   <packaging>pom</packaging>
   <description>Logging component parent</description>
 
@@ -42,8 +42,37 @@
     <module>jetty</module>
   </modules>
 
+  <properties>
+    <!-- Remove once parent updated -->
+    <dep.jetty.version>9.4.12.v20180830</dep.jetty.version>
+    <dep.resteasy.version>4.0.0.Beta5</dep.resteasy.version>
+    <!-- end remove -->
+    <basepom.oss.skip-scala-doc>true</basepom.oss.skip-scala-doc>
+    <basepom.check.skip-javadoc>false</basepom.check.skip-javadoc>
+    <basepom.check.fail-javadoc>false</basepom.check.fail-javadoc>
+  </properties>
   <dependencyManagement>
+    <!-- all of this should not exist in future it merely fixes the fact that spring bom before jetty bom won -->
     <dependencies>
+      <dependency>
+        <groupId>org.eclipse.jetty</groupId>
+        <artifactId>jetty-bom</artifactId>
+        <version>${dep.jetty.version}</version>
+        <scope>import</scope>
+        <type>pom</type>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.jetty</groupId>
+        <artifactId>jetty-server</artifactId>
+        <version>${dep.jetty.version}</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.eclipse.jetty.orbit</groupId>
+            <artifactId>javax.servlet</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <!-- end remove later -->
       <dependency>
         <groupId>com.opentable.components</groupId>
         <artifactId>otj-logging</artifactId>

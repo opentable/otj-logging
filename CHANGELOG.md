@@ -1,6 +1,10 @@
 otj-logging
 ===========
 
+2.7.5
+-----
+* update jetty (9.4.0830) and resteasy (beta 5)
+
 2.7.4
 -----
 * Test oss release
