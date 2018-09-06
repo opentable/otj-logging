@@ -47,6 +47,8 @@
     <dep.jetty.version>9.4.12.v20180830</dep.jetty.version>
     <dep.resteasy.version>4.0.0.Beta5</dep.resteasy.version>
     <!-- end remove -->
+    <basepom.oss.skip-scala-doc>true</basepom.oss.skip-scala-doc>
+    <basepom.check.skip-javadoc>false</basepom.check.skip-javadoc>
   </properties>
   <dependencyManagement>
     <!-- all of this should not exist in future it merely fixes the fact that spring bom before jetty bom won -->
