@@ -21,6 +21,9 @@ import ch.qos.logback.classic.pattern.ThrowableProxyConverter;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.classic.spi.IThrowableProxy;
 
+/**
+ * The object that when serialized to JSON is an application log message
+ */
 class ApplicationLogEvent implements CommonLogFields
 {
     private static final DateTimeFormatter FORMAT = DateTimeFormatter.ISO_INSTANT;
@@ -28,6 +31,10 @@ class ApplicationLogEvent implements CommonLogFields
     private final ILoggingEvent event;
     private final UUID messageId = UUID.randomUUID();
 
+    /**
+     * Create an application log event
+     * @param event the log event from logback
+     */
     ApplicationLogEvent(ILoggingEvent event)
     {
         this.event = event;
@@ -95,10 +102,19 @@ class ApplicationLogEvent implements CommonLogFields
         return "msg-v1";
     }
 
+    /**
+     * A converter that converts {@link IThrowableProxy} objects to Strings
+     */
     static class ThrowableConverterHack extends ThrowableProxyConverter
     {
+        /**
+         * Holds a singleton {@link ThrowableConverterHack}
+         */
         static final ThrowableConverterHack INSTANCE = new ThrowableConverterHack();
 
+        /**
+         * Create a ThrowableConverterHack and start it
+         */
         ThrowableConverterHack() {
             start();
         }

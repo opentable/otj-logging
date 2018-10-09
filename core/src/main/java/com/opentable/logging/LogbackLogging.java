@@ -17,11 +17,17 @@ import org.slf4j.Logger;
 
 import ch.qos.logback.classic.spi.ILoggingEvent;
 
+/**
+ * Utility class for logback logging
+ */
 public final class LogbackLogging
 {
     private LogbackLogging() { }
+
     /**
      * Log an arbitrary {@link ILoggingEvent} to a Logback logger.
+     * @param logger the logger to log to
+     * @param event the event to log
      */
     public static void log(Logger logger, ILoggingEvent event)
     {

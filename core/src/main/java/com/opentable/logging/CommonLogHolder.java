@@ -21,6 +21,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Holds values common to most/all log messages
+ */
 public final class CommonLogHolder
 {
     private static final Logger LOG = LoggerFactory.getLogger(CommonLogHolder.class);
@@ -82,6 +85,10 @@ public final class CommonLogHolder
         CommonLogHolder.serviceType = serviceType;
     }
 
+    /**
+     * Get the service type
+     * @return the type of service
+     */
     public static String getServiceType() {
         if (UNSET.equals(serviceType) && WARNED_UNSET.compareAndSet(false, true)) {
             LoggerFactory.getLogger(ApplicationLogEvent.class).error("The application name was not set!  Sending 'UNSET' instead :(");
