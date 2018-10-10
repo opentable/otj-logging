@@ -25,7 +25,6 @@ import com.opentable.logging.otl.HttpV1;
 public class RequestLogEvent extends LoggingEvent {
     private static final Object[] NO_ARGS = new Object[0];
 
-
     private final HttpV1 payload;
 
     public RequestLogEvent(HttpV1 payload) {
@@ -36,7 +35,6 @@ public class RequestLogEvent extends LoggingEvent {
         super("access", logger(), Level.ALL, message, null, NO_ARGS);
         this.payload = payload;
     }
-
 
     private static Logger logger() {
         return (Logger) LoggerFactory.getLogger(RequestLogEvent.class);
@@ -53,7 +51,6 @@ public class RequestLogEvent extends LoggingEvent {
 
     @Override
     public Level getLevel() {
-
         return Level.ALL;
     }
 

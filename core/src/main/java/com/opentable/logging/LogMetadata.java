@@ -79,7 +79,7 @@ public final class LogMetadata implements Marker {
 
     /**
      * Get metadata key value pairs
-     * @return
+     * @return the metadata
      */
     public Map<String, Object> getMetadata() {
         return metadata;
