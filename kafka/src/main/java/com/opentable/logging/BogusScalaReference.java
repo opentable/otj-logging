@@ -15,6 +15,9 @@ package com.opentable.logging;
 
 import scala.math.ScalaNumber;
 
+/**
+ * Hack class to make the dependency analyzer realize we need Scala
+ */
 class BogusScalaReference {
     // Dead reference to get the dependency analyzer to realize that we actually
     // *do* need Scala.

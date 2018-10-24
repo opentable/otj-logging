@@ -15,15 +15,37 @@ package com.opentable.logging;
 
 import java.util.UUID;
 
+/**
+ * Optional server info
+ *
+ * Currently this is only used by the Kafka logging appender to get an ID unique for this Kafka client
+ */
 final class OptionalServerInfo
 {
     private OptionalServerInfo() { }
+
+    /**
+     * An interface for reporting warnings
+     */
     @FunctionalInterface
     interface WarningReporter
     {
+        /**
+         * Report a warning
+         * @param message the warning message
+         * @param t the problem that caused the warning
+         */
         void warn(String message, Throwable t);
     }
 
+    /**
+     * Get a default client name.
+     * This is used as a default client ID for Kafka logging.
+     * WARNING: This is not idempotent. The current implement creates a new random UUID each time this is called.
+     *
+     * @param reporter a reporter to send a warning report to if we can't get a client name
+     * @return the client name
+     */
     static String getDefaultClientName(WarningReporter reporter)
     {
         try {

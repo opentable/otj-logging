@@ -13,6 +13,7 @@
  */
 package com.opentable.logging;
 
+import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -28,65 +29,129 @@ public interface CommonLogFields
 {
     String REQUEST_ID_KEY = "request-id";
 
+    /**
+     * Get the time this message was logged in ISO-8601 format (i.e. {@link DateTimeFormatter#ISO_INSTANT})
+     * @return the timestamp in ISO-8601 format
+     */
     @JsonProperty("@timestamp")
     String getTimestamp();
 
+    /**
+     * Get a unique ID for this log message
+     * @return a unique ID for this log message
+     */
     @JsonProperty("@uuid")
     UUID getMessageId();
 
+    /**
+     * Get the name of the service/component logging the message (e.g. my-service)
+     * @return the component logging the message
+     */
     @JsonProperty("component-id")
     default String getComponentId() {
         return getServiceType();
     }
 
+    /**
+     * Get the type of service logging the message  (e.g. my-service)
+     * @return the service type
+     */
     @JsonProperty("service-type")
     String getServiceType();
 
+    /**
+     * Get the the log type name (e.g. "application" or "request")
+     * @return the log type name
+     */
     @JsonProperty("log-name")
     String getLogTypeName();
 
+    /**
+     * Get the name of the logger that logged this message (e.g. com.opentable.myservice.MyClass)
+     * @return the name of the logger
+     */
     @JsonProperty("logger-name")
     String getLogClass();
 
+    /**
+     * Get the name of the host that the log message was emitted from (e.g. mesos-slave1-prod-sc.otsql.opentable.com)
+     * @return the host name
+     */
     @JsonProperty("host")
     default String getHost() {
         return CommonLogHolder.HOST_NAME;
     }
 
+    /**
+     * Get the instance number of the server within the cluster that logged this message (e.g. "1")
+     * @return the instance number
+     */
     @JsonProperty("instance-no")
     default Integer getInstanceNo() {
         return CommonLogHolder.INSTANCE_NO;
     }
 
+    /**
+     * Get the name of the environment this message was logged from (e.g. prod-sc)
+     * @return the environment name
+     */
     @JsonProperty("ot-env")
     default String getOtEnv() {
         return CommonLogHolder.OT_ENV;
     }
 
+    /**
+     * Get the type of environment this was logged from (e.g. prod)
+     * @return the environment type
+     */
     @JsonProperty("ot-env-type")
     default String getOtEnvType() {
         return CommonLogHolder.OT_ENV_TYPE;
     }
 
+    /**
+     * Get the environment location this was logged from (e.g. sc)
+     * @return the location of the environment
+     */
     @JsonProperty("ot-env-location")
     default String getOtEnvLocation() {
         return CommonLogHolder.OT_ENV_LOCATION;
     }
 
+    /**
+     * Get the flavor of the environment (e.g. na)
+     * @return the environment flavor
+     */
     @JsonProperty("ot-env-flavor")
     default String getOtEnvFlavor() {
         return CommonLogHolder.OT_ENV_FLAVOR;
     }
 
+    /**
+     * Get the message's severity (e.g. ERROR)
+     * @return the message severity
+     */
     @JsonProperty("severity")
     String getSeverity();
 
+    /**
+     * Get the log message
+     * @return the log message
+     */
     @JsonProperty("message")
     String getMessage();
 
+    /**
+     * Get the name of the thread that the message was logged from (e.g. application-thread-1)
+     * @return the thread name
+     */
     @JsonProperty("thread-name")
     String getThreadName();
 
+    /**
+     * Get the exception (with stacktrace) associated with this message (if any)
+     * @return the exception and stacktrace
+     */
     @JsonProperty("exception")
     String getThrowable();
 
@@ -96,7 +161,13 @@ public interface CommonLogFields
         return Long.MIN_VALUE;
     }
 
-    /** Declare the OTL type for selectorless processing. */
+    /**
+     * Get the loglov3 OTL schema this message is using (e.g. msg-v1)
+     *
+     * This is an OTL type declaration used for selectorless processing.
+     *
+     * @return the OTL
+     */
     @JsonProperty("@loglov3-otl")
     String getLoglov3Otl();
 }

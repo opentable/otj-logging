@@ -47,6 +47,10 @@ public class JsonLogEncoder extends EncoderBase<ILoggingEvent> {
 
     private final ObjectMapper mapper;
 
+    /**
+     * Create a JSON Log Encoder
+     * Sets up a JSON encoder and configures it.
+     */
     public JsonLogEncoder() {
         // TODO: This sucks - - won't get the mapper customizations.  Find a way to inject this.
         // Master configuration is in otj-jackson
@@ -60,6 +64,8 @@ public class JsonLogEncoder extends EncoderBase<ILoggingEvent> {
 
     /**
      * Prepare a log event but don't append it, return it as an ObjectNode instead.
+     * @param the logging event to encode
+     * @return the JSON object version of the log event
      */
     public ObjectNode convertToObjectNode(ILoggingEvent event) {
         final ObjectNode logLine = mapper.valueToTree(
@@ -90,6 +96,11 @@ public class JsonLogEncoder extends EncoderBase<ILoggingEvent> {
         return logLine;
     }
 
+    /**
+     * Convert the JSON object to a byte array to log
+     * @param event the event to log
+     * @return the byte array to append to the log
+     */
     protected byte[] getLogMessage(final ObjectNode event) {
         ByteArrayBuilder buf = new ByteArrayBuilder();
         try {

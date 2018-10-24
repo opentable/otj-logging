@@ -40,6 +40,8 @@ public final class LogMetadata implements Marker {
 
     /**
      * Create a new metadata marker with a single key-value pair.
+     * @param key the key to add
+     * @param value the value to add for that key
      */
     public static LogMetadata of(String key, Object value) {
         Map<String, Object> map = new HashMap<>();
@@ -47,12 +49,19 @@ public final class LogMetadata implements Marker {
         return new LogMetadata(map);
     }
 
+    /**
+     * Add an OTL object to the log message
+     * @param otl the OTL item to log
+     * @return the metadata marker
+     */
     public static <T extends OtlType> LogMetadata logOtl(T otl) {
         return new LogMetadata(Collections.emptyMap()).andInline(otl);
     }
 
     /**
      * Extend a metadata marker with another key-value pair.
+     * @param key the key to add
+     * @param value the value for the key
      */
     public LogMetadata and(String key, Object value) {
         metadata.put(key, value);
@@ -61,16 +70,25 @@ public final class LogMetadata implements Marker {
 
     /**
      * Extend a metadata marker with an arbitrary object's JSON serialized fields.
+     * @param embeddedObj an object that will be converted to JSOn and merged with the JSON being logged
      */
     public LogMetadata andInline(Object embeddedObj) {
         inlines.add(embeddedObj);
         return this;
     }
 
+    /**
+     * Get metadata key value pairs
+     * @return the metadata
+     */
     public Map<String, Object> getMetadata() {
         return metadata;
     }
 
+    /**
+     * Get list of objects that will be merged with the log message object
+     * @return inline log message objects
+     */
     public List<Object> getInlines() {
         return inlines;
     }

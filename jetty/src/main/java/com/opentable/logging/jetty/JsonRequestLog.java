@@ -55,6 +55,13 @@ public class JsonRequestLog extends AbstractLifeCycle implements RequestLog
 
     private final Clock clock;
 
+    /**
+     * Create a JSON Request Log (invoked by Spring)
+     *
+     * @param clock the clock to determine the current time for measuring response time
+     * @param config the request log configuration
+     * @param eventFactory the factory for creating the event to log
+     */
     @Inject
     public JsonRequestLog(final Clock clock,
                           final JsonRequestLogConfig config)

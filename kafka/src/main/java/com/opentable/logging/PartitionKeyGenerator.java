@@ -18,9 +18,20 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import com.google.common.primitives.Longs;
 
+/**
+ * Generates Kafka Message/Record keys
+ */
 class PartitionKeyGenerator {
     private final AtomicLong partitionShufflerKey = new AtomicLong(ThreadLocalRandom.current().nextLong());
 
+    /**
+     * Get the record key to use for the next message to publish to kafka
+     *
+     * This is a number that is incremented each time it is called. This first call starts at a random number.
+     * This is intended to be used as a message key. It will be hashed by Kafka to get the partition key, assuming none is specified.
+     *
+     * @return the message key
+     */
     byte[] next() {
         return Longs.toByteArray(partitionShufflerKey.incrementAndGet());
     }
