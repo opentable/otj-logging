@@ -100,6 +100,7 @@ public final class CommonLogHolder
         try {
             return Integer.parseInt(System.getenv("INSTANCE_NO"));
         } catch (final NumberFormatException e) {
+            LOG.warn("Could not parse INSTANCE_NO.", e);
             return null;
         }
     }

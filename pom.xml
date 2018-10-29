@@ -19,7 +19,7 @@
   <parent>
     <groupId>com.opentable</groupId>
     <artifactId>otj-parent-spring</artifactId>
-    <version>165</version>
+    <version>173</version>
   </parent>
 
   <scm>
