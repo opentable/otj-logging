@@ -99,7 +99,7 @@ class ApplicationLogEvent implements CommonLogFields
 
     @Override
     public String getLoglov3Otl() {
-        return event.getMDCPropertyMap().getOrDefault("@loglov3-otl", "msg-v1");
+        return event.getMDCPropertyMap().getOrDefault("@loglov3-otl-override", "msg-v1");
     }
 
     /**
