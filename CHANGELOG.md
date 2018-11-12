@@ -1,6 +1,11 @@
 otj-logging
 ===========
 
+2.7.6
+----
+* placing @loglov3-otl-override in your MDC key lets you override default otl of msg-v1.
+Be aware that you must maintain compatibility across all libraries, so this is not generally recommended.
+
 2.7.5
 -----
 * update jetty (9.4.0830) and resteasy (beta 5)
