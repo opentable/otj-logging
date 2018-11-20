@@ -51,6 +51,7 @@ public class JsonLogEncoder extends EncoderBase<ILoggingEvent> {
      * Create a JSON Log Encoder
      * Sets up a JSON encoder and configures it.
      */
+    @SuppressWarnings("deprecation")
     public JsonLogEncoder() {
         // TODO: This sucks - - won't get the mapper customizations.  Find a way to inject this.
         // Master configuration is in otj-jackson
@@ -102,15 +103,14 @@ public class JsonLogEncoder extends EncoderBase<ILoggingEvent> {
      * @return the byte array to append to the log
      */
     protected byte[] getLogMessage(final ObjectNode event) {
-        ByteArrayBuilder buf = new ByteArrayBuilder();
-        try {
+        try(ByteArrayBuilder buf = new ByteArrayBuilder()){
             mapper.writeValue(buf, event);
+            buf.append('\n');
+            return buf.toByteArray();
         } catch (IOException e) {
             addError("while serializing log event", e);
             return NADA;
         }
-        buf.append('\n');
-        return buf.toByteArray();
     }
 
     @Override

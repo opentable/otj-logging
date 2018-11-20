@@ -51,7 +51,7 @@
           </exclusion>
           <exclusion>
             <groupId>com.opentable.components</groupId>
-            <artifactId>otj-conservedheaders</artifactId>
+            <artifactId>otj-conservedheaders-core</artifactId>
           </exclusion>
           <exclusion>
             <groupId>com.opentable.components</groupId>

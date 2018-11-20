@@ -18,6 +18,7 @@ import java.util.Properties;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.serialization.ByteArraySerializer;
+import org.apache.kafka.common.serialization.Serializer;
 
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.UnsynchronizedAppenderBase;
@@ -40,6 +41,8 @@ public class KafkaAppender extends UnsynchronizedAppenderBase<ILoggingEvent>
     private String compressionCodec = "snappy";
     private String clientId;
     private int bufSize = 1024;
+    private Serializer<byte[]> keySerializer;
+    private Serializer<byte[]> valueSerializer;
 
     @Override
     public void start()
@@ -56,7 +59,9 @@ public class KafkaAppender extends UnsynchronizedAppenderBase<ILoggingEvent>
         config.put("acks", "1");
         config.put("compression.type", compressionCodec);
         config.put("client.id", clientId);
-        producer = new KafkaProducer<>(config, new ByteArraySerializer(), new ByteArraySerializer());
+        keySerializer = new ByteArraySerializer();
+        valueSerializer = new ByteArraySerializer();
+        producer = new KafkaProducer<>(config, keySerializer, valueSerializer);
     }
 
     @Override
@@ -65,6 +70,8 @@ public class KafkaAppender extends UnsynchronizedAppenderBase<ILoggingEvent>
         addInfo("About to close Kafka producer");
         super.stop();
         producer.close();
+        keySerializer.close();
+        valueSerializer.close();
         addInfo("Finished closing Kafka producer");
     }
 
