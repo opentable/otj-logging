@@ -1,6 +1,12 @@
 otj-logging
 ===========
 
+3.0.0
+-----
+* Remove some compiler warnings
+* Switch a conserved headers dependency exclusion
+* Depend on latest parent
+
 2.7.6
 ----
 * placing @loglov3-otl-override in your MDC key lets you override default otl of msg-v1.
