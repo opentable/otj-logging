@@ -26,7 +26,7 @@ import ch.qos.logback.core.encoder.Encoder;
 
 /**
  * Log messages to Kafka with a configurable encoder.
- * Relies on the encoder's {@link Encoder#init(java.io.OutputStream)} method
+ * Relies on the encoder's Encodersjava.io.OutputStream method
  * being relatively cheap.
  */
 public class KafkaAppender extends UnsynchronizedAppenderBase<ILoggingEvent>
