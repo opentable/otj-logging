@@ -1,6 +1,10 @@
 otj-logging
 ===========
 
+3.0.1
+-----
+* Provides a hook in JsonRequestLog where an alternate source can be provided for setting the request id
+
 3.0.0
 -----
 * Remove some compiler warnings
