@@ -134,7 +134,7 @@ public class JsonRequestLog extends AbstractLifeCycle implements RequestLog
             .referringHost(request.getHeader(OTHeaders.REFERRING_HOST))
             .referringService(request.getHeader(OTHeaders.REFERRING_SERVICE))
             .remoteAddress(request.getRemoteAddr())
-            .requestId(optUuid(response.getHeader(OTHeaders.REQUEST_ID)))
+            .requestId(getRequestIdFrom(request, response))
             .sessionId(request.getHeader(OTHeaders.SESSION_ID))
             .userAgent(request.getHeader(HttpHeaders.USER_AGENT))
             .userId(request.getHeader(OTHeaders.USER_ID))
@@ -149,6 +149,13 @@ public class JsonRequestLog extends AbstractLifeCycle implements RequestLog
             .headerXForwardedProto(request.getHeader(HttpHeaders.X_FORWARDED_PROTO))
 
             .build();
+    }
+
+    /**
+     * Provides a hook whereby an alternate source can be provided for grabbing the requestId
+     */
+    protected UUID getRequestIdFrom(Request request, Response response) {
+        return optUuid(response.getHeader(OTHeaders.REQUEST_ID));
     }
 
     @Nonnull
