@@ -109,6 +109,7 @@ public final class LogMetadata implements Marker {
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public boolean hasChildren() {
         return false;
     }
