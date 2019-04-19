@@ -1,6 +1,10 @@
 otj-logging
 ===========
 
+Future
+------
+* Update POM dep, fix some deprecations, update to 1.7.26 SLF4j
+
 3.0.1
 -----
 * Provides a hook in JsonRequestLog where an alternate source can be provided for setting the request id

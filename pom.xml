@@ -19,7 +19,7 @@
   <parent>
     <groupId>com.opentable</groupId>
     <artifactId>otj-parent-spring</artifactId>
-    <version>184</version>
+    <version>192</version>
   </parent>
 
   <scm>
@@ -43,6 +43,7 @@
   </modules>
 
   <properties>
+    <dep.slf4j.version>1.7.26</dep.slf4j.version>
     <basepom.oss.skip-scala-doc>true</basepom.oss.skip-scala-doc>
     <basepom.check.skip-javadoc>false</basepom.check.skip-javadoc>
     <basepom.check.fail-javadoc>false</basepom.check.fail-javadoc>
