@@ -107,48 +107,48 @@ public class JsonRequestLog extends AbstractLifeCycle implements RequestLog
     protected HttpV1 createEvent(Request request, Response response) {
         final String query = request.getQueryString();
         return HttpV1.builder()
-            .logName("request")
-            .serviceType(CommonLogHolder.getServiceType())
-            .uuid(UUID.randomUUID())
-            .timestamp(Instant.ofEpochMilli(request.getTimeStamp()))
+                .logName("request")
+                .serviceType(CommonLogHolder.getServiceType())
+                .uuid(UUID.randomUUID())
+                .timestamp(Instant.ofEpochMilli(request.getTimeStamp()))
 
-            .method(request.getMethod())
-            .status(response.getStatus())
-            .incoming(true)
-            .url(fullUrl(request))
-            .urlQuerystring(query)
+                .method(request.getMethod())
+                .status(response.getStatus())
+                .incoming(true)
+                .url(fullUrl(request))
+                .urlQuerystring(query)
 
-            .duration(TimeUnit.NANOSECONDS.toMicros(
-                Duration.between(
-                    Instant.ofEpochMilli(request.getTimeStamp()),
-                    clock.instant())
-                .toNanos()))
+                .duration(TimeUnit.NANOSECONDS.toMicros(
+                        Duration.between(
+                                Instant.ofEpochMilli(request.getTimeStamp()),
+                                clock.instant())
+                                .toNanos()))
 
-            .bodySize(request.getContentLengthLong())
-            .responseSize(response.getContentCount())
+                .bodySize(request.getContentLengthLong())
+                .responseSize(response.getContentCount())
+                .correlationId(request.getHeader(OTHeaders.CORRELATION_ID))
+                .acceptLanguage(request.getHeader(HttpHeaders.ACCEPT_LANGUAGE))
+                .anonymousId(request.getHeader(OTHeaders.ANONYMOUS_ID))
+                // mind your r's and rr's
+                .referer(request.getHeader(HttpHeaders.REFERER))
+                .referringHost(request.getHeader(OTHeaders.REFERRING_HOST))
+                .referringService(request.getHeader(OTHeaders.REFERRING_SERVICE))
+                .remoteAddress(request.getRemoteAddr())
+                .requestId(getRequestIdFrom(request, response))
+                .sessionId(request.getHeader(OTHeaders.SESSION_ID))
+                .userAgent(request.getHeader(HttpHeaders.USER_AGENT))
+                .userId(request.getHeader(OTHeaders.USER_ID))
+                .headerOtOriginaluri(request.getHeader(OTHeaders.ORIGINAL_URI))
 
-            .acceptLanguage(request.getHeader(HttpHeaders.ACCEPT_LANGUAGE))
-            .anonymousId(request.getHeader(OTHeaders.ANONYMOUS_ID))
-            // mind your r's and rr's
-            .referer(request.getHeader(HttpHeaders.REFERER))
-            .referringHost(request.getHeader(OTHeaders.REFERRING_HOST))
-            .referringService(request.getHeader(OTHeaders.REFERRING_SERVICE))
-            .remoteAddress(request.getRemoteAddr())
-            .requestId(getRequestIdFrom(request, response))
-            .sessionId(request.getHeader(OTHeaders.SESSION_ID))
-            .userAgent(request.getHeader(HttpHeaders.USER_AGENT))
-            .userId(request.getHeader(OTHeaders.USER_ID))
-            .headerOtOriginaluri(request.getHeader(OTHeaders.ORIGINAL_URI))
+                .headerOtDomain(request.getHeader(OTHeaders.DOMAIN))
+                .headerHost(request.getHeader(HttpHeaders.HOST))
+                .headerAccept(request.getHeader(HttpHeaders.ACCEPT))
 
-            .headerOtDomain(request.getHeader(OTHeaders.DOMAIN))
-            .headerHost(request.getHeader(HttpHeaders.HOST))
-            .headerAccept(request.getHeader(HttpHeaders.ACCEPT))
+                .headerXForwardedFor(request.getHeader(HttpHeaders.X_FORWARDED_FOR))
+                .headerXForwardedPort(request.getHeader(HttpHeaders.X_FORWARDED_PORT))
+                .headerXForwardedProto(request.getHeader(HttpHeaders.X_FORWARDED_PROTO))
 
-            .headerXForwardedFor(request.getHeader(HttpHeaders.X_FORWARDED_FOR))
-            .headerXForwardedPort(request.getHeader(HttpHeaders.X_FORWARDED_PORT))
-            .headerXForwardedProto(request.getHeader(HttpHeaders.X_FORWARDED_PROTO))
-
-            .build();
+                .build();
     }
 
     /**
