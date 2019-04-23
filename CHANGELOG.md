@@ -1,6 +1,10 @@
 otj-logging
 ===========
 
+3.0.4
+-----
+* OT-CorrelationID was conserved before but not logged. Now it will be.
+
 3.0.3
 ------
 * Update POM dep, fix some deprecations, update to 1.7.26 SLF4j
