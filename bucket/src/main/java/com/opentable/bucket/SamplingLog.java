@@ -18,6 +18,7 @@ import java.util.function.Consumer;
 
 import org.slf4j.Logger;
 
+@SuppressWarnings("PMD.ClassWithOnlyPrivateConstructorsShouldBeFinal")
 public class SamplingLog extends LimitLog {
     private final Double rate;
 
@@ -38,7 +39,7 @@ public class SamplingLog extends LimitLog {
         if ((rate != null) && (ThreadLocalRandom.current().nextDouble() <= rate)) {
             foo.accept(null);
             return true;
-        };
+        }
         return false;
     }
 }

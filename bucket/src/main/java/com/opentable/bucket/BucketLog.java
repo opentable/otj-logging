@@ -22,6 +22,7 @@ import io.github.bucket4j.Bandwidth;
 import io.github.bucket4j.Bucket;
 import io.github.bucket4j.Bucket4j;
 
+@SuppressWarnings("PMD.ClassWithOnlyPrivateConstructorsShouldBeFinal")
 public class BucketLog extends LimitLog {
     private final Bucket bucket;
 
@@ -60,7 +61,7 @@ public class BucketLog extends LimitLog {
         if (bucket != null && bucket.tryConsume(1)) {
             foo.accept(null);
             return true;
-        };
+        }
         return false;
     }
 }
