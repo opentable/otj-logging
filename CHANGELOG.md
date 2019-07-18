@@ -1,6 +1,10 @@
 otj-logging
 ===========
 
+3.0.5
+-----
+* Obey HeaderBlacklist in logging from MDC
+
 3.0.4
 -----
 * OT-CorrelationID was conserved before but not logged. Now it will be.

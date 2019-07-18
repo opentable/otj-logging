@@ -45,7 +45,7 @@ import com.opentable.logging.otl.OtlType;
 public class JsonLogEncoder extends EncoderBase<ILoggingEvent> {
     private static final byte[] NADA = new byte[0];
     private static final AtomicLong LOG_SEQUENCE_NUMBER = new AtomicLong(0);
-    private static final HeaderBlacklist HEADER_BLACKLIST = new HeaderBlacklist();
+    private static final HeaderBlacklist HEADER_BLACKLIST = HeaderBlacklist.INSTANCE;
 
     private final ObjectMapper mapper;
 
@@ -90,7 +90,7 @@ public class JsonLogEncoder extends EncoderBase<ILoggingEvent> {
         }
 
         for (Entry<String, String> e : event.getMDCPropertyMap().entrySet()) {
-            if (!logLine.has(e.getKey()) && HEADER_BLACKLIST.logToMDC(e.getKey())) {
+            if (!logLine.has(e.getKey()) && HEADER_BLACKLIST.logFromMDC(e.getKey())) {
                 logLine.put(e.getKey(), e.getValue());
             }
         }
