@@ -90,7 +90,7 @@ public class JsonLogEncoder extends EncoderBase<ILoggingEvent> {
         }
 
         for (Entry<String, String> e : event.getMDCPropertyMap().entrySet()) {
-            if (!logLine.has(e.getKey()) && HEADER_BLACKLIST.logFromMDC(e.getKey())) {
+            if (!logLine.has(e.getKey()) && HEADER_BLACKLIST.canLogFromMDC(e.getKey())) {
                 logLine.put(e.getKey(), e.getValue());
             }
         }
