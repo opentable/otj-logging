@@ -110,8 +110,7 @@ public class JsonRequestLog extends AbstractLifeCycle implements RequestLog
                 .logName("request")
                 .serviceType(CommonLogHolder.getServiceType())
                 .uuid(UUID.randomUUID())
-                .timestamp(Instant.ofEpochMilli(request.getTimeStamp()))
-
+                .timestamp(clock.instant())
                 .method(request.getMethod())
                 .status(response.getStatus())
                 .incoming(true)
