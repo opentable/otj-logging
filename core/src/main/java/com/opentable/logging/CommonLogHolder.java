@@ -20,6 +20,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.StringUtils;
 
 /**
  * Holds values common to most/all log messages
@@ -97,10 +98,15 @@ public final class CommonLogHolder
     }
 
     private static Integer getInstanceNumber() {
+        final String instanceNoString = System.getenv("INSTANCE_NO");
+        if (StringUtils.isEmpty(instanceNoString)) {
+            LOG.warn("Environment variable INSTANCE_NO was not supplied");
+            return null;
+        }
         try {
-            return Integer.parseInt(System.getenv("INSTANCE_NO"));
+            return Integer.parseInt(instanceNoString);
         } catch (final NumberFormatException e) {
-            LOG.warn("Could not parse INSTANCE_NO.", e);
+            LOG.warn("Could not parse INSTANCE_NO, whose value is '{}'", instanceNoString);
             return null;
         }
     }
