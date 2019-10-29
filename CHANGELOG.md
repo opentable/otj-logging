@@ -1,6 +1,10 @@
 otj-logging
 ===========
 
+3.0.7
+-----
+* Suppress annoying stack trace when INSTANCE_NO is undefined
+
 3.0.6
 -----
 * In JsonRequestLog set the timestamp to be time the request was completed, not the time it arrived.
