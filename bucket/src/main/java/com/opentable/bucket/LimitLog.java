@@ -41,31 +41,31 @@ public abstract  class LimitLog implements Logger {
         return delegate.isTraceEnabled();
     }
 
-    protected abstract boolean logMaybe(Consumer<String> foo);
+    protected abstract boolean log(Consumer<String> foo);
 
     @Override
     public void trace(final String s) {
-            logMaybe(delegate::trace);
+            log(delegate::trace);
     }
 
     @Override
     public void trace(final String s, final Object o) {
-        logMaybe(s1 -> delegate.trace(s1, o));
+        log(s1 -> delegate.trace(s1, o));
     }
 
     @Override
     public void trace(final String s, final Object o, final Object o1) {
-        logMaybe(s1 -> delegate.trace(s, o, o1));
+        log(s1 -> delegate.trace(s, o, o1));
     }
 
     @Override
     public void trace(final String s, final Object... objects) {
-        logMaybe(s1 -> delegate.trace(s1, objects));
+        log(s1 -> delegate.trace(s1, objects));
     }
 
     @Override
     public void trace(final String s, final Throwable throwable) {
-        logMaybe(s1 -> delegate.trace(s, throwable));
+        log(s1 -> delegate.trace(s, throwable));
     }
 
     @Override
@@ -75,27 +75,27 @@ public abstract  class LimitLog implements Logger {
 
     @Override
     public void trace(final Marker marker, final String s) {
-        logMaybe(s1 -> delegate.trace(marker, s));
+        log(s1 -> delegate.trace(marker, s));
     }
 
     @Override
     public void trace(final Marker marker, final String s, final Object o) {
-        logMaybe(s1 -> delegate.trace(marker, s, o));
+        log(s1 -> delegate.trace(marker, s, o));
     }
 
     @Override
     public void trace(final Marker marker, final String s, final Object o, final Object o1) {
-        logMaybe(s1 -> delegate.trace(marker, s , o, o1));
+        log(s1 -> delegate.trace(marker, s , o, o1));
     }
 
     @Override
     public void trace(final Marker marker, final String s, final Object... objects) {
-        logMaybe(s1 -> delegate.trace(marker, s , objects));
+        log(s1 -> delegate.trace(marker, s , objects));
     }
 
     @Override
     public void trace(final Marker marker, final String s, final Throwable throwable) {
-        logMaybe(s1 -> delegate.trace(marker, s , throwable));
+        log(s1 -> delegate.trace(marker, s , throwable));
     }
 
     @Override
@@ -105,27 +105,27 @@ public abstract  class LimitLog implements Logger {
 
     @Override
     public void debug(final String s) {
-        logMaybe(s1 -> delegate.debug(s));
+        log(s1 -> delegate.debug(s));
     }
 
     @Override
     public void debug(final String s, final Object o) {
-        logMaybe(s1 -> delegate.debug(s , o));
+        log(s1 -> delegate.debug(s , o));
     }
 
     @Override
     public void debug(final String s, final Object o, final Object o1) {
-        logMaybe(s1 -> delegate.debug(s , o, o1));
+        log(s1 -> delegate.debug(s , o, o1));
     }
 
     @Override
     public void debug(final String s, final Object... objects) {
-        logMaybe(s1 -> delegate.debug(s , objects));
+        log(s1 -> delegate.debug(s , objects));
     }
 
     @Override
     public void debug(final String s, final Throwable throwable) {
-        logMaybe(s1 -> delegate.debug(s , throwable));
+        log(s1 -> delegate.debug(s , throwable));
     }
 
     @Override
@@ -135,27 +135,27 @@ public abstract  class LimitLog implements Logger {
 
     @Override
     public void debug(final Marker marker, final String s) {
-        logMaybe(s1 -> delegate.debug(marker, s));
+        log(s1 -> delegate.debug(marker, s));
     }
 
     @Override
     public void debug(final Marker marker, final String s, final Object o) {
-        logMaybe(s1 -> delegate.debug(marker, s, o));
+        log(s1 -> delegate.debug(marker, s, o));
     }
 
     @Override
     public void debug(final Marker marker, final String s, final Object o, final Object o1) {
-        logMaybe(s1 -> delegate.debug(marker, s, o, o1));
+        log(s1 -> delegate.debug(marker, s, o, o1));
     }
 
     @Override
     public void debug(final Marker marker, final String s, final Object... objects) {
-        logMaybe(s1 -> delegate.debug(marker, s, objects));
+        log(s1 -> delegate.debug(marker, s, objects));
     }
 
     @Override
     public void debug(final Marker marker, final String s, final Throwable throwable) {
-        logMaybe(s1 -> delegate.debug(marker, s, throwable));
+        log(s1 -> delegate.debug(marker, s, throwable));
     }
 
     @Override
@@ -165,27 +165,27 @@ public abstract  class LimitLog implements Logger {
 
     @Override
     public void info(final String s) {
-        logMaybe(s1 -> delegate.info(s));
+        log(s1 -> delegate.info(s));
     }
 
     @Override
     public void info(final String s, final Object o) {
-        logMaybe(s1 -> delegate.info(s, o));
+        log(s1 -> delegate.info(s, o));
     }
 
     @Override
     public void info(final String s, final Object o, final Object o1) {
-        logMaybe(s1 -> delegate.info(s, o, o1));
+        log(s1 -> delegate.info(s, o, o1));
     }
 
     @Override
     public void info(final String s, final Object... objects) {
-        logMaybe(s1 -> delegate.info(s, objects));
+        log(s1 -> delegate.info(s, objects));
     }
 
     @Override
     public void info(final String s, final Throwable throwable) {
-        logMaybe(s1 -> delegate.info(s, throwable));
+        log(s1 -> delegate.info(s, throwable));
     }
 
     @Override
@@ -195,27 +195,27 @@ public abstract  class LimitLog implements Logger {
 
     @Override
     public void info(final Marker marker, final String s) {
-        logMaybe(s1 -> delegate.info(marker, s));
+        log(s1 -> delegate.info(marker, s));
     }
 
     @Override
     public void info(final Marker marker, final String s, final Object o) {
-        logMaybe(s1 -> delegate.info(marker, s, o));
+        log(s1 -> delegate.info(marker, s, o));
     }
 
     @Override
     public void info(final Marker marker, final String s, final Object o, final Object o1) {
-        logMaybe(s1 -> delegate.info(marker, s, o, o1));
+        log(s1 -> delegate.info(marker, s, o, o1));
     }
 
     @Override
     public void info(final Marker marker, final String s, final Object... objects) {
-        logMaybe(s1 -> delegate.info(marker, s, objects));
+        log(s1 -> delegate.info(marker, s, objects));
     }
 
     @Override
     public void info(final Marker marker, final String s, final Throwable throwable) {
-        logMaybe(s1 -> delegate.info(marker, s, throwable));
+        log(s1 -> delegate.info(marker, s, throwable));
     }
 
     @Override
@@ -225,57 +225,57 @@ public abstract  class LimitLog implements Logger {
 
     @Override
     public void warn(final String s) {
-        logMaybe(s1 -> delegate.warn(s));
+        log(s1 -> delegate.warn(s));
     }
 
     @Override
     public void warn(final String s, final Object o) {
-        logMaybe(s1 -> delegate.warn(s, o));
+        log(s1 -> delegate.warn(s, o));
     }
 
     @Override
     public void warn(final String s, final Object... objects) {
-        logMaybe(s1 -> delegate.warn(s, objects));
+        log(s1 -> delegate.warn(s, objects));
     }
 
     @Override
     public void warn(final String s, final Object o, final Object o1) {
-        logMaybe(s1 -> delegate.warn(s, o, o1));
+        log(s1 -> delegate.warn(s, o, o1));
     }
 
     @Override
     public void warn(final String s, final Throwable throwable) {
-        logMaybe(s1 -> delegate.warn(s, throwable));
+        log(s1 -> delegate.warn(s, throwable));
     }
 
     @Override
     public boolean isWarnEnabled(final Marker marker) {
-        return logMaybe(s1 -> delegate.isWarnEnabled(marker));
+        return log(s1 -> delegate.isWarnEnabled(marker));
     }
 
     @Override
     public void warn(final Marker marker, final String s) {
-        logMaybe(s1 -> delegate.warn(marker, s));
+        log(s1 -> delegate.warn(marker, s));
     }
 
     @Override
     public void warn(final Marker marker, final String s, final Object o) {
-        logMaybe(s1 -> delegate.warn(marker, s, o));
+        log(s1 -> delegate.warn(marker, s, o));
     }
 
     @Override
     public void warn(final Marker marker, final String s, final Object o, final Object o1) {
-        logMaybe(s1 -> delegate.warn(marker, s, o, o1));
+        log(s1 -> delegate.warn(marker, s, o, o1));
     }
 
     @Override
     public void warn(final Marker marker, final String s, final Object... objects) {
-        logMaybe(s1 -> delegate.warn(marker, s, objects));
+        log(s1 -> delegate.warn(marker, s, objects));
     }
 
     @Override
     public void warn(final Marker marker, final String s, final Throwable throwable) {
-        logMaybe(s1 -> delegate.warn(marker, s, throwable));
+        log(s1 -> delegate.warn(marker, s, throwable));
     }
 
     @Override
@@ -285,27 +285,27 @@ public abstract  class LimitLog implements Logger {
 
     @Override
     public void error(final String s) {
-        logMaybe(s1 -> delegate.error(s));
+        log(s1 -> delegate.error(s));
     }
 
     @Override
     public void error(final String s, final Object o) {
-        logMaybe(s1 -> delegate.error(s, o));
+        log(s1 -> delegate.error(s, o));
     }
 
     @Override
     public void error(final String s, final Object o, final Object o1) {
-        logMaybe(s1 -> delegate.error(s, o, o1));
+        log(s1 -> delegate.error(s, o, o1));
     }
 
     @Override
     public void error(final String s, final Object... objects) {
-        logMaybe(s1 -> delegate.error(s, objects));
+        log(s1 -> delegate.error(s, objects));
     }
 
     @Override
     public void error(final String s, final Throwable throwable) {
-        logMaybe(s1 -> delegate.error(s, throwable));
+        log(s1 -> delegate.error(s, throwable));
     }
 
     @Override
@@ -315,27 +315,27 @@ public abstract  class LimitLog implements Logger {
 
     @Override
     public void error(final Marker marker, final String s) {
-        logMaybe(s1 -> delegate.error(marker, s));
+        log(s1 -> delegate.error(marker, s));
     }
 
     @Override
     public void error(final Marker marker, final String s, final Object o) {
-        logMaybe(s1 -> delegate.error(marker, s, o));
+        log(s1 -> delegate.error(marker, s, o));
     }
 
     @Override
     public void error(final Marker marker, final String s, final Object o, final Object o1) {
-        logMaybe(s1 -> delegate.error(marker, s, o, o1));
+        log(s1 -> delegate.error(marker, s, o, o1));
     }
 
     @Override
     public void error(final Marker marker, final String s, final Object... objects) {
-        logMaybe(s1 -> delegate.error(marker, s, objects));
+        log(s1 -> delegate.error(marker, s, objects));
     }
 
     @Override
     public void error(final Marker marker, final String s, final Throwable throwable) {
-        logMaybe(s1 -> delegate.error(marker, s, throwable));
+        log(s1 -> delegate.error(marker, s, throwable));
     }
 
 

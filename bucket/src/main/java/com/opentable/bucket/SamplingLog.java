@@ -35,9 +35,9 @@ public class SamplingLog extends LimitLog {
         return new SamplingLog(getLogger(clazz), rate);
     }
 
-    public boolean logMaybe(Consumer<String> foo) {
+    public boolean log(Consumer<String> consumer) {
         if ((rate != null) && (ThreadLocalRandom.current().nextDouble() <= rate)) {
-            foo.accept(null);
+            consumer.accept(null);
             return true;
         }
         return false;

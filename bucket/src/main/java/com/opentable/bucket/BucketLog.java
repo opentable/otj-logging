@@ -57,9 +57,9 @@ public class BucketLog extends LimitLog {
                 .addLimit(Bandwidth.simple(perSecond, refillBucketDuration)).build());
     }
 
-    public boolean logMaybe(Consumer<String> foo) {
+    public boolean log(Consumer<String> consumer) {
         if (bucket != null && bucket.tryConsume(1)) {
-            foo.accept(null);
+            consumer.accept(null);
             return true;
         }
         return false;
