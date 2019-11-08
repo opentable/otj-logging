@@ -1,6 +1,18 @@
 otj-logging
 ===========
 
+3.0.7
+-----
+* Suppress annoying stack trace when INSTANCE_NO is undefined
+
+3.0.6
+-----
+* In JsonRequestLog set the timestamp to be time the request was completed, not the time it arrived.
+
+3.0.5
+-----
+* Obey HeaderBlacklist in logging from MDC
+
 3.0.4
 -----
 * OT-CorrelationID was conserved before but not logged. Now it will be.

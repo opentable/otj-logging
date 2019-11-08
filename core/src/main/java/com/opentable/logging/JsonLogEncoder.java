@@ -30,6 +30,7 @@ import org.slf4j.Marker;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.encoder.EncoderBase;
 
+import com.opentable.httpheaders.HeaderBlacklist;
 import com.opentable.logging.otl.OtlMarker;
 import com.opentable.logging.otl.OtlType;
 
@@ -44,6 +45,7 @@ import com.opentable.logging.otl.OtlType;
 public class JsonLogEncoder extends EncoderBase<ILoggingEvent> {
     private static final byte[] NADA = new byte[0];
     private static final AtomicLong LOG_SEQUENCE_NUMBER = new AtomicLong(0);
+    private static final HeaderBlacklist HEADER_BLACKLIST = HeaderBlacklist.INSTANCE;
 
     private final ObjectMapper mapper;
 
@@ -65,7 +67,7 @@ public class JsonLogEncoder extends EncoderBase<ILoggingEvent> {
 
     /**
      * Prepare a log event but don't append it, return it as an ObjectNode instead.
-     * @param the logging event to encode
+     * @param event the logging event to encode
      * @return the JSON object version of the log event
      */
     public ObjectNode convertToObjectNode(ILoggingEvent event) {
@@ -88,7 +90,7 @@ public class JsonLogEncoder extends EncoderBase<ILoggingEvent> {
         }
 
         for (Entry<String, String> e : event.getMDCPropertyMap().entrySet()) {
-            if (!logLine.has(e.getKey())) {
+            if (!logLine.has(e.getKey()) && HEADER_BLACKLIST.canLogFromMDC(e.getKey())) {
                 logLine.put(e.getKey(), e.getValue());
             }
         }
