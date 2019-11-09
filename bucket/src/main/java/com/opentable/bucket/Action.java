@@ -13,7 +13,10 @@
  */
 package com.opentable.bucket;
 
-
+/**
+ * A function that needs no external input and provides no output. Identical to
+ * @see Runnable, but specifically functional in scope.
+ */
 @FunctionalInterface
 public interface Action {
     void act();

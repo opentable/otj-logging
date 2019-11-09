@@ -31,7 +31,7 @@ public class SamplingLog extends LimitLog {
     }
 
     public static SamplingLog of(Class clazz, Double rate) {
-        return new SamplingLog(getLogger(clazz), rate);
+        return of(getLogger(clazz), rate);
     }
 
     public boolean log(Action action) {

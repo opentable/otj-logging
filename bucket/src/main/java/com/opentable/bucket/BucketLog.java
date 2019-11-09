@@ -35,27 +35,32 @@ public class BucketLog extends LimitLog {
     }
 
     public static BucketLog of(Class clazz, Bucket bucket) {
-        return new BucketLog(getLogger(clazz), bucket);
+        return of(getLogger(clazz), bucket);
     }
 
-    public static BucketLog of(Logger delegate, int perSecond) {
+    public static BucketLog perSecond(Logger delegate, int perSecond) {
         return of(delegate, perSecond, Duration.ofSeconds(1));
     }
 
-    public static BucketLog of(Class clazz, int perSecond) {
+    public static BucketLog perSecond(Class clazz, int perSecond) {
         return of(getLogger(clazz), perSecond, Duration.ofSeconds(1));
     }
 
     public static BucketLog of(Class clazz, int perSecond, Duration refillBucketDuration) {
-        return new BucketLog(getLogger(clazz), Bucket4j.builder()
+        return of(getLogger(clazz), Bucket4j.builder()
                 .addLimit(Bandwidth.simple(perSecond, refillBucketDuration)).build());
     }
 
     public static BucketLog of(Logger delegate, int perSecond, Duration refillBucketDuration) {
-        return new BucketLog(delegate, Bucket4j.builder()
+        return of(delegate, Bucket4j.builder()
                 .addLimit(Bandwidth.simple(perSecond, refillBucketDuration)).build());
     }
 
+    /**
+     * Log assuming we have enough tokens in the token bucket
+     * @param action A functional closure to log with
+     * @return true if we logged, false if it was rate limited
+     */
     public boolean log(Action action) {
         if (bucket != null && bucket.tryConsume(1)) {
             action.act();

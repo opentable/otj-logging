@@ -16,6 +16,10 @@ package com.opentable.bucket;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
+
+/**
+ * Base class that delegates to SLF4j Logger for all functionality and implements the Logger interface.
+ */
 @SuppressWarnings({"PMD.ClassWithOnlyPrivateConstructorsShouldBeFinal", "PMD.LoggerIsNotStaticFinal"})
 public abstract  class LimitLog implements Logger {
     protected final Logger delegate;
@@ -24,10 +28,22 @@ public abstract  class LimitLog implements Logger {
         this.delegate = logger;
     }
 
+    /**
+     * The single method to implement. Given a lambda to execute, execute if and only if it's determined
+     * that one should log.
+     * @param action logging delegation lambda
+     * @return true if sl4j was called, false otherwise
+     */
+    protected abstract boolean log(Action action);
+
     protected static Logger getLogger(final Class clazz) {
         return LoggerFactory.getLogger(clazz);
     }
 
+    /**
+     *
+     * All other methods are simple delegating methods...
+     */
 
     @Override
     public String getName() {
@@ -38,8 +54,6 @@ public abstract  class LimitLog implements Logger {
     public boolean isTraceEnabled() {
         return delegate.isTraceEnabled();
     }
-
-    protected abstract boolean log(Action foo);
 
     @Override
     public void trace(final String s) {
@@ -335,6 +349,4 @@ public abstract  class LimitLog implements Logger {
     public void error(final Marker marker, final String s, final Throwable throwable) {
         log(() -> delegate.error(marker, s, throwable));
     }
-
-
 }
