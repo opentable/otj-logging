@@ -14,7 +14,6 @@
 package com.opentable.bucket;
 
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.function.Consumer;
 
 import org.slf4j.Logger;
 
@@ -35,9 +34,9 @@ public class SamplingLog extends LimitLog {
         return new SamplingLog(getLogger(clazz), rate);
     }
 
-    public boolean log(Consumer<String> consumer) {
+    public boolean log(Action action) {
         if ((rate != null) && (ThreadLocalRandom.current().nextDouble() <= rate)) {
-            consumer.accept(null);
+            action.act();
             return true;
         }
         return false;

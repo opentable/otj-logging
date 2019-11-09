@@ -14,7 +14,6 @@
 package com.opentable.bucket;
 
 import java.time.Duration;
-import java.util.function.Consumer;
 
 import org.slf4j.Logger;
 
@@ -57,9 +56,9 @@ public class BucketLog extends LimitLog {
                 .addLimit(Bandwidth.simple(perSecond, refillBucketDuration)).build());
     }
 
-    public boolean log(Consumer<String> consumer) {
+    public boolean log(Action action) {
         if (bucket != null && bucket.tryConsume(1)) {
-            consumer.accept(null);
+            action.act();
             return true;
         }
         return false;
