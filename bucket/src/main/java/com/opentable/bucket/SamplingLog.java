@@ -13,7 +13,6 @@
  */
 package com.opentable.bucket;
 
-import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 
 import org.slf4j.Logger;
