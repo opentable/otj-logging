@@ -19,7 +19,7 @@
   <parent>
     <groupId>com.opentable</groupId>
     <artifactId>otj-parent-spring</artifactId>
-    <version>213</version>
+    <version>220</version>
   </parent>
 
   <scm>
@@ -40,11 +40,10 @@
     <module>core</module>
     <module>kafka</module>
     <module>jetty</module>
+    <module>bucket</module>
   </modules>
 
   <properties>
-    <!-- remove once parent is updated -->
-    <dep.otj-httpheaders.version>0.1.4</dep.otj-httpheaders.version>
     <basepom.oss.skip-scala-doc>true</basepom.oss.skip-scala-doc>
     <basepom.check.skip-javadoc>false</basepom.check.skip-javadoc>
     <basepom.check.fail-javadoc>false</basepom.check.fail-javadoc>
@@ -64,6 +63,11 @@
       <dependency>
         <groupId>com.opentable.components</groupId>
         <artifactId>otj-logging-kafka</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.opentable.components</groupId>
+        <artifactId>otj-logging-bucket</artifactId>
         <version>${project.version}</version>
       </dependency>
     </dependencies>

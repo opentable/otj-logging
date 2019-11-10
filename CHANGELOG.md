@@ -1,6 +1,10 @@
 otj-logging
 ===========
 
+3.0.8
+-----
+* add otj-logging-bucker module for ratelimiting/sampling
+
 3.0.7
 -----
 * Suppress annoying stack trace when INSTANCE_NO is undefined
