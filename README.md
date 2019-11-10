@@ -110,6 +110,29 @@ The Kafka module provides an Appender that submits logging events to a Kafka que
 
 ```
 
+otj-logging-bucket
+-----------
+Perhaps you need to rate limit or sample your logging? We've got a module for you.
+
+Import `otj-logging-bucket` as a dependency and use either of these implementations as a decorator
+for your SLF4J Logger.
+
+* `BucketLog` - Uses a token bucket to rate limit. There are several static methods you can use. Here's an
+example
+
+```
+    private static final Logger LOG = BucketLog.of(MyClass.class, 10); // 10 per second
+```
+
+* `SamplingLog` - Does a coin flip. You provide a number between 0 and 1 representing probability. Providing
+.1 for example means there's about a 10% rate of logging.
+
+
+```
+    private static final Logger LOG = SamplngLog.of(MyClass.class, .1); // 10% logged
+```
+
+
 otj-logging
 -----------
 
