@@ -95,7 +95,7 @@ public class JsonLogEncoder extends EncoderBase<ILoggingEvent> {
             }
         }
 
-        logLine.put("sequence-number", LOG_SEQUENCE_NUMBER.incrementAndGet());
+        logLine.put(CommonLogFields.SEQUENCE_NUMBER, LOG_SEQUENCE_NUMBER.incrementAndGet());
         return logLine;
     }
 
