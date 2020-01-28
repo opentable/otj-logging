@@ -1,6 +1,11 @@
 otj-logging
 ===========
 
+3.0.9
+-----
+* OTPL-4457 fixed serialization of the `sequence-number` property for JSON log.
+
+
 3.0.8
 -----
 * add otj-logging-bucker module for ratelimiting/sampling

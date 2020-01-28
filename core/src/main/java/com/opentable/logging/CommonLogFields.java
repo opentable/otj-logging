@@ -28,6 +28,7 @@ import org.slf4j.MDC;
 public interface CommonLogFields
 {
     String REQUEST_ID_KEY = "request-id";
+    String SEQUENCE_NUMBER_KEY = "sequence-number";
 
     /**
      * Get the time this message was logged in ISO-8601 format (i.e. {@link DateTimeFormatter#ISO_INSTANT})
@@ -156,7 +157,7 @@ public interface CommonLogFields
     String getThrowable();
 
     /** Written by the encoder, value is ignored for serialization. */
-    @JsonProperty("sequence-number")
+    @JsonProperty(SEQUENCE_NUMBER_KEY)
     default long getSequenceNumber() {
         return Long.MIN_VALUE;
     }
