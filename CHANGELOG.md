@@ -26,6 +26,34 @@ otj-logging
 -----
 * OT-CorrelationID was conserved before but not logged. Now it will be.
 
+3.0.10
+------
+* Add OT-Force-Experiment to request log
+
+3.0.9
+-----
+* Fix 2 year old bug with sequence number not being logged properly
+
+3.0.8
+-----
+* add otj-logging-bucket module, to provide a decorated Logger that is logged based on sampling
+
+3.0.7
+-----
+* Fix annoying stack trace when INSTANCE_NO is not parseable
+
+3.0.6
+-----
+* Per OTPL-4104, the timestamp is now end of the request instead of start.
+
+3.0.5
+-----
+* Allow a backlist for copying from MDC to logging
+
+3.0.4
+-----
+* Add correlation-id as request log
+
 3.0.3
 ------
 * Update POM dep, fix some deprecations, update to 1.7.26 SLF4j
