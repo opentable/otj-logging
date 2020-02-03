@@ -41,38 +41,8 @@ LOG.info(metadata, "Service '{}' is DOWN at '{}'", serviceType, when);
 ```
 
 otj-logging-redis
------------------
-
-The Redis module provides an Appender that submits logging events to a Redis queue.  Example configuration:
-
-```xml
-<?xml version="1.0" encoding="UTF-8" ?>
-
-<!--
-  Example configuration that logs text to the console and JSON to Redis.
--->
-<configuration threshold="TRACE">
-  <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
-    <encoder>
-      <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
-    </encoder>
-  </appender>
-
-  <appender name="REDIS" class="com.opentable.logging.RedisAppender">
-    <encoder class="com.opentable.logging.JsonLogEncoder"/>
-    <host>localhost</host>
-    <port>12345</port>
-    <key>logs</key>
-    <clientName>test-client</clientName>
-  </appender>
-
-  <root level="INFO">
-    <appender-ref ref="CONSOLE" />
-    <appender-ref ref="REDIS" />
-  </root>
-
-</configuration>
-```
+----------------
+* This component was removed in 2017. All logging on OTJ platform now occurs via Kafka.
 
 otj-logging-kafka
 -----------------
