@@ -43,7 +43,8 @@ import com.opentable.logging.LogbackLogging;
 import com.opentable.logging.otl.HttpV1;
 
 /**
- * A Jetty RequestLog that emits to Logback, for tranport to centralized logging.
+ * A Jetty RequestLog that emits to Logback, for transport to centralized logging.
+ * This is normally wired up via otj-server.
  */
 @Singleton
 public class JsonRequestLog extends AbstractLifeCycle implements RequestLog
@@ -70,23 +71,27 @@ public class JsonRequestLog extends AbstractLifeCycle implements RequestLog
         this.equalityBlackList = config.getEqualityBlacklist();
     }
 
+    // Called by Jetty
     @Override
     public void log(final Request request, final Response response)
     {
         final String requestUri = request.getRequestURI();
 
+        // Do not log a URI starting with some configured blacklist
         for (String blackListEntry : startsWithBlackList) {
             if (StringUtils.startsWithIgnoreCase(requestUri, blackListEntry)) {
                 return;
             }
         }
 
+        // Do not log a URI exactly equal to some configured blacklist
         for (String blackListEntry : equalityBlackList) {
             if (StringUtils.equalsIgnoreCase(requestUri, blackListEntry)) {
                 return;
             }
         }
 
+        // Build the event, and wrap it as a Logback ILoggingEvent
         final HttpV1 payload = createEvent(request, response);
         final RequestLogEvent event = new RequestLogEvent(payload, constructMessage(payload));
 
@@ -97,6 +102,7 @@ public class JsonRequestLog extends AbstractLifeCycle implements RequestLog
         MDC.put(CommonLogFields.REQUEST_ID_KEY, Objects.toString(payload.getRequestId(), null));
         try {
             event.prepareForDeferredProcessing();
+            // Log to logback.
             LogbackLogging.log(LOG, event);
         } finally {
             MDC.remove(CommonLogFields.REQUEST_ID_KEY);
