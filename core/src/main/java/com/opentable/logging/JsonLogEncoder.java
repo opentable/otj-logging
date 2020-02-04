@@ -71,30 +71,40 @@ public class JsonLogEncoder extends EncoderBase<ILoggingEvent> {
      * @return the JSON object version of the log event
      */
     public ObjectNode convertToObjectNode(ILoggingEvent event) {
+        // If marked with OtlType, it's got an OTL such as HttpV1 hooked to it. Otherwise
+        // wrap as a generic Application Log. Note that RequestEventLogs will
+        // also be wrapped as an ApplicationLogEvent
         final ObjectNode logLine = mapper.valueToTree(
                 event instanceof OtlType ? event : new ApplicationLogEvent(event));
         final Marker marker = event.getMarker();
 
+        // We support an arbitrary key value marker called LogMetadata
         if (marker instanceof LogMetadata) {
+            // pull the key value metadata out and set the properties
             ObjectNode metadataNode = mapper.valueToTree(((LogMetadata) marker).getMetadata());
             logLine.setAll(metadataNode);
-
+            // LogMetadata also permits objects to be set.
             for (Object o : ((LogMetadata) marker).getInlines()) {
                 metadataNode = mapper.valueToTree(o);
                 logLine.setAll(metadataNode);
             }
         }
+
+        // Merge aux OTL in as well.
         if (marker instanceof OtlMarker) {
             ObjectNode metadataNode = mapper.valueToTree(((OtlMarker) marker).getOtl());
             logLine.setAll(metadataNode);
         }
 
+        // Grab everything from the MDC, and with some exceptions (never override, obey blacklist)
+        // Log them.
         for (Entry<String, String> e : event.getMDCPropertyMap().entrySet()) {
             if (!logLine.has(e.getKey()) && HEADER_BLACKLIST.canLogFromMDC(e.getKey())) {
                 logLine.put(e.getKey(), e.getValue());
             }
         }
 
+        // And put a tie breaking sequence number in
         logLine.put(CommonLogFields.SEQUENCE_NUMBER_KEY, LOG_SEQUENCE_NUMBER.incrementAndGet());
         return logLine;
     }

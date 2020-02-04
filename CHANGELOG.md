@@ -3,28 +3,27 @@ otj-logging
 
 3.0.9
 -----
-* OTPL-4457 fixed serialization of the `sequence-number` property for JSON log.
-
+* Fix 2 year old bug with sequence number not being logged properly
 
 3.0.8
 -----
-* add otj-logging-bucker module for ratelimiting/sampling
+* add otj-logging-bucket module, to provide a decorated Logger that is logged based on sampling
 
 3.0.7
 -----
-* Suppress annoying stack trace when INSTANCE_NO is undefined
+* Fix annoying stack trace when INSTANCE_NO is not parseable
 
 3.0.6
 -----
-* In JsonRequestLog set the timestamp to be time the request was completed, not the time it arrived.
+* Per OTPL-4104, the timestamp is now end of the request instead of start.
 
 3.0.5
 -----
-* Obey HeaderBlacklist in logging from MDC
+* Allow a backlist for copying from MDC to logging
 
 3.0.4
 -----
-* OT-CorrelationID was conserved before but not logged. Now it will be.
+* Add correlation-id as request log
 
 3.0.3
 ------

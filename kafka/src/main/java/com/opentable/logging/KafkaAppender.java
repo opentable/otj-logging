@@ -55,6 +55,7 @@ public class KafkaAppender extends UnsynchronizedAppenderBase<ILoggingEvent>
         }
 
         final Properties config = new Properties();
+        // Always compress with snappy, require only 1 ack, since some lossiness is ok, and performance matters
         config.put("bootstrap.servers", brokerList);
         config.put("acks", "1");
         config.put("compression.type", compressionCodec);
