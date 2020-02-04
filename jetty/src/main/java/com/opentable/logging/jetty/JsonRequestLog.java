@@ -134,7 +134,6 @@ public class JsonRequestLog extends AbstractLifeCycle implements RequestLog
                 .correlationId(request.getHeader(OTHeaders.CORRELATION_ID))
                 .acceptLanguage(request.getHeader(OTHeaders.ACCEPT_LANGUAGE))
                 .anonymousId(request.getHeader(OTHeaders.ANONYMOUS_ID))
-                .otForceExperiment(request.getHeader(OTHeaders.OT_FORCE_EXPERIMENT))
                 // mind your r's and rr's
                 .referer(request.getHeader(HttpHeaders.REFERER))
                 .referringHost(request.getHeader(OTHeaders.REFERRING_HOST))

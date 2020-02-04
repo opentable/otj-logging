@@ -1,10 +1,6 @@
 otj-logging
 ===========
 
-3.0.10
-------
-* Add OT-Force-Experiment to request log
-
 3.0.9
 -----
 * Fix 2 year old bug with sequence number not being logged properly
