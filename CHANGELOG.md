@@ -19,7 +19,7 @@ otj-logging
 
 3.0.5
 -----
-* Allow a backlist for copying from MDC to logging
+* Allow a blacklist for copying from MDC to logging
 
 3.0.4
 -----
