@@ -138,6 +138,7 @@ public class JsonRequestLog extends AbstractLifeCycle implements RequestLog
                 .referer(request.getHeader(HttpHeaders.REFERER))
                 .referringHost(request.getHeader(OTHeaders.REFERRING_HOST))
                 .referringService(request.getHeader(OTHeaders.REFERRING_SERVICE))
+                .headerOtReferringEnvironment(request.getHeader(OTHeaders.REFERRING_ENV))
                 .remoteAddress(request.getRemoteAddr())
                 .requestId(getRequestIdFrom(request, response))
                 .sessionId(request.getHeader(OTHeaders.SESSION_ID))

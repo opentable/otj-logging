@@ -1,5 +1,10 @@
 otj-logging
 ===========
+3.0.10
+======
+* Use otj-otl 0.9.11, httpheaders 0.1.6
+* upgrade pom
+* OT-ReferringEnv logged if present in incoming Http Request.
 
 3.0.9
 -----
@@ -19,7 +24,7 @@ otj-logging
 
 3.0.5
 -----
-* Allow a backlist for copying from MDC to logging
+* Allow a blacklist for copying from MDC to logging
 
 3.0.4
 -----
