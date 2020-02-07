@@ -45,8 +45,9 @@
 
   <properties>
     <!-- remove once parent updated -->
-    <dep.otj-otl.version>0.9.10-SNAPSHOT</dep.otj-otl.version>
-    <dep.otj-httpheaders.version>0.1.6-SNAPSHOT</dep.otj-httpheaders.version>
+    <dep.otj-otl.version>0.9.11</dep.otj-otl.version>
+    <dep.otj-httpheaders.version>0.1.6</dep.otj-httpheaders.version>
+    <!-- end remove once parent updated -->
     <basepom.oss.skip-scala-doc>true</basepom.oss.skip-scala-doc>
     <basepom.check.skip-javadoc>false</basepom.check.skip-javadoc>
     <basepom.check.fail-javadoc>false</basepom.check.fail-javadoc>
