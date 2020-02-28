@@ -33,13 +33,6 @@ ther applications should explicitly initialize this early on during application 
 CommonLogHolder.setServiceType("my-cool-server");
 ```
 
-We also provide a way to log structured metadata:
-
-```java
-LogMetadata metadata = LogMetadata.of("availability", "down").and("serviceType", serviceType);
-LOG.info(metadata, "Service '{}' is DOWN at '{}'", serviceType, when);
-```
-
 otj-logging-redis
 ----------------
 * This component was removed in 2017. All logging on OTJ platform now occurs via Kafka.
