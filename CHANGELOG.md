@@ -1,7 +1,20 @@
 otj-logging
 ===========
+
+3.1.0
+-----
+* Remove LogMetaData.
+
+LogMetaData was a support for arbitrary metadata, used as a transition to selectorless otl-based
+logging. It did not function correctly for the last 2 years (swallowed the extra fields). 
+
+If you use LogMetadata, you'll need to create otls in the [logging-config](https://github.com/opentable/logging-loglov3-config) repo
+and then build a new otl in the [logging-tools](https://github.com/opentable/logging-tools/tree/master/otj-otl) repo
+
+We apologize for the inconvenience.
+
 3.0.10
-======
+-----
 * Use otj-otl 0.9.11, httpheaders 0.1.6
 * upgrade pom
 * OT-ReferringEnv logged if present in incoming Http Request.
