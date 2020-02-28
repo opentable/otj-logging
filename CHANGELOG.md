@@ -11,6 +11,9 @@ logging. It did not function correctly for the last 2 years (swallowed the extra
 If you use LogMetadata, you'll need to create otls in the [logging-config](https://github.com/opentable/logging-loglov3-config) repo
 and then build a new otl in the [logging-tools](https://github.com/opentable/logging-tools/tree/master/otj-otl) repo
 
+Alternatively, restructure or eliminate the logging. Unless it perfectly matched an existing OTL
+it has not logged correctly for 2 years.
+
 We apologize for the inconvenience.
 
 3.0.10
