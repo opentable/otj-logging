@@ -112,7 +112,9 @@ public class JsonRequestLog extends AbstractLifeCycle implements RequestLog
     @Nonnull
     protected HttpV1 createEvent(Request request, Response response) {
         final String query = request.getQueryString();
-        return HttpV1.builder()
+        HttpV1.HttpV1Builder builder = HttpV1.builder();
+        addKubernetesInfo(builder);
+        return builder
                 .logName("request")
                 .serviceType(CommonLogHolder.getServiceType())
                 .uuid(UUID.randomUUID())
@@ -155,6 +157,17 @@ public class JsonRequestLog extends AbstractLifeCycle implements RequestLog
                 .headerXForwardedProto(request.getHeader(HttpHeaders.X_FORWARDED_PROTO))
 
                 .build();
+    }
+
+    private void addKubernetesInfo(final HttpV1.HttpV1Builder builder) {
+        CommonLogHolder.getK8sInfo().ifPresent(k8sInfo -> {
+            builder
+                    .k8SClusterName(k8sInfo.getClusterName().orElse(null))
+                    .k8SNamespace(k8sInfo.getNamespace().orElse(null))
+                    .k8SNodeHost(k8sInfo.getNodeHost().orElse(null))
+                    .k8SPodName(k8sInfo.getPodName().orElse(null))
+                    .k8SServiceName(k8sInfo.getServiceName().orElse(null));
+        });
     }
 
     /**
