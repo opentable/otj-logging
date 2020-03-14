@@ -171,4 +171,40 @@ public interface CommonLogFields
      */
     @JsonProperty("@loglov3-otl")
     String getLoglov3Otl();
+
+
+    /**
+     * Kubernetes cluster name
+     * @return the cluster name
+     */
+    @JsonProperty("k8s-cluster-name")
+    String getClusterName();
+
+    /**
+     * Kubernetes namespace
+     * @return the namespace
+     */
+    @JsonProperty("k8s-namespace")
+    String getNamespace();
+
+    /**
+     * Kubernetes Node Host
+     * @return the node host
+     */
+    @JsonProperty("k8s-node-host")
+    String getNodeHost();
+
+    /**
+     * Kubernetes Pod name
+     * @return the kubernetes pod name
+     */
+    @JsonProperty("k8s-pod-name")
+    String getPodName();
+
+    /**
+     * Kubernetes service name
+     * @return the kubernetes service name
+     */
+    @JsonProperty("k8s-service-name")
+    String getServiceName();
 }

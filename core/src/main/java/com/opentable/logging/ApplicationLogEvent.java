@@ -102,6 +102,31 @@ class ApplicationLogEvent implements CommonLogFields
         return event.getMDCPropertyMap().getOrDefault("@loglov3-otl-override", "msg-v1");
     }
 
+    @Override
+    public String getClusterName() {
+        return CommonLogHolder.getK8sInfo().getClusterName();
+    }
+
+    @Override
+    public String getNamespace() {
+        return CommonLogHolder.getK8sInfo().getNameSpace();
+    }
+
+    @Override
+    public String getNodeHost() {
+        return CommonLogHolder.getK8sInfo().getNodeHost();
+    }
+
+    @Override
+    public String getPodName() {
+        return CommonLogHolder.getK8sInfo().getPodName();
+    }
+
+    @Override
+    public String getServiceName() {
+        return CommonLogHolder.getK8sInfo().getServiceName();
+    }
+
     /**
      * A converter that converts {@link IThrowableProxy} objects to Strings
      */
