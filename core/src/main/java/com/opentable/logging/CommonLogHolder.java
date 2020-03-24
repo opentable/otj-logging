@@ -16,11 +16,15 @@ package com.opentable.logging;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
+
+import com.opentable.service.K8sInfo;
 
 /**
  * Holds values common to most/all log messages
@@ -37,6 +41,8 @@ public final class CommonLogHolder
     static final Integer INSTANCE_NO;
     static String OT_ENV, OT_ENV_TYPE, OT_ENV_LOCATION, OT_ENV_FLAVOR; //NOPMD
     private static String serviceType = UNSET; //NOPMD
+
+    private static final AtomicReference<KubernetesLogHolder> k8sInfo = new AtomicReference<>();
 
     static {
         final String hostNameEnv = System.getenv("TASK_HOST");
@@ -84,6 +90,13 @@ public final class CommonLogHolder
 
     public static void setServiceType(String serviceType) {
         CommonLogHolder.serviceType = serviceType;
+    }
+    public static void setK8sInfo(K8sInfo k8sInfo) {
+        CommonLogHolder.k8sInfo.set(new KubernetesLogHolder(Optional.ofNullable(k8sInfo)));
+    }
+
+    public static KubernetesLogHolder getK8sInfo() {
+        return Optional.ofNullable(CommonLogHolder.k8sInfo.get()).orElse(KubernetesLogHolder.EMPTY);
     }
 
     /**
