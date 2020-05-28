@@ -1,10 +1,14 @@
 otj-logging
 ===========
 
-3.0.11
+3.0.12
 -----
 * Force ObjectMapper to use legacy behavior with ObjectMapper.
 Apparently people like +00:00 now instead of +0000
+
+3.0.11
+------
+* K8s logging
 
 3.0.10
 ----
