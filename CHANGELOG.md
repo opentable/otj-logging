@@ -1,7 +1,13 @@
 otj-logging
 ===========
+
+3.0.11
+-----
+* Force ObjectMapper to use legacy behavior with ObjectMapper.
+Apparently people like +00:00 now instead of +0000
+
 3.0.10
-======
+----
 * Use otj-otl 0.9.11, httpheaders 0.1.6
 * upgrade pom
 * OT-ReferringEnv logged if present in incoming Http Request.
