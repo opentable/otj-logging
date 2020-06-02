@@ -19,12 +19,20 @@
   <parent>
     <groupId>com.opentable.components</groupId>
     <artifactId>otj-logging-parent</artifactId>
-    <version>3.0.13-SNAPSHOT</version>
+    <version>5.2.0-SNAPSHOT</version>
   </parent>
 
   <artifactId>otj-logging</artifactId>
   <name>otj-logging</name>
   <description>Logging component</description>
+
+  <properties>
+    <dep.otj-core.version>5.2.0-SNAPSHOT</dep.otj-core.version>
+    <dep.otj-jvm.version>5.2.0-SNAPSHOT</dep.otj-jvm.version>
+    <dep.otj-scopes.version>5.2.0-SNAPSHOT</dep.otj-scopes.version>
+    <dep.otj-spring.version>5.2.0-SNAPSHOT</dep.otj-spring.version>
+    <dep.otj-httpheaders.version>5.2.0-SNAPSHOT</dep.otj-httpheaders.version>
+  </properties>
 
   <dependencies>
     <dependency>
