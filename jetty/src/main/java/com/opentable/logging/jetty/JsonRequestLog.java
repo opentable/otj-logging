@@ -145,8 +145,7 @@ public class JsonRequestLog extends AbstractLifeCycle implements RequestLog
                 .userAgent(request.getHeader(HttpHeaders.USER_AGENT))
                 .userId(request.getHeader(OTHeaders.USER_ID))
                 .headerOtOriginaluri(request.getHeader(OTHeaders.ORIGINAL_URI))
-                //TODO: Do not merge until OTL is published - this isn't pointing to the right place
-                .headerHost(request.getHeader(OTHeaders.ACTUAL_HOST))
+                .headerOtActualHost(request.getHeader(OTHeaders.ACTUAL_HOST))
                 .headerOtDomain(request.getHeader(OTHeaders.DOMAIN))
                 .headerHost(request.getHeader(HttpHeaders.HOST))
                 .headerAccept(request.getHeader(HttpHeaders.ACCEPT))
