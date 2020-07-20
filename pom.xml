@@ -44,9 +44,8 @@
   </modules>
 
   <properties>
-    <!-- See PR for this -->
-    <dep.otj-otl.version>0.10.3-SNAPSHOT</dep.otj-otl.version>
-    <dep.otj-httpheaders.version>0.1.8-SNAPSHOT</dep.otj-httpheaders.version>
+    <dep.otj-otl.version>0.10.3</dep.otj-otl.version>
+    <dep.otj-httpheaders.version>0.1.8</dep.otj-httpheaders.version>
     <basepom.oss.skip-scala-doc>true</basepom.oss.skip-scala-doc>
     <basepom.check.skip-javadoc>false</basepom.check.skip-javadoc>
     <basepom.check.fail-javadoc>false</basepom.check.fail-javadoc>
