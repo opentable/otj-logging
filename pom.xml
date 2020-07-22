@@ -19,7 +19,7 @@
   <parent>
     <groupId>com.opentable</groupId>
     <artifactId>otj-parent-spring</artifactId>
-    <version>9999-SNAPSHOT</version>
+    <version>253</version>
   </parent>
 
   <scm>
@@ -44,14 +44,24 @@
   </modules>
 
   <properties>
-    <dep.otj-core.version>5.2.0-SNAPSHOT</dep.otj-core.version>
-    <dep.otj-jvm.version>5.2.0-SNAPSHOT</dep.otj-jvm.version>
-    <dep.otj-scopes.version>5.2.0-SNAPSHOT</dep.otj-scopes.version>
-    <dep.otj-spring.version>5.2.0-SNAPSHOT</dep.otj-spring.version>
-    <dep.otj-httpheaders.version>5.2.0-SNAPSHOT</dep.otj-httpheaders.version>
+    <!-- Remove once parent updated -->
+    <dep.spring-boot.version>2.2.7.RELEASE</dep.spring-boot.version>
+    <dep.spring.version>5.2.6.RELEASE</dep.spring.version>
+    <dep.spring-security.version>5.2.4.RELEASE</dep.spring-security.version>
+    <dep.otj-core.version>5.2.0</dep.otj-core.version>
+    <dep.otj-jvm.version>5.2.0</dep.otj-jvm.version>
+    <dep.otj-scopes.version>5.2.0</dep.otj-scopes.version>
+    <dep.otj-jackson.version>5.2.0</dep.otj-jackson.version>
+    <dep.otj-spring.version>5.2.0</dep.otj-spring.version>
+    <dep.otj-httpheaders.version>5.2.1</dep.otj-httpheaders.version>
+    <dep.otj-executors.version>5.2.0</dep.otj-executors.version>
+    <dep.otj-otl.version>0.10.3</dep.otj-otl.version>
     <basepom.oss.skip-scala-doc>true</basepom.oss.skip-scala-doc>
     <basepom.check.skip-javadoc>false</basepom.check.skip-javadoc>
     <basepom.check.fail-javadoc>false</basepom.check.fail-javadoc>
+
+
+
   </properties>
   <dependencyManagement>
     <dependencies>

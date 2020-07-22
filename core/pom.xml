@@ -26,14 +26,6 @@
   <name>otj-logging</name>
   <description>Logging component</description>
 
-  <properties>
-    <dep.otj-core.version>5.2.0-SNAPSHOT</dep.otj-core.version>
-    <dep.otj-jvm.version>5.2.0-SNAPSHOT</dep.otj-jvm.version>
-    <dep.otj-scopes.version>5.2.0-SNAPSHOT</dep.otj-scopes.version>
-    <dep.otj-spring.version>5.2.0-SNAPSHOT</dep.otj-spring.version>
-    <dep.otj-httpheaders.version>5.2.0-SNAPSHOT</dep.otj-httpheaders.version>
-  </properties>
-
   <dependencies>
     <dependency>
       <groupId>com.opentable</groupId>
