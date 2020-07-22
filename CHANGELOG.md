@@ -1,6 +1,14 @@
 otj-logging
 ===========
 
+5.2.0
+-----
+* Recompile for Spring 5.2
+
+3.0.13
+------
+* OT-Actual-Host
+
 3.0.12
 -----
 * Force ObjectMapper to use legacy behavior with ObjectMapper.
