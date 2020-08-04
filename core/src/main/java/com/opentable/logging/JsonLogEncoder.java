@@ -23,6 +23,7 @@ import com.fasterxml.jackson.core.util.ByteArrayBuilder;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.util.StdDateFormat;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import org.slf4j.Marker;
@@ -57,7 +58,9 @@ public class JsonLogEncoder extends EncoderBase<ILoggingEvent> {
     public JsonLogEncoder() {
         // TODO: This sucks - - won't get the mapper customizations.  Find a way to inject this.
         // Master configuration is in otj-jackson
+        // See https://github.com/FasterXML/jackson-databind/issues/2643 for why the custom dateformat
         this.mapper = new ObjectMapper()
+                .setDateFormat(new StdDateFormat().withColonInTimeZone(false))
                 .registerModule(new JavaTimeModule())
                 .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
                 .disable(SerializationFeature.WRITE_NULL_MAP_VALUES)

@@ -1,7 +1,8 @@
 otj-logging
 ===========
 
-3.1.0
+
+5.2.1
 -----
 * Remove LogMetaData.
 
@@ -16,8 +17,25 @@ it has not logged correctly for 2 years.
 
 We apologize for the inconvenience.
 
-3.0.10
+5.2.0
 -----
+* Recompile for Spring 5.2
+
+3.0.13
+------
+* OT-Actual-Host
+
+3.0.12
+-----
+* Force ObjectMapper to use legacy behavior with ObjectMapper.
+Apparently people like +00:00 now instead of +0000
+
+3.0.11
+------
+* K8s logging
+
+3.0.10
+----
 * Use otj-otl 0.9.11, httpheaders 0.1.6
 * upgrade pom
 * OT-ReferringEnv logged if present in incoming Http Request.

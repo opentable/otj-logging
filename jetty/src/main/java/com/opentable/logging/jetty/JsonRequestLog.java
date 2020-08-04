@@ -145,7 +145,7 @@ public class JsonRequestLog extends AbstractLifeCycle implements RequestLog
                 .userAgent(request.getHeader(HttpHeaders.USER_AGENT))
                 .userId(request.getHeader(OTHeaders.USER_ID))
                 .headerOtOriginaluri(request.getHeader(OTHeaders.ORIGINAL_URI))
-
+                .headerOtActualHost(request.getHeader(OTHeaders.ACTUAL_HOST))
                 .headerOtDomain(request.getHeader(OTHeaders.DOMAIN))
                 .headerHost(request.getHeader(HttpHeaders.HOST))
                 .headerAccept(request.getHeader(HttpHeaders.ACCEPT))
