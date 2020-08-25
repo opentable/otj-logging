@@ -81,18 +81,6 @@ public class JsonLogEncoder extends EncoderBase<ILoggingEvent> {
                 event instanceof OtlType ? event : new ApplicationLogEvent(event));
         final Marker marker = event.getMarker();
 
-        // We support an arbitrary key value marker called LogMetadata
-        if (marker instanceof LogMetadata) {
-            // pull the key value metadata out and set the properties
-            ObjectNode metadataNode = mapper.valueToTree(((LogMetadata) marker).getMetadata());
-            logLine.setAll(metadataNode);
-            // LogMetadata also permits objects to be set.
-            for (Object o : ((LogMetadata) marker).getInlines()) {
-                metadataNode = mapper.valueToTree(o);
-                logLine.setAll(metadataNode);
-            }
-        }
-
         // Merge aux OTL in as well.
         if (marker instanceof OtlMarker) {
             ObjectNode metadataNode = mapper.valueToTree(((OtlMarker) marker).getOtl());
