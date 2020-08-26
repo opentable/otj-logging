@@ -13,10 +13,10 @@
  */
 package com.opentable.logging;
 
-import static com.opentable.logging.otl.ChatLogV2.ChatLogV2;
 import static org.junit.Assert.assertEquals;
 
 import java.time.Instant;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,6 +35,8 @@ import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.UnsynchronizedAppenderBase;
 import ch.qos.logback.core.status.OnConsoleStatusListener;
+
+import static com.opentable.logging.otl.ChatLogV2.ChatLogV2;
 
 public class LogOtlTest {
 
@@ -93,5 +95,16 @@ public class LogOtlTest {
         final JsonNode event = serializedEvents.get(0);
         assertEquals(when.toString(), event.get("delivered-at").textValue());
         assertEquals("chat-log-v2", event.get("@loglov3-otl").textValue());
+    }
+
+    @Test
+    public void testDateFormat()
+    {
+        final Instant when = Instant.EPOCH;
+        context.getLogger("test").info(ChatLogV2().deliveredAt(when).log(), "herro");
+        assertEquals(1, serializedEvents.size());
+        final JsonNode event = serializedEvents.get(0);
+
+        assertEquals(DateTimeFormatter.ISO_INSTANT.format(Instant.EPOCH), event.get("delivered-at").textValue());
     }
 }
