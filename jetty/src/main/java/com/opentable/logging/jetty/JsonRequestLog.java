@@ -103,10 +103,15 @@ public class JsonRequestLog extends AbstractLifeCycle implements RequestLog
         try {
             event.prepareForDeferredProcessing();
             // Log to logback.
-            LogbackLogging.log(LOG, event);
+            LogbackLogging.log(getLogger(), event);
         } finally {
             MDC.remove(CommonLogFields.REQUEST_ID_KEY);
         }
+    }
+
+    // Allow for overriding so a sampling bucket logger for example can be injected
+    protected Logger getLogger() {
+        return LOG;
     }
 
     @Nonnull
