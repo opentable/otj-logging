@@ -93,6 +93,10 @@ public class JsonRequestLog extends AbstractLifeCycle implements RequestLog
 
         // Build the event, and wrap it as a Logback ILoggingEvent
         final HttpV1 payload = createEvent(request, response);
+        if (payload == null) {
+            return;
+        }
+
         final RequestLogEvent event = new RequestLogEvent(payload, constructMessage(payload));
 
         // TODO: this is a bit of a hack.  The RequestId filter happens inside of the
