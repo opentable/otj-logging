@@ -51,8 +51,8 @@ public class JsonRequestLog extends AbstractLifeCycle implements RequestLog
 {
     private static final Logger LOG = LoggerFactory.getLogger(JsonRequestLog.class);
 
-    private final Set<String> startsWithBlackList;
-    private final Set<String> equalityBlackList;
+    private final Set<String> startsWithBlockList;
+    private final Set<String> equalityBlockList;
 
     private final Clock clock;
 
@@ -67,8 +67,8 @@ public class JsonRequestLog extends AbstractLifeCycle implements RequestLog
                           final JsonRequestLogConfig config)
     {
         this.clock = clock;
-        this.startsWithBlackList = config.getStartsWithBlacklist();
-        this.equalityBlackList = config.getEqualityBlacklist();
+        this.startsWithBlockList = config.getStartsWithBlocklist();
+        this.equalityBlockList = config.getEqualityBlocklist();
     }
 
     // Called by Jetty
@@ -77,16 +77,16 @@ public class JsonRequestLog extends AbstractLifeCycle implements RequestLog
     {
         final String requestUri = request.getRequestURI();
 
-        // Do not log a URI starting with some configured blacklist
-        for (String blackListEntry : startsWithBlackList) {
-            if (StringUtils.startsWithIgnoreCase(requestUri, blackListEntry)) {
+        // Do not log a URI starting with some configured blocklist
+        for (String blockListEntry : startsWithBlockList) {
+            if (StringUtils.startsWithIgnoreCase(requestUri, blockListEntry)) {
                 return;
             }
         }
 
-        // Do not log a URI exactly equal to some configured blacklist
-        for (String blackListEntry : equalityBlackList) {
-            if (StringUtils.equalsIgnoreCase(requestUri, blackListEntry)) {
+        // Do not log a URI exactly equal to some configured blocklist
+        for (String blockListEntry : equalityBlockList) {
+            if (StringUtils.equalsIgnoreCase(requestUri, blockListEntry)) {
                 return;
             }
         }

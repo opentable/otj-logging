@@ -1,6 +1,22 @@
 otj-logging
 ===========
 
+5.2.2
+-----
+* Rename the configuration @Values for blacklist => blocklist
+   * ot.httpserver.request-log.startswith-blacklist => ot.httpserver.request-log.startswith-blocklist
+   * ot.httpserver.request-log.equality-blacklist =>> ot.httpserver.request-log.equality-blocklist
+* Add to the default startswith-blacklist (was /health) /infra/health, /infra/ready to suppress logging by default in Platorm 3 (just like /health).
+   * If you want them (for debugging), just supply ot.httpserver.request-log.equality-blacklist=/foobar (or such)
+
+Opengrok seems to show only Front Door (and some very old services) configured these values. If you do use them
+you'll need to rename blacklist => blocklist
+
+* The above change in turn changed the getters of JsonRequestLogConfig - you'll have to correct this. It also
+  breaks binary compatibility of these, hence otj-server is also recompiled against this, and
+  released in same parent POM.
+* In turn this changed JsonRequestLog. Some users extend this, afaik they are not affected.
+
 
 5.2.1
 -----
