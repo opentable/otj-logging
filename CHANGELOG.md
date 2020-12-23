@@ -6,8 +6,8 @@ otj-logging
 * Rename the configuration @Values for blacklist => blocklist
    * ot.httpserver.request-log.startswith-blacklist => ot.httpserver.request-log.startswith-blocklist
    * ot.httpserver.request-log.equality-blacklist =>> ot.httpserver.request-log.equality-blocklist
-* Add to the default startswith-blacklist (was /health) /infra/health, /infra/ready to suppress logging by default in Platorm 3 (just like /health).
-   * If you want them (for debugging), just supply ot.httpserver.request-log.equality-blacklist=/foobar (or such)
+* Add to the default startswith-blocklist (was /health) /infra/health, /infra/ready to suppress logging by default in Platorm 3 (just like /health).
+   * If you want them (for debugging), just supply ot.httpserver.request-log.startswith-blocklist=/foobar (or such)
 
 Opengrok seems to show only Front Door (and some very old services) configured these values. If you do use them
 you'll need to rename blacklist => blocklist
