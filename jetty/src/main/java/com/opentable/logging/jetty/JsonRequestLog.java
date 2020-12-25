@@ -102,11 +102,15 @@ public class JsonRequestLog extends AbstractLifeCycle implements RequestLog
         MDC.put(CommonLogFields.REQUEST_ID_KEY, Objects.toString(payload.getRequestId(), null));
         try {
             event.prepareForDeferredProcessing();
-            // Log to logback.
-            LogbackLogging.log(LOG, event);
+            sendEvent(event);
         } finally {
             MDC.remove(CommonLogFields.REQUEST_ID_KEY);
         }
+    }
+
+    protected void sendEvent(final RequestLogEvent event) {
+        // Log to logback.
+        LogbackLogging.log(LOG, event);
     }
 
     @Nonnull
