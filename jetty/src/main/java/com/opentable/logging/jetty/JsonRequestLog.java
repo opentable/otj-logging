@@ -25,6 +25,7 @@ import javax.annotation.Nonnull;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.net.HttpHeaders;
 
 import org.apache.commons.lang3.StringUtils;
@@ -108,6 +109,10 @@ public class JsonRequestLog extends AbstractLifeCycle implements RequestLog
         }
     }
 
+    /**
+     * @param event The event to send
+     */
+    @VisibleForTesting
     protected void sendEvent(final RequestLogEvent event) {
         // Log to logback.
         LogbackLogging.log(LOG, event);
@@ -163,6 +168,9 @@ public class JsonRequestLog extends AbstractLifeCycle implements RequestLog
 
     /**
      * Provides a hook whereby an alternate source can be provided for grabbing the requestId
+     * @param request The request
+     * @param response the response
+     * @return uuid generated
      */
     protected UUID getRequestIdFrom(Request request, Response response) {
         return optUuid(response.getHeader(OTHeaders.REQUEST_ID));

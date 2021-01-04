@@ -73,6 +73,10 @@ public final class CommonLogHolder
 
     /**
      * Mock out the environment.  You probably don't want to do this.
+     * @param otEnv the environment
+     * @param otEnvType the environment type
+     * @param otEnvLocation the environment location
+     * @param otEnvFlavor the flavor if any
      */
     public static void setEnvironment(String otEnv, String otEnvType, String otEnvLocation, String otEnvFlavor) {
         OT_ENV = otEnv;
