@@ -32,7 +32,7 @@
   <groupId>com.opentable.components</groupId>
   <artifactId>otj-logging-parent</artifactId>
   <name>otj-logging-parent</name>
-  <version>5.2.3-SNAPSHOT</version>
+  <version>5.2.2-SNAPSHOT</version>
   <packaging>pom</packaging>
   <description>Logging component parent</description>
 
