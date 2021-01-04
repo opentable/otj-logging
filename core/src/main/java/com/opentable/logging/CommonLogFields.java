@@ -156,7 +156,9 @@ public interface CommonLogFields
     @JsonProperty("exception")
     String getThrowable();
 
-    /** Written by the encoder, value is ignored for serialization. */
+    /** Written by the encoder, value is ignored for serialization.
+     * @return long sequence id
+     */
     @JsonProperty(SEQUENCE_NUMBER_KEY)
     default long getSequenceNumber() {
         return Long.MIN_VALUE;
