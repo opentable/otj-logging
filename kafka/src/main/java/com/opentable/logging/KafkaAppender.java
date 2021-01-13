@@ -71,6 +71,8 @@ public class KafkaAppender extends UnsynchronizedAppenderBase<ILoggingEvent>
     {
         addInfo("About to close Kafka producer");
         super.stop();
+        // The AsyncAppenderBase#Worker thread may leave interrupt flag set, see https://jira.qos.ch/browse/LOGBACK-1548
+        // this prevents kafka producer from shutdown. We wanna check this condition, clear the flag and log warning.
         if (Thread.interrupted()) {
             addWarn("KafkaAppender::stop() is called from the interrupted thread, we cleared interrupt flag.");
         }
@@ -90,6 +92,7 @@ public class KafkaAppender extends UnsynchronizedAppenderBase<ILoggingEvent>
                 addWarn("KafkaAppender::append() is called from the interrupted thread, we cleared interrupt flag and about to retry..");
                 producer.send(new ProducerRecord<>(topic, keyGenerator.next(), encoder.encode(eventObject)));
             } else {
+                // If it is actually issue with KafkaProducer.ioThread, we do not want to swallow exception.
                 throw e;
             }
         }
