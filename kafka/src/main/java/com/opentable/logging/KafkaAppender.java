@@ -17,6 +17,7 @@ import java.util.Properties;
 
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.common.errors.InterruptException;
 import org.apache.kafka.common.serialization.ByteArraySerializer;
 import org.apache.kafka.common.serialization.Serializer;
 
@@ -70,6 +71,11 @@ public class KafkaAppender extends UnsynchronizedAppenderBase<ILoggingEvent>
     {
         addInfo("About to close Kafka producer");
         super.stop();
+        // The AsyncAppenderBase#Worker thread may leave interrupt flag set, see https://jira.qos.ch/browse/LOGBACK-1548
+        // this prevents kafka producer from shutdown. We wanna check this condition, clear the flag and log warning.
+        if (Thread.interrupted()) {
+            addWarn("KafkaAppender::stop() is called from the interrupted thread, we cleared interrupt flag.");
+        }
         producer.close();
         keySerializer.close();
         valueSerializer.close();
@@ -79,7 +85,17 @@ public class KafkaAppender extends UnsynchronizedAppenderBase<ILoggingEvent>
     @Override
     protected void append(ILoggingEvent eventObject)
     {
-        producer.send(new ProducerRecord<>(topic, keyGenerator.next(), encoder.encode(eventObject)));
+        try {
+            producer.send(new ProducerRecord<>(topic, keyGenerator.next(), encoder.encode(eventObject)));
+        } catch (InterruptException e) {
+            if (Thread.interrupted()) {
+                addWarn("KafkaAppender::append() is called from the interrupted thread, we cleared interrupt flag and about to retry..");
+                producer.send(new ProducerRecord<>(topic, keyGenerator.next(), encoder.encode(eventObject)));
+            } else {
+                // If it is actually issue with KafkaProducer.ioThread, we do not want to swallow exception.
+                throw e;
+            }
+        }
     }
 
     public Encoder<ILoggingEvent> getEncoder()

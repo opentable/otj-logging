@@ -1,6 +1,10 @@
 otj-logging
 ===========
 
+5.2.3
+-----
+* Workaround for the AsyncAppenderBase#Worker thread race condition (see https://jira.qos.ch/browse/LOGBACK-1548)
+
 5.2.2
 -----
 * Rename the configuration @Values for blacklist => blocklist
