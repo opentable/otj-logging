@@ -21,14 +21,12 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-import javax.annotation.Nonnull;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import com.google.common.annotations.VisibleForTesting;
-import com.google.common.net.HttpHeaders;
 
 import org.apache.commons.lang3.StringUtils;
+import org.eclipse.jetty.http.HttpHeader;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.RequestLog;
 import org.eclipse.jetty.server.Response;
@@ -112,13 +110,11 @@ public class JsonRequestLog extends AbstractLifeCycle implements RequestLog
     /**
      * @param event The event to send
      */
-    @VisibleForTesting
     protected void sendEvent(final RequestLogEvent event) {
         // Log to logback.
         LogbackLogging.log(LOG, event);
     }
 
-    @Nonnull
     protected HttpV1 createEvent(Request request, Response response) {
         final String query = request.getQueryString();
         return HttpV1.builder()
@@ -144,24 +140,24 @@ public class JsonRequestLog extends AbstractLifeCycle implements RequestLog
                 .acceptLanguage(request.getHeader(OTHeaders.ACCEPT_LANGUAGE))
                 .anonymousId(request.getHeader(OTHeaders.ANONYMOUS_ID))
                 // mind your r's and rr's
-                .referer(request.getHeader(HttpHeaders.REFERER))
+                .referer(request.getHeader(HttpHeader.REFERER.asString()))
                 .referringHost(request.getHeader(OTHeaders.REFERRING_HOST))
                 .referringService(request.getHeader(OTHeaders.REFERRING_SERVICE))
                 .headerOtReferringEnvironment(request.getHeader(OTHeaders.REFERRING_ENV))
                 .remoteAddress(request.getRemoteAddr())
                 .requestId(getRequestIdFrom(request, response))
                 .sessionId(request.getHeader(OTHeaders.SESSION_ID))
-                .userAgent(request.getHeader(HttpHeaders.USER_AGENT))
+                .userAgent(request.getHeader(HttpHeader.USER_AGENT.asString()))
                 .userId(request.getHeader(OTHeaders.USER_ID))
                 .headerOtOriginaluri(request.getHeader(OTHeaders.ORIGINAL_URI))
                 .headerOtActualHost(request.getHeader(OTHeaders.ACTUAL_HOST))
                 .headerOtDomain(request.getHeader(OTHeaders.DOMAIN))
-                .headerHost(request.getHeader(HttpHeaders.HOST))
-                .headerAccept(request.getHeader(HttpHeaders.ACCEPT))
+                .headerHost(request.getHeader(HttpHeader.HOST.asString()))
+                .headerAccept(request.getHeader(HttpHeader.ACCEPT.asString()))
 
-                .headerXForwardedFor(request.getHeader(HttpHeaders.X_FORWARDED_FOR))
-                .headerXForwardedPort(request.getHeader(HttpHeaders.X_FORWARDED_PORT))
-                .headerXForwardedProto(request.getHeader(HttpHeaders.X_FORWARDED_PROTO))
+                .headerXForwardedFor(request.getHeader(HttpHeader.X_FORWARDED_FOR.asString()))
+                .headerXForwardedPort(request.getHeader(HttpHeader.X_FORWARDED_PORT.asString()))
+                .headerXForwardedProto(request.getHeader(HttpHeader.X_FORWARDED_PROTO.asString()))
 
                 .build();
     }
@@ -176,12 +172,10 @@ public class JsonRequestLog extends AbstractLifeCycle implements RequestLog
         return optUuid(response.getHeader(OTHeaders.REQUEST_ID));
     }
 
-    @Nonnull
     protected String constructMessage(HttpV1 payload) {
         return constructMessage0(payload);
     }
 
-    @Nonnull
     static String constructMessage0(HttpV1 payload) {
         if (payload == null) {
             throw new IllegalArgumentException("null payload");

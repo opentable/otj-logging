@@ -27,6 +27,7 @@
   <packaging>jar</packaging>
   <description>Logging component Jetty access log adapter</description>
 
+
   <dependencies>
     <dependency>
       <groupId>org.springframework</groupId>
@@ -46,6 +47,10 @@
     <dependency>
       <groupId>com.opentable.logging</groupId>
       <artifactId>otj-otl</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-http</artifactId>
     </dependency>
     <dependency>
       <groupId>com.opentable</groupId>
@@ -81,10 +86,6 @@
       <artifactId>javax.inject</artifactId>
     </dependency>
 
-    <dependency>
-      <groupId>com.google.guava</groupId>
-      <artifactId>guava</artifactId>
-    </dependency>
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>

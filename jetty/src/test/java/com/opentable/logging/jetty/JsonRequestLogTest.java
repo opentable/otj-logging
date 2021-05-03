@@ -20,10 +20,12 @@ import static org.mockito.Mockito.when;
 import java.time.Clock;
 import java.time.Instant;
 import java.time.ZoneId;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-import com.google.common.collect.Sets;
 
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.Response;
@@ -40,8 +42,8 @@ public class JsonRequestLogTest {
     @Before
     public void before() {
         final Clock clock = Clock.fixed(Instant.ofEpochMilli(12345678L), ZoneId.systemDefault());
-        final Set<String> set = Sets.newHashSet("/health", "/infra/health", "/infra/ready");
-        final Set<String> equalSet = Sets.newHashSet("/mustbeequals");
+        final Set<String> set = Stream.of("/health", "/infra/health", "/infra/ready").collect(Collectors.toSet());
+        final Set<String> equalSet =Stream.of("/mustbeequals").collect(Collectors.toSet());
         final JsonRequestLogConfig config = new JsonRequestLogConfig(true, set, equalSet, "myLogger");
         httpV1Ref = new AtomicReference<>();
         jsonRequestLog = new JsonRequestLog(clock, config) {

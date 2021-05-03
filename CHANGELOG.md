@@ -1,5 +1,8 @@
 otj-logging
 ===========
+5.2.4
+-----
+* Remove guava as a dependency
 
 5.2.3
 -----

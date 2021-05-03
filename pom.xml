@@ -44,6 +44,7 @@
   </modules>
 
   <properties>
+    <dep.otj-otl.version>0.11.10-SNAPSHOT</dep.otj-otl.version>
     <basepom.oss.skip-scala-doc>true</basepom.oss.skip-scala-doc>
     <basepom.check.skip-javadoc>false</basepom.check.skip-javadoc>
     <basepom.check.fail-javadoc>false</basepom.check.fail-javadoc>

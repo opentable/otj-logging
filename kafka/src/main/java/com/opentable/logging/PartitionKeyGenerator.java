@@ -16,7 +16,6 @@ package com.opentable.logging;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicLong;
 
-import com.google.common.primitives.Longs;
 
 /**
  * Generates Kafka Message/Record keys
@@ -33,6 +32,15 @@ class PartitionKeyGenerator {
      * @return the message key
      */
     byte[] next() {
-        return Longs.toByteArray(partitionShufflerKey.incrementAndGet());
+        return toByteArray(partitionShufflerKey.incrementAndGet());
+    }
+
+    byte[] toByteArray(long value) {
+        byte[] result = new byte[8];
+        for (int i = 7; i >= 0; i--) {
+            result[i] = (byte) (value & 0xffL);
+            value >>= 8;
+        }
+        return result;
     }
 }

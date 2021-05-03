@@ -17,11 +17,9 @@ import static org.junit.Assert.assertTrue;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import com.google.common.collect.Multiset;
-import com.google.common.collect.TreeMultiset;
 
 import org.apache.kafka.clients.producer.Partitioner;
 import org.apache.kafka.clients.producer.internals.DefaultPartitioner;
@@ -56,7 +54,7 @@ public class PartitionSpreadTest {
     @Test
     @Ignore //TODO: This test can't pass since Cluster.partitionsByTopic is now immutable.
     public void testPartitionSpread() throws Exception {
-        Multiset<Integer> results = TreeMultiset.create();
+        Map<Integer, Integer> results = new HashMap<>();
         Cluster c = Cluster.empty();
         try (Partitioner p = new DefaultPartitioner()) {
             PartitionKeyGenerator pkg = new PartitionKeyGenerator();
@@ -64,18 +62,27 @@ public class PartitionSpreadTest {
             mockPartitions(c);
 
             for (int i = 0; i < messages; i++) {
-                results.add(p.partition("test", null, pkg.next(), null, null, c));
+                add(results,p.partition("test", null, pkg.next(), null, null, c));
             }
 
             int expected = messages / partitions;
             double threshold = expected * 0.05;
 
-            for (Multiset.Entry<Integer> e : results.entrySet()) {
-                int offBy = Math.abs(e.getCount() - expected);
-                assertTrue("Partition " + e.getElement() + " had " + e.getCount() + " elements, expected " + expected + ", threshold is " + threshold,
+            for (Map.Entry<Integer, Integer> e : results.entrySet()) {
+                int offBy = Math.abs(e.getValue() - expected);
+                assertTrue("Partition " + e.getKey() + " had " + e.getValue() + " elements, expected " + expected + ", threshold is " + threshold,
                         offBy < threshold);
             }
         }
+    }
+
+    private void add(Map<Integer, Integer> results, int newEntry) {
+        Integer count = 0;
+        if (results.containsKey(newEntry)) {
+            count = results.get(newEntry);
+        }
+        count++;
+        results.put(newEntry, count);
     }
 
     // Cluster is final and can't be mocked.  So crack it open the hard way.
