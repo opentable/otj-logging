@@ -19,7 +19,7 @@
   <parent>
     <groupId>com.opentable.components</groupId>
     <artifactId>otj-logging-parent</artifactId>
-    <version>5.2.4-SNAPSHOT</version>
+    <version>5.2.4-2.4.3-SNAPSHOT</version>
   </parent>
 
   <artifactId>otj-logging-kafka</artifactId>
@@ -81,7 +81,7 @@
 
     <dependency>
       <groupId>org.apache.kafka</groupId>
-      <artifactId>kafka_2.12</artifactId>
+      <artifactId>kafka_2.13</artifactId>
       <classifier>test</classifier>
       <scope>test</scope>
     </dependency>

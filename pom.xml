@@ -18,8 +18,8 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>com.opentable</groupId>
-    <artifactId>otj-parent-spring</artifactId>
-    <version>255</version>
+    <artifactId>otj-parent-dag-build</artifactId>
+    <version>275-2.4.3-SNAPSHOT</version>
   </parent>
 
   <scm>
@@ -32,7 +32,7 @@
   <groupId>com.opentable.components</groupId>
   <artifactId>otj-logging-parent</artifactId>
   <name>otj-logging-parent</name>
-  <version>5.2.4-SNAPSHOT</version>
+  <version>5.2.4-2.4.3-SNAPSHOT</version>
   <packaging>pom</packaging>
   <description>Logging component parent</description>
 
