@@ -1,6 +1,10 @@
 otj-logging
 ===========
 
+5.2.4
+-----
+* Parent POM-328 [changes see here]( https://github.com/opentable/otj-parent/blob/master/CHANGELOG.md#328)
+
 5.2.3
 -----
 * Workaround for the AsyncAppenderBase#Worker thread race condition (see https://jira.qos.ch/browse/LOGBACK-1548)
