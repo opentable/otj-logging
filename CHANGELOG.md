@@ -1,5 +1,10 @@
 otj-logging
 ===========
+5.3.0
+-----
+* Update to bucket4j 7.5.0. This is a nonbackwards compatible change
+and other libraries utilizing must be recompiled against this, including
+`otj-metrics` and `service-discovery`.
 
 5.2.4
 -----
