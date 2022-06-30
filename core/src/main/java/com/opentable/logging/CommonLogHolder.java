@@ -116,7 +116,7 @@ public final class CommonLogHolder
 
     private static Integer getInstanceNumber() {
         final String instanceNoString = System.getenv("INSTANCE_NO");
-        if (StringUtils.isEmpty(instanceNoString)) {
+        if (StringUtils.hasLength(instanceNoString)) {
             LOG.warn("Environment variable INSTANCE_NO was not supplied");
             return null;
         }

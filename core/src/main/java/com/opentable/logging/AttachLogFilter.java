@@ -15,10 +15,10 @@ package com.opentable.logging;
 
 import java.util.Iterator;
 
-import javax.annotation.PostConstruct;
-import javax.inject.Inject;
 
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 
 import ch.qos.logback.classic.Logger;
@@ -32,7 +32,7 @@ import ch.qos.logback.core.filter.Filter;
  * If an appender name is provided we will attach the filter to it. In any case, we'll add it to all of the logger's appenders.
  * We'll use the root logger, unless a logger is specified.
  */
-public final class AttachLogFilter {
+public final class AttachLogFilter implements InitializingBean {
     private final Filter<ILoggingEvent> filter;
     private final String configKey;
 
@@ -46,13 +46,17 @@ public final class AttachLogFilter {
         this.configKey = configKey;
     }
 
-    @Inject
+    @Autowired
     AttachLogFilter provideEnvironment(Environment env) {
         enabled = env.getProperty(configKey, boolean.class, false);
         return this;
     }
 
-    @PostConstruct
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        attach();
+    }
+
     public void attach() {
         if (context == null) {
             context = (LoggerContext) LoggerFactory.getILoggerFactory();

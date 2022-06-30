@@ -44,6 +44,7 @@
   </modules>
 
   <properties>
+    <dep.otj-spring.version>5.2.3-SNAPSHOT</dep.otj-spring.version>
     <!-- Remove once parent is updated - breaks backwards compatibility -->
     <dep.bucket4j.version>7.5.0</dep.bucket4j.version>
     <basepom.oss.skip-scala-doc>true</basepom.oss.skip-scala-doc>

@@ -21,10 +21,6 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-import javax.annotation.Nonnull;
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.net.HttpHeaders;
 
@@ -36,6 +32,7 @@ import org.eclipse.jetty.util.component.AbstractLifeCycle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opentable.httpheaders.OTHeaders;
 import com.opentable.logging.CommonLogFields;
@@ -47,7 +44,6 @@ import com.opentable.logging.otl.HttpV1;
  * A Jetty RequestLog that emits to Logback, for transport to centralized logging.
  * This is normally wired up via otj-server.
  */
-@Singleton
 public class JsonRequestLog extends AbstractLifeCycle implements RequestLog
 {
     private static final Logger LOG = LoggerFactory.getLogger(JsonRequestLog.class);
@@ -63,7 +59,7 @@ public class JsonRequestLog extends AbstractLifeCycle implements RequestLog
      * @param clock the clock to determine the current time for measuring response time
      * @param config the request log configuration
      */
-    @Inject
+    @Autowired
     public JsonRequestLog(final Clock clock,
                           final JsonRequestLogConfig config)
     {
@@ -118,7 +114,6 @@ public class JsonRequestLog extends AbstractLifeCycle implements RequestLog
         LogbackLogging.log(LOG, event);
     }
 
-    @Nonnull
     protected HttpV1 createEvent(Request request, Response response) {
         final String query = request.getQueryString();
         return HttpV1.builder()
@@ -176,12 +171,10 @@ public class JsonRequestLog extends AbstractLifeCycle implements RequestLog
         return optUuid(response.getHeader(OTHeaders.REQUEST_ID));
     }
 
-    @Nonnull
     protected String constructMessage(HttpV1 payload) {
         return constructMessage0(payload);
     }
 
-    @Nonnull
     static String constructMessage0(HttpV1 payload) {
         if (payload == null) {
             throw new IllegalArgumentException("null payload");
