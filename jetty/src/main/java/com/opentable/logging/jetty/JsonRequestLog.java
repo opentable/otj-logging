@@ -173,6 +173,8 @@ public class JsonRequestLog extends AbstractLifeCycle implements RequestLog
      * @return uuid generated
      */
     protected UUID getRequestIdFrom(Request request, Response response) {
+        // NB: There's a hidden and currently correct assumption that
+        // these kinds of calls are equivalent to ConservedHeader.enumName.getHeaderKey()
         return optUuid(response.getHeader(OTHeaders.REQUEST_ID));
     }
 

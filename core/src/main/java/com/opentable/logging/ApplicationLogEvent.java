@@ -27,6 +27,7 @@ import ch.qos.logback.classic.spi.IThrowableProxy;
 class ApplicationLogEvent implements CommonLogFields
 {
     private static final DateTimeFormatter FORMAT = DateTimeFormatter.ISO_INSTANT;
+    public static final String LOGLOV_3_OTL_OVERRIDE = "@loglov3-otl-override";
 
     private final ILoggingEvent event;
     private final UUID messageId = UUID.randomUUID();
@@ -99,7 +100,7 @@ class ApplicationLogEvent implements CommonLogFields
 
     @Override
     public String getLoglov3Otl() {
-        return event.getMDCPropertyMap().getOrDefault("@loglov3-otl-override", "msg-v1");
+        return event.getMDCPropertyMap().getOrDefault(LOGLOV_3_OTL_OVERRIDE, "msg-v1");
     }
 
     @Override

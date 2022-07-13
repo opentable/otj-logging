@@ -27,6 +27,8 @@ import org.slf4j.MDC;
  */
 public interface CommonLogFields
 {
+    // NB: This must be the same as the calculated logger name in ConservedHeaders library.
+    // This is in turn equivalent to ConservedHeader.REQUEST_ID.getMDCKey()
     String REQUEST_ID_KEY = "request-id";
     String SEQUENCE_NUMBER_KEY = "sequence-number";
 
