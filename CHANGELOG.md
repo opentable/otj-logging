@@ -1,5 +1,10 @@
 otj-logging
 ===========
+
+5.3.1
+-----
+* POM 344, minor changes and notes for OTPL-6894
+
 5.3.0
 -----
 * Update to bucket4j 7.5.0. This is a nonbackwards compatible change
