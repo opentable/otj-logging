@@ -19,7 +19,6 @@ import org.slf4j.Logger;
 
 import io.github.bucket4j.Bandwidth;
 import io.github.bucket4j.Bucket;
-import io.github.bucket4j.Bucket4j;
 
 @SuppressWarnings("PMD.ClassWithOnlyPrivateConstructorsShouldBeFinal")
 public class BucketLog extends LimitLog {
@@ -47,12 +46,12 @@ public class BucketLog extends LimitLog {
     }
 
     public static BucketLog of(Class clazz, int perSecond, Duration refillBucketDuration) {
-        return of(getLogger(clazz), Bucket4j.builder()
+        return of(getLogger(clazz), Bucket.builder()
                 .addLimit(Bandwidth.simple(perSecond, refillBucketDuration)).build());
     }
 
     public static BucketLog of(Logger delegate, int perSecond, Duration refillBucketDuration) {
-        return of(delegate, Bucket4j.builder()
+        return of(delegate, Bucket.builder()
                 .addLimit(Bandwidth.simple(perSecond, refillBucketDuration)).build());
     }
 
