@@ -27,6 +27,7 @@
   <description>Logging component</description>
 
   <dependencies>
+
     <dependency>
       <groupId>com.opentable</groupId>
       <artifactId>otj-httpheaders</artifactId>
@@ -124,5 +125,7 @@
       <artifactId>spring-test</artifactId>
       <scope>test</scope>
     </dependency>
+
+
   </dependencies>
 </project>
