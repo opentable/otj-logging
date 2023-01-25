@@ -1,9 +1,0 @@
-language: java
-jdk:
-  - openjdk8
-
-before_install:
-  - wget http://mirrors.ocf.berkeley.edu/apache/maven/maven-3/3.6.2/binaries/apache-maven-3.6.2-bin.zip
-  - unzip -qq apache-maven-3.6.2-bin.zip
-  - export M2_HOME=$PWD/apache-maven-3.6.2
-  - export PATH=$M2_HOME/bin:$PATH
