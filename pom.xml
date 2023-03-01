@@ -19,7 +19,7 @@
   <parent>
     <groupId>com.opentable</groupId>
     <artifactId>otj-parent-spring</artifactId>
-    <version>361-SNAPSHOT</version>
+    <version>361</version>
   </parent>
 
   <scm>
@@ -47,9 +47,23 @@
     <basepom.oss.skip-scala-doc>true</basepom.oss.skip-scala-doc>
     <basepom.check.skip-javadoc>false</basepom.check.skip-javadoc>
     <basepom.check.fail-javadoc>false</basepom.check.fail-javadoc>
+    <dep.jetty.version>10.0.12</dep.jetty.version> <!-- override jetty 9 in old pom -->
   </properties>
   <dependencyManagement>
     <dependencies>
+      <dependency>
+        <groupId>org.eclipse.jetty</groupId>
+        <artifactId>jetty-bom</artifactId>
+        <version>10.0.12.1</version>
+        <type>pom</type>
+        <scope>import</scope>
+        <exclusions>
+        <exclusion>
+          <groupId>org.eclipse.jetty.toolchain</groupId>
+          <artifactId>jetty-servlet-api</artifactId>
+        </exclusion>
+        </exclusions>
+      </dependency>
       <dependency>
         <groupId>com.opentable.components</groupId>
         <artifactId>otj-logging</artifactId>
