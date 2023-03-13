@@ -19,7 +19,7 @@
   <parent>
     <groupId>com.opentable.components</groupId>
     <artifactId>otj-logging-parent</artifactId>
-    <version>5.3.2-SNAPSHOT</version>
+    <version>6.0.1-SNAPSHOT</version>
   </parent>
 
   <artifactId>otj-logging</artifactId>
@@ -27,6 +27,7 @@
   <description>Logging component</description>
 
   <dependencies>
+
     <dependency>
       <groupId>com.opentable</groupId>
       <artifactId>otj-httpheaders</artifactId>
@@ -124,5 +125,7 @@
       <artifactId>spring-test</artifactId>
       <scope>test</scope>
     </dependency>
+
+
   </dependencies>
 </project>

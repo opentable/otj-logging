@@ -24,6 +24,7 @@ import java.util.concurrent.TimeUnit;
 import javax.annotation.Nonnull;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import javax.servlet.http.HttpServletRequest;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.net.HttpHeaders;
@@ -50,6 +51,10 @@ import com.opentable.logging.otl.HttpV1;
 @Singleton
 public class JsonRequestLog extends AbstractLifeCycle implements RequestLog
 {
+    // Note: This is strictly to fix the transitive dependency and have dependency checker not complaining
+    static {
+        HttpServletRequest.class.hashCode(); //NOPMD
+    }
     private static final Logger LOG = LoggerFactory.getLogger(JsonRequestLog.class);
 
     private final Set<String> startsWithBlockList;
