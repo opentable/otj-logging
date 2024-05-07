@@ -141,6 +141,7 @@ class ApplicationLogEvent implements CommonLogFields
         /**
          * Create a ThrowableConverterHack and start it
          */
+        @SuppressWarnings("PMD")
         ThrowableConverterHack() {
             start();
         }
